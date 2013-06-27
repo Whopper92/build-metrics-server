@@ -4,14 +4,9 @@ build-metrics-server
 A web based dashboard to receive and visualize statistics from
 a large number of package builds.
 
+## 1. Installation
 
-# Usage
-
---------
-
-### 1. Installation
-
-### 2. Getting the Data
+## 2. Getting the Data
 
 * **Configuring a database**
 
@@ -19,11 +14,9 @@ a large number of package builds.
 
 * **Retrieving data from Jenkins remote builds**
 
-### 3. Optional Components
+## 3. Optional Components
 
---------
-
-## Dependencies
+## 4. Dependencies
 
 * rubygem sinatra (1.3.3)
 * rubygem sinatra-contrib (1.3.2)
