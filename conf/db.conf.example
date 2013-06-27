@@ -1,0 +1,6 @@
+---
+database: metrics_database
+username: metrics_user
+password: strong_password
+hostname: db.example.com
+port:     5432
