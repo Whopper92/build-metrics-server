@@ -38,8 +38,7 @@ class MetricServer < Sinatra::Base
     if @@configured == true
       yield block
     else
-      puts "Temporary error notice: no configuration file present, and no DB could \
-            be reached"
+      puts "(Temporary error): no configuration file present, and no DB could be reached"
     end
   end
 
@@ -57,8 +56,8 @@ class MetricServer < Sinatra::Base
 
   #  =============================  ROUTES  =============================== #
 
-  get '/' do
-    puts '/'
+  get '/overview' do
+    erb :overview
   end
 
   # Listener for incoming metrics. Stores the data in the metrics database
@@ -66,16 +65,27 @@ class MetricServer < Sinatra::Base
   #
   #
   post '/overview/metrics' do
+    params[:date]       = Time.now.to_s
+    params[:build_time] = params[:build_time].to_f
+    params[:success] == "SUCCESS" ? params[:success] = true : params[:success] = false
+
+=begin
+    puts params.inspect
+    puts params[:date]
+    puts params[:package]
+    puts params[:dist]
+    puts params[:build_time]
+    puts params[:build_user]
+    puts params[:build_loc]
+    puts params[:version]
+    puts params[:pe_version]
+    puts params[:success]
+    puts params[:build_log]
+=end
     render_page do
       begin
-        # Do math on minutes section, combine with seconds bits.
-        if (time = params[:build_time].match(/(\d*)m(\d*\.\d*)s/))
-          params[:build_time] = (time[1].to_i * 60).to_f + time[2].to_f
-        # Strip the trailing s from `time` submissions.
-        elsif (time = params[:build_time].match(/(\d*\.\d*)s/))
-          params[:build_time] = time[1]
-        end
         Metric.create( params )
+        puts "New entry created!"
         200
       rescue Exception => e
         [418, "#{e.message} AND #{params.inspect}"]
