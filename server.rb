@@ -2,6 +2,7 @@ require 'yaml'
 require 'sinatra/base'
 require 'data_mapper'
 require 'dm-postgres-adapter'
+require 'fileutils'
 
 class MetricServer < Sinatra::Base
   attr_accessor :metrics, :avg, :error, :builds, :last_sat, :next_sat, :title
@@ -65,9 +66,12 @@ class MetricServer < Sinatra::Base
   #
   #
   post '/overview/metrics' do
+    # Format some paramters and download the Jenkins build log for storage
     params[:date]       = Time.now.to_s
     params[:build_time] = params[:build_time].to_f
     params[:success] == "SUCCESS" ? params[:success] = true : params[:success] = false
+    `wget -q -O log.txt #{params['build_log']} -P #{Dir.pwd}`
+    params[:build_log] = "#{Dir.pwd}/log.txt"
 
 =begin
     puts params.inspect
@@ -85,7 +89,7 @@ class MetricServer < Sinatra::Base
     render_page do
       begin
         Metric.create( params )
-        puts "New entry created!"
+        FileUtils.rm("#{params[:build_log]}")
         200
       rescue Exception => e
         [418, "#{e.message} AND #{params.inspect}"]
