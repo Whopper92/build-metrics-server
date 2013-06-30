@@ -68,15 +68,15 @@ class MetricServer < Sinatra::Base
   post '/overview/metrics' do
     # Format some paramters and download the Jenkins build log for storage
     params[:date]       = Time.now.to_s
-    params[:build_time] = params[:build_time].to_f
+    #params[:build_time] = params[:build_time].to_f
     params[:success] == "SUCCESS" ? params[:success] = true : params[:success] = false
-    `wget -q -O log.txt #{params['build_log']} -P #{Dir.pwd}`
-    params[:build_log] = "#{Dir.pwd}/log.txt"
+    params[:build_log] = `wget -q #{params[:build_log]} -O -`
 
 =begin
+    puts "\n\n\n"
     puts params.inspect
     puts params[:date]
-    puts params[:package]
+    puts params[:package_name]
     puts params[:dist]
     puts params[:build_time]
     puts params[:build_user]
@@ -89,9 +89,9 @@ class MetricServer < Sinatra::Base
     render_page do
       begin
         Metric.create( params )
-        FileUtils.rm("#{params[:build_log]}")
         200
       rescue Exception => e
+        puts "something went wrong\n\n\n"
         [418, "#{e.message} AND #{params.inspect}"]
       end
     end

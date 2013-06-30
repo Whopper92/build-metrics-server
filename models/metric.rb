@@ -2,11 +2,11 @@ class Metric
   include DataMapper::Resource
   property :id, Serial, :key => true
   property :date, DateTime, :required => true
-  property :package, String, :required => true
+  property :package_name, String, :required => true
   property :dist, String
   property :build_time, Float
   property :build_user, String
-  property :build_loc, String
+  property :build_loc, Text
   property :version, String
   property :pe_version, String
   property :success, Boolean
