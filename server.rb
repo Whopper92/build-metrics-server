@@ -56,8 +56,13 @@ class MetricServer < Sinatra::Base
   end
 
   #  =============================  ROUTES  =============================== #
+  get '/' do
+    redirect to('/overview')
+  end
 
   get '/overview' do
+    @stats = Hash.new
+    @stats[:latest] = Metric.all(:order => [:date.desc], :limit => 10, :jenkins_build_time.not => nil, :fields=>[:id, :date, :package_name, :dist, :jenkins_build_time, :package_build_time, :build_user, :build_loc, :version, :pe_version, :success])
     erb :overview
   end
 
@@ -67,6 +72,7 @@ class MetricServer < Sinatra::Base
   #
   post '/overview/metrics' do
     # Format some paramters and download the Jenkins build log for storage
+    puts params.inspect
     params[:date]       = Time.now.to_s
     params[:success] = case params[:success]
         when /SUCCESS/ then true
@@ -75,21 +81,6 @@ class MetricServer < Sinatra::Base
     end
     params[:build_log] = `wget -q #{params[:build_log]} -O -` if params[:jenkins_build_time] != nil
     params[:package_build_time] = nil if params[:package_build_time] == "N/A"
-#=begin
-    puts "\n\n\n"
-    puts params.inspect
-    puts params[:date]
-    puts params[:package_name]
-    puts params[:dist]
-    puts params[:jenkins_build_time]
-    puts params[:package_build_time]
-    puts params[:build_user]
-    puts params[:build_loc]
-    puts params[:version]
-    puts params[:pe_version]
-    puts params[:success]
-    puts params[:build_log]
-#=end
     render_page do
       begin
         Metric.create( params )
@@ -99,6 +90,11 @@ class MetricServer < Sinatra::Base
         [418, "#{e.message} AND #{params.inspect}"]
       end
     end
+  end
+
+  not_found do
+    status 404
+    erb :notfound
   end
 
   # Start the server if this file is executed directly
