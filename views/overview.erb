@@ -1,7 +1,9 @@
-<div id="latestBuilds">
-  <% @stats[:latest].each do |metric| %>
-    <%=# metric[:package_name] %>
-    <%=# metric[:jenkins_build_time] %>
-    <%=# metric[:package_build_time] %>
-  <% end %>
+<div id='latestBuildsContainer' class='metricContainer'>
+  <script type='text/javascript'>
+    createLatestBuildsGraph(<%= @stats[:latest].to_json %>)
+  </script>
+
+  <div id='latestBuildsToolTip' class='hidden tooltip'>
+    <p><strong><span id='latestBuildsToolTipTitle'</span></strong></p>
+  </div>
 </div>

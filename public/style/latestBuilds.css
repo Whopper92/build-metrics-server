@@ -1,0 +1,7 @@
+/* Frequent Buyer specific elements */
+
+#freqBuyersContainer {
+  position: absolute;
+  top: 350px;
+/*  left: 420px; */
+}
