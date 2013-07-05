@@ -151,3 +151,15 @@
   width:185px;
   display:inline-block;
 }
+
+#recentBuildsToolTipTitle {
+  font-weight: bold;
+  font-size:30px;
+}
+
+#moreInfoNote {
+  margin-left:0px;
+  font-size:12px;
+  text-decoration:italic;
+  color:#660066;
+}

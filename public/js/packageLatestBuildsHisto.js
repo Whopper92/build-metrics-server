@@ -9,7 +9,7 @@ function drawLatestHisto(dataset) {
 
   var w           = 500;
   var h           = 350;
-  var xPadding    = 25;
+  var xPadding    = 30;
   var yPadding    = 40;
   var textPadding = 30;
 
@@ -55,7 +55,7 @@ function drawLatestHisto(dataset) {
       var xPosition = parseFloat(d3.select(this).attr('x'));
       var yPosition = parseFloat(d3.select(this).attr('y')) + 100;
 
-      displayTooltip(tooltipID, contentID, xPosition, yPosition, d.package_name, d.jenkins_build_time.toFixed(2));
+      displayHistoTooltip(tooltipID, contentID, xPosition, yPosition, d.package_name, d.jenkins_build_time.toFixed(2));
 
       d3.select(this)
         .transition()
@@ -125,14 +125,13 @@ function drawLatestHisto(dataset) {
       .call(yAxis)
 }
 
-function displayTooltip(tooltipID, contentID, xPosition, yPosition, packageName, buildTime) {
+function displayHistoTooltip(tooltipID, contentID, xPosition, yPosition, packageName, buildTime) {
 
   d3.select(tooltipID)
     .style('left', xPosition + 'px')
     .style('top', yPosition + 'px')
     .select(contentID)
-    .text(packageName + ': ' + buildTime + ' Seconds');
-
+    .text(packageName + ': ' + buildTime + ' seconds');
   d3.select(tooltipID).classed('hidden', false);
 }
 

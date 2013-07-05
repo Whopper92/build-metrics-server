@@ -27,24 +27,50 @@
   display: none;
 }
 
-.tooltip {
+.overviewTooltip {
   position: absolute;
-  width: 270px;
+  top:50px;
+  left:40%;
+  width: 500px;
   height: auto;
   padding: 10px;
+  text-align:left;
   background-color: white;
   border-radius: 10px;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
   pointer-events:none;
 }
 
-.tooltip.hidden {
+.histoTooltip {
+  position: absolute;
+  width: 270px;
+  height: auto;
+  padding: 5px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
+  pointer-events:none;
+}
+
+.histoTooltip.hidden,
+.overviewTooltip.hidden, {
   display: none;
 }
 
-.tooltip p {
-  margin: 0;
+.histoTooltip p,
+.overviewTooltip p {
+  margin-left:40px;
   font-family: sans-serif;
-  font-size: 16px;
-  line-height: 20px;
+  font-size: 14px;
+}
+
+.histoTooltip span,
+.overviewTooltip span {
+  margin-left:10px;
+  font-size:18px;
+}
+.tooltipDesc {
+  display:inline-block;
+  font-weight:bold;
+  font-size:18px;
 }
