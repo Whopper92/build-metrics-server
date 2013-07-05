@@ -1,9 +1,19 @@
-<div id='latestBuildsContainer' class='metricContainer'>
-  <script type='text/javascript'>
-    createLatestBuildsGraph(<%= @stats[:latest].to_json %>)
-  </script>
-
-  <div id='latestBuildsToolTip' class='hidden tooltip'>
-    <p><strong><span id='latestBuildsToolTipTitle'</span></strong></p>
+<div id='recentBuildsContainer' class='metricContainer basicBox'>
+  <div id='recentBuildsTitleBar' class='titleBar'>
+    <p id='recentBuildsTitle'> Recent Builds </p>
+    <input id='recentBuildsMoreButton' class='headerButton' type='button' value='More'>
+    <div id='recentBuildsLegendBar'>
+      <p id='recentBuildsLegendSuccess'>Success</p>
+      <p id='recentBuildsLegendPackage'>Package</p>
+      <p id='recentBuildsLegendDist'>Dist</p>
+      <p id='recentBuildsLegendTime'>Build Time</p>
+      <p id='recentBuildsLegendTrend'>Trend</p>
+    </div>
   </div>
+  <div id='recentBuildsContent'>
+
+  </div>
+  <script type='text/javascript'>
+    createRecentBuildsGraphic(<%= @stats[:latest].to_json %>)
+  </script>
 </div>

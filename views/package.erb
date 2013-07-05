@@ -1,0 +1,9 @@
+<div id='latestBuildsContainer' class='metricContainer'>
+  <script type='text/javascript'>
+    createLatestBuildsGraph(<%= @stats[:latest].to_json %>)
+  </script>
+
+  <div id='latestBuildsToolTip' class='hidden tooltip'>
+    <p><strong><span id='latestBuildsToolTipTitle'></span></strong></p>
+  </div>
+</div>

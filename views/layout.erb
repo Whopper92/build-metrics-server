@@ -5,14 +5,19 @@
     <title></title>
     <script language="javascript" type="text/javascript" src="/js/d3.v3/d3.v3.js"></script>
     <script language="javascript" type="text/javascript" src="/js/jquery-1.10.1.min.js"></script>
-    <script language="javascript" type="text/javascript" src="/js/latestBuilds.js"></script>
-    <link rel="stylesheet" type="text/css" href="style/d3.css" />
-    <link rel="stylesheet" type="text/css" href="style/latestBuilds.css" />
+    <script language="javascript" type="text/javascript" src="/js/packageLatestBuildsHisto.js"></script>
+    <script language="javascript" type="text/javascript" src="/js/recentBuildsGraphic.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style/d3.css" />
+    <link rel="stylesheet" type="text/css" href="/style/general.css" />
+    <link rel="stylesheet" type="text/css" href="/style/overview.css" />
+    <link rel="stylesheet" type="text/css" href="/style/package.css" />
   </head>
   <body>
     <header>
-      <h1><a href="/overview">BuildBoard</a></h1>
-      <h2>A temporary header!</h2>
+      <img src="/images/puppetlabslogo.png" alt="Puppet Labs">
+      <form action="http://dagr.delivery.puppetlabs.net:4567/overview">
+        <input id='headerHomeButton' class='headerButton' type='submit' value='Build Board'>
+      </form>
     </header>
 
     <div id="main">

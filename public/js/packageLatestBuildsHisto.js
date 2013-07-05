@@ -20,7 +20,7 @@ function drawLatestHisto(dataset) {
 
   var yScale = d3.scale.linear()
               .domain([0, d3.max(dataset, function(d)
-                { return parseInt(d.jenkins_build_time); })])
+                { return parseInt(d.jenkins_build_time.toFixed(2)); })])
               .range([h - yPadding, 0]);
 
   // Create the SVG canvs
@@ -28,7 +28,7 @@ function drawLatestHisto(dataset) {
               .append('svg')
               .attr({width: w, height: h });
 
-  // Create the jenkins build timebars
+  // Create the package build time bars
   svg.selectAll('rect')
     .data(dataset)
     .enter()
@@ -41,10 +41,10 @@ function drawLatestHisto(dataset) {
       return xScale(i) + xPadding;
      })
     .attr('y', function(d) {
-      return yScale(d.jenkins_build_time);
+      return yScale(d.jenkins_build_time.toFixed(2));
     } )
     .attr('height', function(d) {
-      return h - yScale(d.jenkins_build_time) - yPadding;
+      return h - yScale(d.jenkins_build_time.toFixed(2)) - yPadding;
     })
     .attr('width', xScale.rangeBand())
     .attr('fill', 'cornflowerblue')
@@ -55,7 +55,7 @@ function drawLatestHisto(dataset) {
       var xPosition = parseFloat(d3.select(this).attr('x'));
       var yPosition = parseFloat(d3.select(this).attr('y')) + 100;
 
-      displayTooltip(tooltipID, contentID, xPosition, yPosition, d.package_name, d.jenkins_build_time);
+      displayTooltip(tooltipID, contentID, xPosition, yPosition, d.package_name, d.jenkins_build_time.toFixed(2));
 
       d3.select(this)
         .transition()
@@ -83,7 +83,7 @@ function drawLatestHisto(dataset) {
         return d3.ascending(a.date, b.date);
        })
       .text(function(d) {
-        return d.package_name;
+        return d.jenkins_build_time.toFixed(2);
       })
       .attr('x', function(d, i) {
         if (d.package_name.length > 8) {
