@@ -1,4 +1,7 @@
 <div id='latestBuildsContainer' class='metricContainer'>
+
+  <p id='latestBuildsTitle'>Lastest <%= params[:package].capitalize %> Builds</p>
+  <div id='latestBuildsGraph'></div>
   <script type='text/javascript'>
     createLatestBuildsGraph(<%= @stats[:latest].to_json %>)
   </script>

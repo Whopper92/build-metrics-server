@@ -23,8 +23,8 @@ function drawLatestHisto(dataset) {
                 { return parseInt(d.jenkins_build_time.toFixed(2)); })])
               .range([h - yPadding, 0]);
 
-  // Create the SVG canvs
-  var svg = d3.select('#latestBuildsContainer')
+  // Create the SVG canvas
+  var svg = d3.select('#latestBuildsGraph')
               .append('svg')
               .attr({width: w, height: h });
 
@@ -41,7 +41,7 @@ function drawLatestHisto(dataset) {
       return xScale(i) + xPadding;
      })
     .attr('y', function(d) {
-      return yScale(d.jenkins_build_time.toFixed(2));
+      return yScale(d.jenkins_build_time.toFixed(2)) + yPadding / 2;
     } )
     .attr('height', function(d) {
       return h - yScale(d.jenkins_build_time.toFixed(2)) - yPadding;
@@ -83,7 +83,9 @@ function drawLatestHisto(dataset) {
         return d3.ascending(a.date, b.date);
        })
       .text(function(d) {
-        return d.jenkins_build_time.toFixed(2);
+        day  = d.date.slice(6,10).replace('-', '/');
+        time = d.date.slice(12,16);
+        return day + ' ' + time
       })
       .attr('x', function(d, i) {
         if (d.package_name.length > 8) {
@@ -93,21 +95,14 @@ function drawLatestHisto(dataset) {
         }
       })
       .attr('y', function(d) {
-        return h - (d.jenkins_build_time * 2) - 25;
-        //return 325;
+        //return h - (d.jenkins_build_time * 2) - 25;
+        return 325 + + yPadding / 2;
       })
       .attr('pointer-events', 'none')
       .attr('text-anchor', 'middle')
       .attr('font-family', 'Arial')
       .attr('font-weight', 'bold')
-      .attr('font-size', function(d) {
-        if (d.package_name.length > 8) {
-          fontSize = '10px'
-        } else {
-          fontSize = '14px'
-        }
-        return fontSize;
-      })
+      .attr('font-size', '12px')
       .attr('fill', '');
 
   // Create the Axes
@@ -117,7 +112,7 @@ function drawLatestHisto(dataset) {
 
   svg.append('g')
       .attr('class', 'x axis xhistoAxis invisAxis')
-      .attr('transform', 'translate('+ xPadding +','+ (h - yPadding + 2) + ')')
+      .attr('transform', 'translate('+ xPadding +','+ (h - (yPadding - 20)) + ')')
       .call(xAxis)
 
   var yAxis = d3.svg.axis()
@@ -126,7 +121,7 @@ function drawLatestHisto(dataset) {
 
   svg.append('g')
       .attr('class', 'y axis yhistoAxis')
-      .attr('transform', 'translate('+ xPadding +', 0)')
+      .attr('transform', 'translate('+ xPadding +','+ yPadding / 2 + ')')
       .call(yAxis)
 }
 
