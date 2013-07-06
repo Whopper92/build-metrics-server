@@ -6,11 +6,23 @@ h5   {color:black;font-family:serif;}
 p    {color:black;margin-left:20px;}
 hr   {width:500;size:6;color:red;}
 li   {color:white;font-family:serif;list-style-position:inside;}
-.table th, .table td   {text-align:left;}
+.table th, .table td   {text-align:left;vertical-align:middle;}
 .table tr { height: 60px; }
 
 body {
   background-color: #F0F0F0;
+}
+
+svg {
+  height: 25px;
+  overflow: hidden;
+}
+
+circle {
+  stroke: 0;
+  -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
+  -moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
 }
 
 .main {
