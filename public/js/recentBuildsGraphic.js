@@ -6,91 +6,72 @@ function createRecentBuildsGraphic(data) {
 }
 
 function drawRecentBuildsGraphic(dataset) {
+  var fontSize;
+  var columnTitles = ["Result", "Dist", "Package", "Time", "Trend"]
+  var columns = ["success", "dist", "package_name", "jenkins_build_time", "trend"];
 
-  var w           = 500;
-  var h           = 400;
-  var columnCount = 1;
-  var Origcolor   = ''
+  var table = d3.select("#recentBuildsContent").append("table")
+                .attr('class', 'table table-striped table-hover')
+  var thead       = table.append("thead")
+  var tbody       = table.append("tbody");
 
-  var buildsDiv = d3.select('#recentBuildsContent').selectAll('#recentBuild')
-                    .data(dataset)
-                    .enter()
-                    .append('div')
-                    .attr('id', 'recentBuild')
-                    .style('background-color', function(d) {
-                      if(columnCount % 2 == 1) {
-                        columnCount += 1
-                        color = '#D4D4D4'
-                        return color
-                      } else {
-                        columnCount += 1
-                        color = '#FFFFFF'
-                        return color
-                      }
-                    })
-                    .on('mouseover', function(d) {
-                      origColor = this.style.backgroundColor
-                      var xPosition = parseFloat(d3.select(this).attr('x'));
-                      var yPosition = parseFloat(d3.select(this).attr('y')) - 100;
-                      if(d.success == true) {
-                        var result = "Package successfully built!"
-                      } else {
-                        var result = "Package failed to build..."
-                      }
-                      d3.select(this)
-                        .style('background-color', 'rgba(101, 156, 239, 0.5)')
+  // append the header row
+  thead.append("tr")
+      .selectAll("th")
+      .data(columnTitles)
+      .enter()
+      .append("th")
+      .text(function(column) { return column; })
+      .attr('class', function(column) {
+        if(column == 'Result') {
+          return 'result'
+        } else if(column == 'Dist') {
+          return 'dist'
+        } else if(column == 'Package') {
+          return 'package'
+        } else if(column == 'Time') {
+          return 'buildTime'
+        } else if(column == 'Trend') {
+          return 'trend'
+        }
+      })
 
-                        displayOverviewTooltip('#recentBuildsToolTip', '#recentBuildsToolTipTitle', xPosition, yPosition, 'Build Details');
-                        displayOverviewTooltip('#recentBuildsToolTip', '#recentBuildsToolTipDate', xPosition, yPosition, d.date.slice(0,10) + ' ' + d.date.slice(11,19));
-                        displayOverviewTooltip('#recentBuildsToolTip', '#recentBuildsToolTipPackage', xPosition, yPosition, d.package_name);
-                        displayOverviewTooltip('#recentBuildsToolTip', '#recentBuildsToolTipDist', xPosition, yPosition, d.dist);
-                        displayOverviewTooltip('#recentBuildsToolTip', '#recentBuildsToolTipBuildTime', xPosition, yPosition, d.jenkins_build_time );
-                        displayOverviewTooltip('#recentBuildsToolTip', '#recentBuildsToolTipBuildUser', xPosition, yPosition, d.build_user);
-                        displayOverviewTooltip('#recentBuildsToolTip', '#recentBuildsToolTipBuildLoc', xPosition, yPosition, d.build_loc);
-                        displayOverviewTooltip('#recentBuildsToolTip', '#recentBuildsToolTipVersion', xPosition, yPosition, d.version);
-                        displayOverviewTooltip('#recentBuildsToolTip', '#recentBuildsToolTipPEVersion', xPosition, yPosition, d.pe_version);
-                        displayOverviewTooltip('#recentBuildsToolTip', '#recentBuildsToolTipSuccess', xPosition, yPosition, result);
-                    })
-                    .on('mouseout', function(d) {
-                      d3.select(this)
-                        .style('background-color', function(d) {
-                          return origColor
-                        })
-                      hideTooltip('#recentBuildsToolTip')
-                    })
+  // create a row for each object in the data
+  var rows = tbody.selectAll("tr")
+      .data(dataset)
+      .enter()
+      .append("tr")
+
+  // create a cell in each row for each column
+  var cells = rows.selectAll("td")
+      .data(function(row) {
+          return columns.map(function(column) {
+              return {column: column, value: row[column]};
+          });
+      })
+      .enter()
+      .append("td")
+      .text(function(d, row) {
+        return d.value;
+      })
+
 /*
-                    var table = buildsDiv.append('table')
-                    var rows  = table.selectAll('tr')
-                          .data(dataset)
-                          .enter()
-                          .append('tr');
+  var successInd = cells.append('svg')
+                        .attr('id', 'recentBuildsSuccess')
 
-                    rows.append('td')
-                        .text(function(d) {
-                          return d.success;
-                        });
-
-                    rows.append('td')
-                        .text(function(d) {
-                          return d.package_name;
-                        });
-
-                    rows.append('td')
-                        .text(function(d) {
-                          return d.dist;
-                        });
-
-                    rows.append('td')
-                        .text(function(d) {
-                          return d.jenkins_build_time;
-                        });
-
-                    rows.append('td')
-                        .text(function(d) {
-                          return 'sparkline'
-                        });
-
+  successInd.append('circle')
+            .attr('cx', 15)
+            .attr('cy', 27)
+            .attr('r', 8)
+            .attr('fill', function(d) {
+              if( d.success == true) {
+                return 'limegreen'
+              } else {
+                return 'red'
+              }
+            });
 */
+/*
   var successInd = buildsDiv.append('svg')
                             .attr('id', 'recentBuildsSuccess')
 
@@ -105,24 +86,7 @@ function drawRecentBuildsGraphic(dataset) {
                 return 'red'
               }
             });
-
-  buildsDiv.append('div')
-           .attr('id', 'recentBuildsPackageName')
-           .text(function(d) { return d.package_name })
-           .style('font-size', '20px')
-
-  buildsDiv.append('div')
-           .attr('id', 'recentBuildsDist')
-           .text(function(d) { return d.dist })
-           .style('font-size', '18px')
-
-  buildsDiv.append('div')
-           .attr('id', 'recentBuildsBuildTime')
-           .text(function(d) { return d.jenkins_build_time.toFixed(0) + " sec"})
-           .style('font-size', '20px')
-
-  buildsDiv.append('div')
-           .attr('id', 'recentBuildsSparkline')
+*/
 }
 
 function displayOverviewTooltip(tooltipID, contentID, xPosition, yPosition, textContent) {

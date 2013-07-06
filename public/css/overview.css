@@ -1,18 +1,22 @@
+th.result {
+  width: 5%;
+}
 
+th.dist {
+  width: 15%;
+}
 
+th.package {
+  width: 25%;
+}
 
+th.buildTime {
+  width: 10%;
+}
 
-
-
-
-
-
-
-
-
-
-
-
+th.trend {
+ width: 45%;
+}
 
 #recentBuildsContainer {
   float:left;

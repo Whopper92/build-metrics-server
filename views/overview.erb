@@ -1,12 +1,14 @@
 
-<div id='recentBuildsContent' class='contentContainer contentColumnFull contentLeft'></div>
+<div id='recentBuildsContent' class='contentContainer contentColumnFull contentLeft'>
+
+  <script type='text/javascript'>
+    createRecentBuildsGraphic(<%= @stats[:latest].to_json %>)
+  </script>
+</div>
+
+
 <div id='summariesContent' class='contentContainer contentColumnHalf contentRight contentTop'></div>
 <div id='buildHostContent' class='contentContainer contentColumnHalf contentRight contentBottom'>
-
-
-
-
-
 
 <!--
   <div id='recentBuildsContainer' class='metricContainer basicBox'>

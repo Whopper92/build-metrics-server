@@ -70,7 +70,7 @@ class MetricServer < Sinatra::Base
     @stats[:latest] = Metric.all(
                         :fields=>[:id, :date, :package_name, :dist, :jenkins_build_time, :package_build_time, :build_user, :build_loc, :version, :pe_version, :success, :build_log], 
                         :order => [:date.desc],
-                        :limit => 6, 
+                        :limit => 10,
                         :jenkins_build_time.not => nil)
     erb :overview
   end
