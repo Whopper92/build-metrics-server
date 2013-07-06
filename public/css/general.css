@@ -13,11 +13,6 @@ body {
   background-color: #F0F0F0;
 }
 
-svg {
-  height: 25px;
-  overflow: hidden;
-}
-
 circle {
   stroke: 0;
   -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);

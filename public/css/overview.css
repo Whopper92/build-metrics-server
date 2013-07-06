@@ -17,3 +17,8 @@ th.buildTime {
 th.trend {
  width: 45%;
 }
+
+#resultCell {
+ height: 25px;
+ overflow: hidden;
+}
