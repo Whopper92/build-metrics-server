@@ -59,14 +59,14 @@
 
 .histoTooltip p,
 .overviewTooltip p {
-  margin-left:40px;
+  margin-left:10px;
   font-family: sans-serif;
   font-size: 14px;
 }
 
 .histoTooltip span,
 .overviewTooltip span {
-  margin-left:10px;
+  margin-left:20px;
   font-size:18px;
 }
 .tooltipDesc {

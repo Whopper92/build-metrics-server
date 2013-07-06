@@ -58,13 +58,45 @@ function drawRecentBuildsGraphic(dataset) {
                         })
                       hideTooltip('#recentBuildsToolTip')
                     })
+/*
+                    var table = buildsDiv.append('table')
+                    var rows  = table.selectAll('tr')
+                          .data(dataset)
+                          .enter()
+                          .append('tr');
 
+                    rows.append('td')
+                        .text(function(d) {
+                          return d.success;
+                        });
+
+                    rows.append('td')
+                        .text(function(d) {
+                          return d.package_name;
+                        });
+
+                    rows.append('td')
+                        .text(function(d) {
+                          return d.dist;
+                        });
+
+                    rows.append('td')
+                        .text(function(d) {
+                          return d.jenkins_build_time;
+                        });
+
+                    rows.append('td')
+                        .text(function(d) {
+                          return 'sparkline'
+                        });
+
+*/
   var successInd = buildsDiv.append('svg')
                             .attr('id', 'recentBuildsSuccess')
 
   successInd.append('circle')
             .attr('cx', 15)
-            .attr('cy', 12)
+            .attr('cy', 27)
             .attr('r', 8)
             .attr('fill', function(d) {
               if( d.success == true) {

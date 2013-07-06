@@ -2,7 +2,7 @@
   position:absolute;
   width:500px;
   height:400px;
-  margin-top:20px;
+  margin-top:60px;
 }
 
 #latestBuildsGraph {
@@ -12,7 +12,7 @@
 
 #latestBuildsTitle {
   position:absolute;
-  margin-top:0px;
+  margin-top:10px;
   width:500px;
   height:height:50px;
   font-size:30px;

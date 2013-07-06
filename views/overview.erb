@@ -1,35 +1,47 @@
-<div id='recentBuildsContainer' class='metricContainer basicBox'>
-  <div id='recentBuildsTitleBar' class='titleBar'>
-    <p id='recentBuildsTitle'> Recent Builds </p>
-    <input id='recentBuildsMoreButton' class='headerButton' type='button' value='More'>
-    <div id='recentBuildsLegendBar'>
-      <p id='recentBuildsLegendSuccess'>Success</p>
-      <p id='recentBuildsLegendPackage'>Package</p>
-      <p id='recentBuildsLegendDist'>Dist</p>
-      <p id='recentBuildsLegendTime'>Build Time</p>
-      <p id='recentBuildsLegendTrend'>Trend</p>
+
+<div id='recentBuildsContent' class='contentContainer contentColumnFull contentLeft'></div>
+<div id='summariesContent' class='contentContainer contentColumnHalf contentRight contentTop'></div>
+<div id='buildHostContent' class='contentContainer contentColumnHalf contentRight contentBottom'>
+
+
+
+
+
+
+<!--
+  <div id='recentBuildsContainer' class='metricContainer basicBox'>
+    <div id='recentBuildsTitleBar' class='titleBar'>
+      <p id='recentBuildsTitle'> Recent Builds </p>
+      <input id='recentBuildsMoreButton' class='headerButton' type='button' value='More'>
+      <div id='recentBuildsLegendBar'>
+        <p id='recentBuildsLegendSuccess'>Success</p>
+        <p id='recentBuildsLegendPackage'>Package</p>
+        <p id='recentBuildsLegendDist'>Dist</p>
+        <p id='recentBuildsLegendTime'>Build Time</p>
+        <p id='recentBuildsLegendTrend'>Trend</p>
+      </div>
+    </div>
+
+    <div id='recentBuildsContent'></div>
+    <script type='text/javascript'>
+      createRecentBuildsGraphic(<%= @stats[:latest].to_json %>)
+    </script>
+
+    <div id='recentBuildsToolTip' class='hidden overviewTooltip'>
+      <span id='recentBuildsToolTipTitle'></span></strong><br>
+      <table id='recentBuildsTooTtipTable'>
+        <tr><td><p class='tooltipDesc'>Build Date:</p></td><td><span id='recentBuildsToolTipDate'></span></td></tr>
+        <tr><td><p class='tooltipDesc'>Package:</p></td><td><span id='recentBuildsToolTipPackage'></span></td></tr>
+        <tr><td><p class='tooltipDesc'>Distribution:</p></td><td><span id='recentBuildsToolTipDist'></span></td></tr>
+        <tr><td><p class='tooltipDesc'>Build Time:</p></td><td><span id='recentBuildsToolTipBuildTime'></span></td></tr>
+        <tr><td><p class='tooltipDesc'>Build User:</p></td><td><span id='recentBuildsToolTipBuildUser'></span></td></tr>
+        <tr><td><p class='tooltipDesc'>Build Host:</p></td><td><span id='recentBuildsToolTipBuildLoc'></span></td></tr>
+        <tr><td><p class='tooltipDesc'>Version:</p></td><td><span id='recentBuildsToolTipVersion'></span></td></tr>
+        <tr><td><p class='tooltipDesc'>PE Version:</p></td><td><span id='recentBuildsToolTipPEVersion'></span></td></tr>
+        <tr><td><p class='tooltipDesc'>Result:</p></td><td><span id='recentBuildsToolTipSuccess'></span></td></tr>
+      </table>
+      <p id='moreInfoNote'>Click for additional information</p>
     </div>
   </div>
-  <div id='recentBuildsContent'>
 
-  </div>
-  <script type='text/javascript'>
-    createRecentBuildsGraphic(<%= @stats[:latest].to_json %>)
-  </script>
-
-  <div id='recentBuildsToolTip' class='hidden overviewTooltip'>
-    <span id='recentBuildsToolTipTitle'></span></strong><br>
-    <table id='recentBuildsTooTtipTable'>
-      <tr><td><p class='tooltipDesc'>Build Date:</p></td><td><span id='recentBuildsToolTipDate'></span></td></tr>
-      <tr><td><p class='tooltipDesc'>Package:</p></td><td><span id='recentBuildsToolTipPackage'></span></td></tr>
-      <tr><td><p class='tooltipDesc'>Distribution:</p></td><td><span id='recentBuildsToolTipDist'></span></td></tr>
-      <tr><td><p class='tooltipDesc'>Build Time:</p></td><td><span id='recentBuildsToolTipBuildTime'></span></td></tr>
-      <tr><td><p class='tooltipDesc'>Build User:</p></td><td><span id='recentBuildsToolTipBuildUser'></span></td></tr>
-      <tr><td><p class='tooltipDesc'>Build Host:</p></td><td><span id='recentBuildsToolTipBuildLoc'></span></td></tr>
-      <tr><td><p class='tooltipDesc'>Version:</p></td><td><span id='recentBuildsToolTipVersion'></span></td></tr>
-      <tr><td><p class='tooltipDesc'>PE Version:</p></td><td><span id='recentBuildsToolTipPEVersion'></span></td></tr>
-      <tr><td><p class='tooltipDesc'>Result:</p></td><td><span id='recentBuildsToolTipSuccess'></span></td></tr>
-    </table>
-    <p id='moreInfoNote'>Click for additional information</p>
-  </div>
-</div>
+-->

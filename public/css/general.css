@@ -1,0 +1,65 @@
+/* Generic Elements */
+
+h1   {color:black;font-family:serif;}
+h3   {color:black;font-family:serif;}
+h5   {color:black;font-family:serif;}
+p    {color:black;margin-left:20px;}
+hr   {width:500;size:6;color:red;}
+li   {color:white;font-family:serif;list-style-position:inside;}
+a    {color:green;font-family:serif;text-align:center;}
+
+body {
+  background-color: #F0F0F0;
+}
+
+.main {
+  margin-top: 40px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 95%;
+  height: 700px;
+}
+
+.basicBox {
+  text-align: center;
+  border-style: groove;
+  border-width: 1px;
+  border-color: #480000;
+  background-color: white;
+}
+
+.contentContainer {
+  background-color: white;
+}
+
+.contentColumnFull {
+  margin-top: 20px;
+  width: 35%;
+  height: 90%;
+}
+
+.contentColumnHalf {
+  width: 60%;
+  height: 43%;
+}
+
+.contentLeft {
+  float: left;
+}
+
+.contentRight {
+  float: right;
+  margin-right: 10px;
+}
+
+.contentBottom {
+  margin-top: 20px;
+}
+
+.contentTop {
+  margin-top: 20px;
+}
+
+.hidden {
+  display: none;
+}

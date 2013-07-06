@@ -1,13 +1,28 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 #recentBuildsContainer {
-  border-bottom-right-radius:20px;
   float:left;
   width:500px;
   height:400px;
   display:inline-block;
-  margin-top:10px;
-  border-bottom-left-radius:0px;
-  border-bottom-right-radius:0px;
+  margin-top:80px;
+  margin-left:20px;
   border-width:1px;
+  border-radius:0px;
 }
 
 #recentBuildsTitleBar {
@@ -15,15 +30,13 @@
   width:100%;
   height:50px;
   border-bottom-style:groove;
-  border-top-left-radius:20px;
-  border-top-right-radius:20px;
-  background: #e2e2e2; /* Old browsers */
-  background: -moz-linear-gradient(top,  #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e2e2e2), color-stop(50%,#dbdbdb), color-stop(51%,#d1d1d1), color-stop(100%,#fefefe)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%); /* W3C */
+  background: #e2e2e2;
+  background: -moz-linear-gradient(top,  #e2e2e2 0%, #dbdbdb 50%, #d1d1d1 51%, #fefefe 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#e2e2e2), color-stop(50%,#dbdbdb), color-stop(51%,#d1d1d1), color-stop(100%,#fefefe));
+  background: -webkit-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%);
+  background: -o-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%);
+  background: -ms-linear-gradient(top,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%);
+  background: linear-gradient(to bottom,  #e2e2e2 0%,#dbdbdb 50%,#d1d1d1 51%,#fefefe 100%);
 }
 
 #recentBuildsTitleBar p {
@@ -31,6 +44,8 @@
   margin-top:0px;
   margin-left:40px;
   font-size:22px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #333333;
 }
 
 #recentBuildsMoreButton {
@@ -40,14 +55,13 @@
   height:25px;
   color:white;
   border-radius:5px;
-  background: #1b3a60; /* Old browsers */
-  background: -moz-linear-gradient(top,  #1b3a60 0%, #2c539e 100%); /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1b3a60), color-stop(100%,#2c539e)); /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top,  #1b3a60 0%,#2c539e 100%); /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top,  #1b3a60 0%,#2c539e 100%); /* Opera 11.10+ */
-  background: -ms-linear-gradient(top,  #1b3a60 0%,#2c539e 100%); /* IE10+ */
-  background: linear-gradient(to bottom,  #1b3a60 0%,#2c539e 100%); /* W3C */
-
+  background: #1b3a60;
+  background: -moz-linear-gradient(top,  #1b3a60 0%, #2c539e 100%);
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#1b3a60), color-stop(100%,#2c539e));
+  background: -webkit-linear-gradient(top,  #1b3a60 0%,#2c539e 100%);
+  background: -o-linear-gradient(top,  #1b3a60 0%,#2c539e 100%);
+  background: -ms-linear-gradient(top,  #1b3a60 0%,#2c539e 100%);
+  background: linear-gradient(to bottom,  #1b3a60 0%,#2c539e 100%);
 }
 
 #recentBuildsMoreButton:hover {
@@ -67,6 +81,8 @@
   height:100%;
   font-style:italic;
   font-size:12px;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #333333;
 }
 
 #recentBuildsLegendSuccess {
@@ -87,11 +103,6 @@
 
 #recentBuildsLegendTrend {
   width:185px;
-}
-
-#recentBuildsContent {
-  width:100%;
-  height:350px;
 }
 
 #recentBuild {
@@ -118,9 +129,9 @@
 
 #recentBuildsDist,
 #recentBuildsBuildTime, p {
-
   text-shadow: 2px 4px 3px rgba(0,0,0,0.1);
-  font-family: Gill Sans, Verdana;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #333333;
   letter-spacing: 1px;
 }
 
