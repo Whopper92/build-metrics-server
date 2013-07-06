@@ -6,7 +6,6 @@ h5   {color:black;font-family:serif;}
 p    {color:black;margin-left:20px;}
 hr   {width:500;size:6;color:red;}
 li   {color:white;font-family:serif;list-style-position:inside;}
-a    {color:green;font-family:serif;text-align:center;}
 
 body {
   background-color: #F0F0F0;
@@ -35,12 +34,12 @@ body {
 .contentColumnFull {
   margin-top: 20px;
   width: 35%;
-  height: 90%;
+  height: 95%;
 }
 
 .contentColumnHalf {
   width: 60%;
-  height: 43%;
+  height: 46%;
 }
 
 .contentLeft {

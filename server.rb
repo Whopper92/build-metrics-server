@@ -56,6 +56,9 @@ class MetricServer < Sinatra::Base
     @@configured = false
   end
 
+  #  ============================= VARIABLES ============================== #
+        @@allPackages = Metric.all(:fields=>[:package_name], :unique => true, :order => [:package_name.asc])
+
   #  =============================  ROUTES  =============================== #
   get '/' do
     redirect to('/overview')
@@ -64,14 +67,24 @@ class MetricServer < Sinatra::Base
   get '/overview' do
     @title = "Packaging Overview"
     @stats = Hash.new
-    @stats[:latest] = Metric.all(:fields=>[:id, :date, :package_name, :dist, :jenkins_build_time, :package_build_time, :build_user, :build_loc, :version, :pe_version, :success, :build_log], :order => [:date.desc], :limit => 6, :jenkins_build_time.not => nil)
+    @stats[:latest] = Metric.all(
+                        :fields=>[:id, :date, :package_name, :dist, :jenkins_build_time, :package_build_time, :build_user, :build_loc, :version, :pe_version, :success, :build_log], 
+                        :order => [:date.desc],
+                        :limit => 6, 
+                        :jenkins_build_time.not => nil)
     erb :overview
   end
 
   get '/package/:package' do
     @title = "Overview of #{params[:package]}"
+
     @stats = Hash.new
-    @stats[:latest] = Metric.all(:fields=>[:id, :date, :package_name, :dist, :jenkins_build_time, :package_build_time, :build_user, :build_loc, :version, :pe_version, :success, :build_log], :order => [:date.desc], :limit => 7, :jenkins_build_time.not => nil, :package_name => params[:package])
+    @stats[:latest] = Metric.all(
+                        :fields=>[:id, :date, :package_name, :dist, :jenkins_build_time, :package_build_time, :build_user, :build_loc, :version, :pe_version, :success, :build_log], 
+                        :order => [:date.desc],
+                        :limit => 7,
+                        :jenkins_build_time.not => nil,
+                        :package_name => params[:package])
     erb :package
   end
 
