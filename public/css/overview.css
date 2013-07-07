@@ -18,6 +18,11 @@ th.trend {
  width: 45%;
 }
 
+#recentBuildsTitle {
+  margin-top: -15px;
+  margin-left: 10px;
+}
+
 #resultCell {
  height: 25px;
  overflow: hidden;

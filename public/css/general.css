@@ -1,15 +1,14 @@
 /* Generic Elements */
 
-h1   {color:black;font-family:serif;}
-h3   {color:black;font-family:serif;}
-h5   {color:black;font-family:serif;}
-p    {color:black;margin-left:20px;}
-hr   {width:500;size:6;color:red;}
-li   {color:white;font-family:serif;list-style-position:inside;}
+p     {color:black;margin-left:20px;}
+hr    {width:500;size:6;color:red;}
+li    {color:white;font-family:serif;list-style-position:inside;}
+table {height:97%;margin-top:-20px;}
 .table th, .table td   {text-align:left;vertical-align:middle;}
-.table tr { height: 60px; }
+.table tr { height: 10%; }
 
-body {
+html, body {
+  height: 100%;
   background-color: #F0F0F0;
 }
 
@@ -25,7 +24,7 @@ circle {
   margin-left: auto;
   margin-right: auto;
   width: 95%;
-  height: 700px;
+  height: 90%;
 }
 
 .basicBox {
@@ -48,7 +47,7 @@ circle {
 
 .contentColumnHalf {
   width: 60%;
-  height: 46%;
+  height: 47%;
 }
 
 .contentLeft {
@@ -61,7 +60,7 @@ circle {
 }
 
 .contentBottom {
-  margin-top: 20px;
+  margin-top: 15px;
 }
 
 .contentTop {
