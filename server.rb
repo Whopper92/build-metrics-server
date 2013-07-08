@@ -56,8 +56,9 @@ class MetricServer < Sinatra::Base
     @@configured = false
   end
 
-  #  ============================= VARIABLES ============================== #
-        @@allPackages = Metric.all(:fields=>[:package_name], :unique => true, :order => [:package_name.asc])
+  #  ============================= VARIABLES =============================== #
+    @@allPackageNames = Metric.all(:fields=>[:package_name], :unique => true, :order => [:package_name.asc])
+
 
   #  =============================  ROUTES  =============================== #
   get '/' do
@@ -68,7 +69,6 @@ class MetricServer < Sinatra::Base
     @title = "Packaging Overview"
     @stats = Hash.new
     @stats[:latest] = Metric.all(
-                        :fields=>[:id, :date, :package_name, :dist, :jenkins_build_time, :package_build_time, :build_user, :build_loc, :version, :pe_version, :success, :build_log], 
                         :order => [:date.desc],
                         :limit => 10,
                         :jenkins_build_time.not => nil)
@@ -80,7 +80,6 @@ class MetricServer < Sinatra::Base
 
     @stats = Hash.new
     @stats[:latest] = Metric.all(
-                        :fields=>[:id, :date, :package_name, :dist, :jenkins_build_time, :package_build_time, :build_user, :build_loc, :version, :pe_version, :success, :build_log], 
                         :order => [:date.desc],
                         :limit => 7,
                         :jenkins_build_time.not => nil,
@@ -91,8 +90,6 @@ class MetricServer < Sinatra::Base
 
   # Listener for incoming metrics. Stores the data in the metrics database
   # Expects a hash with the following keys:
-  #
-  #
   post '/overview/metrics' do
     # Format some paramters and download the Jenkins build log for storage
     puts params.inspect
