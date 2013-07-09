@@ -68,7 +68,7 @@ class MetricServer < Sinatra::Base
     @stats = Hash.new
     @stats[:latest] = Metric.all(
                         :order => [:date.desc],
-                        :limit => 10,
+                        :limit => 6,
                         :jenkins_build_time.not => nil)
 
     @trends = Hash.new

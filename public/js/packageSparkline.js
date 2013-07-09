@@ -4,7 +4,7 @@ console.log(divid)
 dataset = dataset.reverse();
 //var data = [3, 6, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 7],
 w = 160
-h = 40
+h = 20
 
 //w = document.getElementById("recentSparkline").offsetWidth
 //h = document.getElementById("recentSparkline").offsetHeight
@@ -13,7 +13,7 @@ h = 40
 //console.log(w)
 //console.log(h)
 
-margin = 20,
+margin = 5,
 y = d3.scale.linear().domain([0, d3.max(dataset)]).range([0 + margin, h]),
 x = d3.scale.linear().domain([0, dataset.length]).range([0 + margin, w])
 
@@ -23,7 +23,7 @@ var vis = d3.select(divid)
     .attr("height", h)
 
 var g = vis.append("svg:g")
-    .attr("transform", "translate(0, 50)");
+    .attr("transform", "translate(0, 25)");
 
 var line = d3.svg.line()
     .x(function(d,i) { return x(i); })

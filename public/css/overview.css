@@ -11,11 +11,11 @@ th.package {
 }
 
 th.buildTime {
-  width: 10%;
+  width: 15%;
 }
 
 th.trend {
- width: 45%;
+ width: 30%;
 }
 
 #recentBuildsTitle {
@@ -24,6 +24,6 @@ th.trend {
 }
 
 #resultCell {
- height: 25px;
+ height: 10%;
  overflow: hidden;
 }

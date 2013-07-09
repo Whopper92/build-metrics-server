@@ -3,9 +3,10 @@
 p     {color:black;margin-left:20px;}
 hr    {width:500;size:6;color:red;}
 li    {color:white;font-family:serif;list-style-position:inside;}
-table {height:97%;margin-top:-20px;}
-.table th, .table td   {text-align:left;vertical-align:middle;}
+table {height:94%;margin-top:-20px;}
+tbody {height:100%;}
 .table tr { height: 10%; }
+.table th, .table td   {height:10%;text-align:left;vertical-align:middle;}
 
 html, body {
   height: 100%;
@@ -30,6 +31,7 @@ line {
 }
 
 .main {
+  position: relative;
   margin-top: 40px;
   margin-left: auto;
   margin-right: auto;
@@ -55,26 +57,44 @@ line {
   height: 95%;
 }
 
-.contentColumnHalf {
+.contentColumnWideHalf {
   width: 60%;
-  height: 47%;
+  height: 48%;
 }
 
-.contentLeft {
-  float: left;
+.contentColumnNarrowHalf {
+  width: 40%;
+  height: 48%;
 }
 
-.contentRight {
-  float: right;
-  margin-right: 10px;
-}
-
-.contentBottom {
-  margin-top: 15px;
-}
-
-.contentTop {
+.contentUpperLeft {
+  position: absolute;
+  left: 0;
   margin-top: 20px;
+  margin-left: -10px;
+}
+
+.contentUpperRight {
+  position: absolute;
+  right: 0;
+  margin-top: 20px;
+  margin-right: -10px;
+}
+
+.contentLowerLeft {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  margin-top: 15px;
+  margin-left: -10px;
+}
+
+.contentLowerRight {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-top: 15px;
+  margin-right: -10px;
 }
 
 .hidden {
