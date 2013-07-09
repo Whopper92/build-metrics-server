@@ -1,9 +1,17 @@
 <div id='latestBuildsContainer' class='metricContainer'>
 
   <p id='latestBuildsTitle'>Latest <%= params[:package].capitalize %> Builds</p>
+  <div id="graph" class="aGraph" style="position:absolute;top:100px;left:0; float:left; width:300px; height:60px;"></div>
+
   <div id='latestBuildsGraph'></div>
+    <%= time_array = Array.new
+      @trends[params[:package]].each do |row|
+        time_array << row.jenkins_build_time
+       end
+    %>
     <script type='text/javascript'>
-      createLatestBuildsGraph(<%= @stats[:latest].to_json %>)
+      //  createRecentSparkline( <%= time_array %> )
+       createLatestBuildsGraph(<%= @stats[:latest].to_json %>)
     </script>
   </div>
   <div id='latestBuildsToolTip' class='hidden histoTooltip'>

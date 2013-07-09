@@ -26,7 +26,6 @@ class MetricServer < Sinatra::Base
       @next_sat += 86400
     end
     @next_sat = Time.mktime(@next_sat.year, @next_sat.month, @next_sat.day) + 86399
-
     @last_sat = today.dup
     while not @last_sat.saturday?
       @last_sat -= 86400
@@ -57,8 +56,7 @@ class MetricServer < Sinatra::Base
   end
 
   #  ============================= VARIABLES =============================== #
-    @@allPackageNames = Metric.all(:fields=>[:package_name], :unique => true, :order => [:package_name.asc])
-
+    @@allPackageNames   = Metric.all(:fields => [:package_name], :unique => true, :order => [:package_name.asc])
 
   #  =============================  ROUTES  =============================== #
   get '/' do
@@ -72,6 +70,13 @@ class MetricServer < Sinatra::Base
                         :order => [:date.desc],
                         :limit => 10,
                         :jenkins_build_time.not => nil)
+
+    @trends = Hash.new
+    @stats[:latest].each do |package|
+      @trends[package[:package_name]] = Metric.all(:fields       => [:jenkins_build_time],
+                                                   :order        => [:date.desc],
+                                                   :package_name => package[:package_name])
+    end
     erb :overview
   end
 
@@ -84,6 +89,10 @@ class MetricServer < Sinatra::Base
                         :limit => 7,
                         :jenkins_build_time.not => nil,
                         :package_name => params[:package])
+    @trends = Hash.new
+    @trends[params[:package]] = Metric.all(:fields       => [:jenkins_build_time],
+                                           :order        => [:date.desc],
+                                           :package_name => params[:package])
     erb :package
   end
 

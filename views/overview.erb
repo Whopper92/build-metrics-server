@@ -8,7 +8,7 @@
       <th class='result'>Result</th>
       <th class='package'>Package</th>
       <th class='dist'>Dist</th>
-      <th class='buildTime'>Time</th>
+      <th class='buildTime'><i class="icon-time"></i></th>
       <th class='trend'>Trend</th>
     </thead>
     <tbody>
@@ -27,14 +27,24 @@
                 <feGaussianBlur in="SourceGraphic" stdDeviation="1" />
               </filter>
             </defs>
-            <circle class='resultCircle' r='8' cx='20' cy='15' filter="url(#drop-shadow)"
+            <circle class='resultCircle' r='6' cx='20' cy='15' filter="url(#drop-shadow)"
               fill=<%= "#{circleColor}" %>>
           </svg>
         </td>
         <td><%= row.package_name %></td>
         <td><%= row.dist %></td>
         <td><%= "#{row.jenkins_build_time.round(0)} sec" %></td>
-        <td></td>
+        <td id="<%= "sparkline#{row.id}" %>">
+          <%= time_array = Array.new
+              @trends[row.package_name].each do |row|
+                time_array << row.jenkins_build_time
+              end
+              puts time_array.inspect
+          %>
+          <script type='text/javascript'>
+            createRecentSparkline( <%= time_array %>, <%= "sparkline#{row.id}" %> )
+          </script>
+        </td>
       </tr>
     <% end %>
     </tbody>

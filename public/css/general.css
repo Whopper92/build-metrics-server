@@ -19,6 +19,16 @@ circle {
   box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
 }
 
+path {
+    stroke: steelblue;
+    stroke-width: 2;
+    fill: none;
+}
+
+line {
+    stroke: black;
+}
+
 .main {
   margin-top: 40px;
   margin-left: auto;
