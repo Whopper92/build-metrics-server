@@ -1,4 +1,3 @@
-
 <div id='recentBuildsContent' class='contentContainer contentColumnNarrowHalf contentUpperLeft'>
   <div id='recentBuildsTitle'>
     <h3>Recent Builds</h3>
@@ -9,7 +8,7 @@
       <th class='package'>Package</th>
       <th class='dist'>Dist</th>
       <th class='buildTime'><i class="icon-time"></i></th>
-      <th class='trend'>Trend</th>
+      <th id = 'trendHeader'class='trend'><i class="icon-time"></i> Trend by Dist (All Time)</th>
     </thead>
     <tbody>
     <% @stats[:latest].each do |row| %>
@@ -36,7 +35,7 @@
         <td><%= "#{row.jenkins_build_time.round(0)} sec" %></td>
         <td id="<%= "sparkline#{row.id}" %>">
           <%= time_array = Array.new
-              @trends[row.package_name].each do |row|
+              @trends["#{row.package_name}-#{row.dist}"].each do |row|
                 time_array << row.jenkins_build_time
               end
               puts time_array.inspect

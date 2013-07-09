@@ -2,6 +2,7 @@ require 'yaml'
 require 'sinatra/base'
 require 'data_mapper'
 require 'dm-postgres-adapter'
+require 'dm-aggregates'
 require 'fileutils'
 require 'json'
 
@@ -57,6 +58,7 @@ class MetricServer < Sinatra::Base
 
   #  ============================= VARIABLES =============================== #
     @@allPackageNames   = Metric.all(:fields => [:package_name], :unique => true, :order => [:package_name.asc])
+    @@allDists          = Metric.all(:fields => [:dist], :unique => true, :order => [:dist.asc])
 
   #  =============================  ROUTES  =============================== #
   get '/' do
@@ -71,11 +73,27 @@ class MetricServer < Sinatra::Base
                         :limit => 6,
                         :jenkins_build_time.not => nil)
 
+    @stats[:total_deb_builds] = 0
+    @stats[:total_rpm_builds] = 0
+    @stats[:total_gem_builds] = 0
+    @stats[:total_dmg_builds] = 0
+
+    @@allDists.each do |dist|
+      puts dist[:dist]
+      case dist[:dist]
+        when /lucid|oneiric|precise|quantal|raring|sid|squeeze|stable|testing|unstable|wheezy/ then @stats[:total_deb_builds] += Metric.count(:dist => dist[:dist])
+        when /el5|el6|fedora17|fedora18/ then @stats[:total_rpm_builds] += Metric.count(:dist => dist[:dist])
+        when /gem/ then @stats[:total_gem_builds] += Metric.count(:dist => dist[:dist])
+        when /apple/ then @stats[:total_dmg_builds] += Metric.count(:dist => dist[:dist])
+      end
+    end
+
     @trends = Hash.new
     @stats[:latest].each do |package|
-      @trends[package[:package_name]] = Metric.all(:fields       => [:jenkins_build_time],
-                                                   :order        => [:date.desc],
-                                                   :package_name => package[:package_name])
+      @trends["#{package[:package_name]}-#{package[:dist]}"] = Metric.all(:fields => [:jenkins_build_time],
+                                                      :order        => [:date.desc],
+                                                      :package_name => package[:package_name],
+                                                      :dist         => package[:dist])
     end
     erb :overview
   end
@@ -95,7 +113,6 @@ class MetricServer < Sinatra::Base
                                            :package_name => params[:package])
     erb :package
   end
-
 
   # Listener for incoming metrics. Stores the data in the metrics database
   # Expects a hash with the following keys:
