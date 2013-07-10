@@ -73,21 +73,21 @@ class MetricServer < Sinatra::Base
                         :limit => 6,
                         :jenkins_build_time.not => nil)
 
-    @stats[:total_deb_builds] = 0
-    @stats[:total_rpm_builds] = 0
-    @stats[:total_gem_builds] = 0
-    @stats[:total_dmg_builds] = 0
+    @totalNumBuilds = Hash.new
+    @totalNumBuilds[:deb] = Hash[:type => 'deb', :num => 0]
+    @totalNumBuilds[:rpm] = Hash[:type => 'rpm', :num => 0]
+    @totalNumBuilds[:gem] = Hash[:type => 'gem', :num => 0]
+    @totalNumBuilds[:dmg] = Hash[:type => 'dmg', :num => 0]
 
     @@allDists.each do |dist|
       puts dist[:dist]
       case dist[:dist]
-        when /lucid|oneiric|precise|quantal|raring|sid|squeeze|stable|testing|unstable|wheezy/ then @stats[:total_deb_builds] += Metric.count(:dist => dist[:dist])
-        when /el5|el6|fedora17|fedora18/ then @stats[:total_rpm_builds] += Metric.count(:dist => dist[:dist])
-        when /gem/ then @stats[:total_gem_builds] += Metric.count(:dist => dist[:dist])
-        when /apple/ then @stats[:total_dmg_builds] += Metric.count(:dist => dist[:dist])
+        when /lucid|oneiric|precise|quantal|raring|sid|squeeze|stable|testing|unstable|wheezy/ then @totalNumBuilds[:deb][:num] += Metric.count(:dist => dist[:dist])
+        when /el5|el6|fedora17|fedora18/ then @totalNumBuilds[:rpm][:num] += Metric.count(:dist => dist[:dist])
+        when /gem/ then @totalNumBuilds[:gem][:num] += Metric.count(:dist => dist[:dist])
+        when /apple/ then @totalNumBuilds[:dmg][:num] += Metric.count(:dist => dist[:dist])
       end
     end
-
     @trends = Hash.new
     @stats[:latest].each do |package|
       @trends["#{package[:package_name]}-#{package[:dist]}"] = Metric.all(:fields => [:jenkins_build_time],
@@ -111,6 +111,24 @@ class MetricServer < Sinatra::Base
     @trends[params[:package]] = Metric.all(:fields       => [:jenkins_build_time],
                                            :order        => [:date.desc],
                                            :package_name => params[:package])
+
+    @totalNumBuilds = Hash.new
+    @totalNumBuilds[:deb] = Hash[:type => 'deb', :num => 0]
+    @totalNumBuilds[:rpm] = Hash[:type => 'rpm', :num => 0]
+    @totalNumBuilds[:gem] = Hash[:type => 'gem', :num => 0]
+    @totalNumBuilds[:dmg] = Hash[:type => 'dmg', :num => 0]
+
+    @@allDists.each do |dist|
+      puts dist[:dist]
+      case dist[:dist]
+        when /lucid|oneiric|precise|quantal|raring|sid|squeeze|stable|testing|unstable|wheezy/ then @totalNumBuilds[:deb][:num] += Metric.count(:dist => dist[:dist])
+        when /el5|el6|fedora17|fedora18/ then @totalNumBuilds[:rpm][:num] += Metric.count(:dist => dist[:dist])
+        when /gem/ then @totalNumBuilds[:gem][:num] += Metric.count(:dist => dist[:dist])
+        when /apple/ then @totalNumBuilds[:dmg][:num] += Metric.count(:dist => dist[:dist])
+      end
+    end
+
+
     erb :package
   end
 

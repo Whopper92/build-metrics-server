@@ -10,8 +10,7 @@
        end
     %>
     <script type='text/javascript'>
-      //  createRecentSparkline( <%= time_array %> )
-       createLatestBuildsGraph(<%= @stats[:latest].to_json %>)
+      createLatestBuildsGraph(<%= @stats[:latest].to_json %>)
     </script>
   </div>
   <div id='latestBuildsToolTip' class='hidden histoTooltip'>

@@ -18,7 +18,7 @@ th.trend {
  width: 30%;
 }
 
-#recentBuildsTitle {
+.contentTitle {
   margin-top: -15px;
   margin-left: 10px;
 }
@@ -28,5 +28,33 @@ th.trend {
  overflow: hidden;
 }
 
-.sparklineTrend {
+#buildHostContentTitle {
+  width: 100%;
+  height: 10%;
+}
+
+#typeBuildNumber {
+  display: inline-block;
+  float: left;
+  margin-top:5px;
+  width: 35%;
+  height: 100%;
+}
+
+#typeBuildSpeed {
+  display: inline-block;
+  float: left;
+  margin-top:5px;
+  width: 35%;
+  height: 100%;
+
+}
+
+#typeBuildHost {
+  display: inline-block;
+  float: right;
+  margin-top:5px;
+  width: 30%;
+  height: 100%;
+
 }

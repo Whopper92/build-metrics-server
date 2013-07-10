@@ -1,5 +1,5 @@
 <div id='recentBuildsContent' class='contentContainer contentColumnNarrowHalf contentUpperLeft'>
-  <div id='recentBuildsTitle'>
+  <div id='recentBuildsTitle' class='contentTitle'>
     <h3>Recent Builds</h3>
   </div>
   <table class='table table-striped table-hover'>
@@ -52,4 +52,39 @@
 
 <div id='teamContent' class='contentContainer contentColumnNarrowHalf contentLowerLeft'></div>
 <div id='summariesContent' class='contentContainer contentColumnWideHalf contentUpperRight'></div>
-<div id='buildHostContent' class='contentContainer contentColumnWideHalf contentLowerRight'></div>
+
+<div id='buildHostContent' class='contentContainer contentColumnWideHalf contentLowerRight'>
+
+  <div id='buildHostContentTitle' class='contentTitle'>
+    <h3>Metrics by Package Type</h3>
+  </div>
+
+  <div id='typeBuildNumber'>
+    <div id='typeBuildNumberTitle' class='contentTitle'>
+      <h4>Number of Builds</h4>
+    </div>
+    <div id='typeBuildNumberContent'>
+
+      <script type='text/javascript'>
+        createDistNumbersGraph(<%= [@totalNumBuilds[:deb].to_json, @totalNumBuilds[:rpm].to_json, @totalNumBuilds[:gem].to_json, @totalNumBuilds[:dmg].to_json] %>)
+      </script>
+
+    </div>
+  </div>
+
+  <div id='typeBuildSpeed'>
+    <div id='typeBuildSpeedTitle' class='contentTitle'>
+      <h4>Average Build Speed</h4>
+    </div>
+    <div id='typeBuildSpeedContent'>
+    </div>
+  </div>
+
+  <div id='typeBuildHost'>
+    <div id='typeBuildHostTitle' class='contentTitle'>
+      <h4>Most Used Build Hosts</h4>
+    </div>
+    <div id='typeBuildHostContent'>
+    </div>
+  </div>
+</div>
