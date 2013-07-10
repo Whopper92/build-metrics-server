@@ -64,19 +64,20 @@
       <h4>Number of Builds</h4>
     </div>
     <div id='typeBuildNumberContent'>
-
       <script type='text/javascript'>
         createDistNumbersGraph(<%= [@totalNumBuilds[:deb].to_json, @totalNumBuilds[:rpm].to_json, @totalNumBuilds[:gem].to_json, @totalNumBuilds[:dmg].to_json] %>)
       </script>
-
     </div>
   </div>
 
   <div id='typeBuildSpeed'>
     <div id='typeBuildSpeedTitle' class='contentTitle'>
-      <h4>Average Build Speed</h4>
+      <h4>Average Build Speed (sec)</h4>
     </div>
     <div id='typeBuildSpeedContent'>
+      <script type='text/javascript'>
+        createDistAvgSpeedGraph(<%= [@totalNumBuilds[:deb].to_json, @totalNumBuilds[:rpm].to_json, @totalNumBuilds[:gem].to_json, @totalNumBuilds[:dmg].to_json] %>)
+      </script>
     </div>
   </div>
 

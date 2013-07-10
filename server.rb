@@ -73,21 +73,6 @@ class MetricServer < Sinatra::Base
                         :limit => 6,
                         :jenkins_build_time.not => nil)
 
-    @totalNumBuilds = Hash.new
-    @totalNumBuilds[:deb] = Hash[:type => 'deb', :num => 0]
-    @totalNumBuilds[:rpm] = Hash[:type => 'rpm', :num => 0]
-    @totalNumBuilds[:gem] = Hash[:type => 'gem', :num => 0]
-    @totalNumBuilds[:dmg] = Hash[:type => 'dmg', :num => 0]
-
-    @@allDists.each do |dist|
-      puts dist[:dist]
-      case dist[:dist]
-        when /lucid|oneiric|precise|quantal|raring|sid|squeeze|stable|testing|unstable|wheezy/ then @totalNumBuilds[:deb][:num] += Metric.count(:dist => dist[:dist])
-        when /el5|el6|fedora17|fedora18/ then @totalNumBuilds[:rpm][:num] += Metric.count(:dist => dist[:dist])
-        when /gem/ then @totalNumBuilds[:gem][:num] += Metric.count(:dist => dist[:dist])
-        when /apple/ then @totalNumBuilds[:dmg][:num] += Metric.count(:dist => dist[:dist])
-      end
-    end
     @trends = Hash.new
     @stats[:latest].each do |package|
       @trends["#{package[:package_name]}-#{package[:dist]}"] = Metric.all(:fields => [:jenkins_build_time],
@@ -95,6 +80,38 @@ class MetricServer < Sinatra::Base
                                                       :package_name => package[:package_name],
                                                       :dist         => package[:dist])
     end
+
+    @totalNumBuilds = Hash.new
+    @totalNumBuilds[:deb] = Hash[:type => 'deb', :num => 0, :avgSpd => 0]
+    @totalNumBuilds[:rpm] = Hash[:type => 'rpm', :num => 0, :avgSpd => 0]
+    @totalNumBuilds[:gem] = Hash[:type => 'gem', :num => 0, :avgSpd => 0]
+    @totalNumBuilds[:dmg] = Hash[:type => 'dmg', :num => 0, :avgSpd => 0]
+    @numDebDists = 0
+    @numRpmDists = 0
+
+    @@allDists.each do |dist|
+      puts dist[:dist]
+      case dist[:dist]
+        when /lucid|oneiric|precise|quantal|raring|sid|squeeze|stable|testing|unstable|wheezy/
+          @totalNumBuilds[:deb][:num] += Metric.count(:dist => dist[:dist])
+          @totalNumBuilds[:deb][:avgSpd] += Metric.avg(:jenkins_build_time, :conditions => [ 'dist = ?', dist[:dist]])
+          @numDebDists += 1
+        when /el5|el6|fedora17|fedora18/
+          @totalNumBuilds[:rpm][:num] += Metric.count(:dist => dist[:dist])
+          @totalNumBuilds[:rpm][:avgSpd] += Metric.avg(:jenkins_build_time, :conditions => [ 'dist = ?', dist[:dist]])
+          @numRpmDists += 1
+        when /gem/
+          @totalNumBuilds[:gem][:num] += Metric.count(:dist => dist[:dist])
+          @totalNumBuilds[:gem][:avgSpd] += Metric.avg(:jenkins_build_time, :conditions => [ 'dist = ?', dist[:dist]])
+        when /apple/
+          @totalNumBuilds[:dmg][:num] += Metric.count(:dist => dist[:dist])
+          @totalNumBuilds[:dmg][:avgSpd] += Metric.avg(:jenkins_build_time, :conditions => [ 'dist = ?', dist[:dist]])
+      end
+    end
+
+    @totalNumBuilds[:deb][:avgSpd] = @totalNumBuilds[:deb][:avgSpd] / @numDebDists
+    @totalNumBuilds[:rpm][:avgSpd] = @totalNumBuilds[:rpm][:avgSpd] / @numRpmDists
+
     erb :overview
   end
 
@@ -111,24 +128,6 @@ class MetricServer < Sinatra::Base
     @trends[params[:package]] = Metric.all(:fields       => [:jenkins_build_time],
                                            :order        => [:date.desc],
                                            :package_name => params[:package])
-
-    @totalNumBuilds = Hash.new
-    @totalNumBuilds[:deb] = Hash[:type => 'deb', :num => 0]
-    @totalNumBuilds[:rpm] = Hash[:type => 'rpm', :num => 0]
-    @totalNumBuilds[:gem] = Hash[:type => 'gem', :num => 0]
-    @totalNumBuilds[:dmg] = Hash[:type => 'dmg', :num => 0]
-
-    @@allDists.each do |dist|
-      puts dist[:dist]
-      case dist[:dist]
-        when /lucid|oneiric|precise|quantal|raring|sid|squeeze|stable|testing|unstable|wheezy/ then @totalNumBuilds[:deb][:num] += Metric.count(:dist => dist[:dist])
-        when /el5|el6|fedora17|fedora18/ then @totalNumBuilds[:rpm][:num] += Metric.count(:dist => dist[:dist])
-        when /gem/ then @totalNumBuilds[:gem][:num] += Metric.count(:dist => dist[:dist])
-        when /apple/ then @totalNumBuilds[:dmg][:num] += Metric.count(:dist => dist[:dist])
-      end
-    end
-
-
     erb :package
   end
 

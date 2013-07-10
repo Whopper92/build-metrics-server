@@ -1,4 +1,4 @@
-function createDistNumbersGraph(data) {
+function createDistAvgSpeedGraph(data) {
 
   console.log(data)
   var w = 280
@@ -13,12 +13,12 @@ function createDistNumbersGraph(data) {
 
   var yScale = d3.scale.linear()
                  .domain([0, d3.max(data, function(d) {
-                    return parseInt(JSON.parse(d).num)
+                    return parseInt(JSON.parse(d).avgSpd)
                   })])
                 .range([h - yPadding, 0]);
 
   // Create the SVG canvas
-  var svg = d3.select('#typeBuildNumberContent')
+  var svg = d3.select('#typeBuildSpeedContent')
               .append('svg')
               .attr({width: w, height: h});
 
@@ -29,17 +29,17 @@ function createDistNumbersGraph(data) {
      .append('rect')
      .attr('class', 'histoBar')
 //     .sort(function(a, b) {
-//       return d3.ascending(JSON.parse(a).num, JSON.parse(b).num);
+//       return d3.ascending(JSON.parse(a).avgSpd, JSON.parse(b).avgSpd);
 //     })
      .attr('x', function(d, i) {
       return xScale(i) + xPadding;
      })
      .attr('y', function(d) {
-      return yScale(JSON.parse(d).num) + yPadding / 2;
+      return yScale(JSON.parse(d).avgSpd) + yPadding / 2;
      })
      .attr('height', function(d) {
-       console.log(h - yScale(JSON.parse(d).num))
-       return h - yScale(JSON.parse(d).num) - yPadding;
+       console.log(h - yScale(JSON.parse(d).avgSpd))
+       return h - yScale(JSON.parse(d).avgSpd) - yPadding;
      })
      .attr('width', xScale.rangeBand())
      .attr('fill', 'cornflowerblue')
@@ -65,7 +65,7 @@ function createDistNumbersGraph(data) {
       .enter()
       .append('text')
 //      .sort(function(a, b) {
-//        return d3.ascending(JSON.parse(a).num, JSON.parse(b).num);
+//        return d3.ascending(JSON.parse(a).avgSpd, JSON.parse(b).avgSpd);
 //       })
       .text(function(d) {
         return JSON.parse(d).type
