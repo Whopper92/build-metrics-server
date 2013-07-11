@@ -1,5 +1,6 @@
 /* Generic Elements */
 
+a     {font-family:sans-serif;}
 p     {color:black;margin-left:20px;}
 hr    {width:500;size:6;color:red;}
 li    {color:white;font-family:serif;list-style-position:inside;}

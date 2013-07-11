@@ -4,6 +4,7 @@ class Metric
   property :date, DateTime, :required => true
   property :package_name, String, :required => true
   property :dist, String
+  property :package_type, String
   property :jenkins_build_time, Float
   property :package_build_time, Float
   property :build_user, String
