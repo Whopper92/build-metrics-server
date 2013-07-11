@@ -56,5 +56,9 @@ th.trend {
   margin-top:5px;
   width: 30%;
   height: 100%;
+}
 
+#freqHostTable {
+  margin-top:10px;
+  margin-left:2px;
 }

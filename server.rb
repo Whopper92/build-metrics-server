@@ -60,6 +60,7 @@ class MetricServer < Sinatra::Base
     @@allPackageNames   = Metric.all(:fields => [:package_name], :unique => true, :order => [:package_name.asc])
     @@allDists          = Metric.all(:fields => [:dist], :unique => true, :order => [:dist.asc])
     @@allHosts          = Metric.all(:fields => [:build_loc], :unique => true, :order => [:build_loc.asc])
+    @@allPackageTypes   = ['deb', 'rpm', 'gem', 'dmg']
 
   #  =============================  ROUTES  =============================== #
   get '/' do
@@ -85,24 +86,15 @@ class MetricServer < Sinatra::Base
                                                       :dist         => package[:dist])
     end
 
-    # Find the aggregate total number of builds by package type.
-    @stats[:deb] = Hash[:type => 'deb', :num => 0, :avgSpd => 0]
-    @stats[:rpm] = Hash[:type => 'rpm', :num => 0, :avgSpd => 0]
-    @stats[:gem] = Hash[:type => 'gem', :num => 0, :avgSpd => 0]
-    @stats[:dmg] = Hash[:type => 'dmg', :num => 0, :avgSpd => 0]
-
-    @stats[:deb][:num]     = Metric.count(:conditions => ['package_type = ?', 'deb'])
-    @stats[:rpm][:num]     = Metric.count(:conditions => ['package_type = ?', 'rpm'])
-    @stats[:gem][:num]     = Metric.count(:conditions => ['package_type = ?', 'gem'])
-    @stats[:dmg][:num]     = Metric.count(:conditions => ['package_type = ?', 'dmg'])
-
-    @stats[:deb][:avgSpd]  = Metric.avg(:jenkins_build_time, :conditions => ['package_type = ?', 'deb'])
-    @stats[:rpm][:avgSpd]  = Metric.avg(:jenkins_build_time, :conditions => ['package_type = ?', 'rpm'])
-    @stats[:gem][:avgSpd]  = Metric.avg(:jenkins_build_time, :conditions => ['package_type = ?', 'gem'])
-    @stats[:dmg][:avgSpd]  = Metric.avg(:jenkins_build_time, :conditions => ['package_type = ?', 'dmg'])
-
-    # Find the build host with the most builds for each package type
-    @@allHosts.each do |host|
+    @@allPackageTypes.each do |type|
+      @stats[:"#{type}"]                   = Hash[:type => "#{type}", :num => 0, :avgSpd => 0, :freqHost => '', :freqHostPercent => 0]
+      @stats[:"#{type}"][:num]             = Metric.count(:conditions => ['package_type = ?', "#{type}"])
+      @stats[:"#{type}"][:avgSpd]          = Metric.avg(:jenkins_build_time, :conditions => ['package_type = ?', "#{type}"])
+      @stats[:"#{type}"][:freqHost]        = Metric.aggregate(:build_loc, :all.count, :conditions => ['package_type = ?', "#{type}"]).sort {|a,b| b[1] <=> a[1]}[0]
+      @stats[:"#{type}"][:freqHost][0]     = /^[^\.]*/.match(@stats[:"#{type}"][:freqHost][0])
+      totalTypeBuilds = Metric.count(:conditions => ['package_type = ?', "#{type}"])
+      @stats[:"#{type}"][:freqHostPercent] = @stats[:"#{type}"][:freqHost][1] / Float(totalTypeBuilds)
+      @stats[:"#{type}"][:freqHostPercent] = (@stats[:"#{type}"][:freqHostPercent] * 100).round(0)
     end
 
     erb :overview

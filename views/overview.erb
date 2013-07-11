@@ -87,18 +87,22 @@
     </div>
     <div id='typeBuildHostContent'>
 
-      <table class='table table-striped table-hover'>
+      <table id='freqHostTable' class='table table-hover'>
         <thead>
           <th>Type</th>
           <th>Host</th>
           <th>Builds</th>
+          <th>%</th>
         </thead>
         <tbody>
+          <% [@stats[:deb], @stats[:rpm], @stats[:gem], @stats[:dmg]].each do |pkgtype| %>
             <tr>
-              <td></td>
-              <td></td>
-              <td></td>
+              <td><%= pkgtype[:type] %></td>
+              <td><%= pkgtype[:freqHost][0] %></td>
+              <td><%= pkgtype[:freqHost][1] %></td>
+              <td><%= pkgtype[:freqHostPercent] %></td>
             </tr>
+          <% end %>
         </tbody>
       </table>
     </div>
