@@ -37,7 +37,7 @@ th.trend {
   display: inline-block;
   float: left;
   margin-top:5px;
-  width: 35%;
+  width: 30%;
   height: 100%;
 }
 
@@ -45,7 +45,8 @@ th.trend {
   display: inline-block;
   float: left;
   margin-top:5px;
-  width: 35%;
+  margin-left:-5px;
+  width: 30%;
   height: 100%;
 
 }
@@ -54,11 +55,12 @@ th.trend {
   display: inline-block;
   float: right;
   margin-top:5px;
-  width: 30%;
+  width: 40%;
   height: 100%;
 }
 
 #freqHostTable {
-  margin-top:10px;
-  margin-left:2px;
+  margin-top: 5%;
+  margin-left: -20px;
 }
+

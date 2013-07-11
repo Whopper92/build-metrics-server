@@ -3,7 +3,7 @@
 function createDistAvgSpeedGraph(data) {
 
   console.log(data)
-  var w = 280
+  var w = 180
   var h = 280
   var xPadding = 40
   var yPadding = 30
@@ -67,7 +67,7 @@ function createDistAvgSpeedGraph(data) {
         return JSON.parse(d).type
       })
       .attr('x', function(d, i) {
-        return xScale(i) + xPadding * 1.5;
+        return xScale(i) + xPadding * 1.3;
       })
       .attr('y', function(d) {
         return h - 5
@@ -77,7 +77,6 @@ function createDistAvgSpeedGraph(data) {
       .attr('font-family', 'Arial')
       .attr('font-weight', 'bold')
       .attr('font-size', '12px')
-
   // Create the Axes
   var xAxis = d3.svg.axis()
                 .scale(xScale)
@@ -101,7 +100,7 @@ function createDistAvgSpeedGraph(data) {
 function createDistNumbersGraph(data) {
 
   console.log(data)
-  var w = 280
+  var w = 180
   var h = 280
   var xPadding = 40
   var yPadding = 30
@@ -171,7 +170,7 @@ function createDistNumbersGraph(data) {
         return JSON.parse(d).type
       })
       .attr('x', function(d, i) {
-        return xScale(i) + xPadding * 1.5;
+        return xScale(i) + xPadding * 1.3;
       })
       .attr('y', function(d) {
         return h - 5

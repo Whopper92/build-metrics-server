@@ -72,7 +72,7 @@
 
   <div id='typeBuildSpeed'>
     <div id='typeBuildSpeedTitle' class='contentTitle'>
-      <h4>Average Build Speed (s)</h4>
+      <h4>Average Build Speed (sec)</h4>
     </div>
     <div id='typeBuildSpeedContent'>
       <script type='text/javascript'>
@@ -87,7 +87,7 @@
     </div>
     <div id='typeBuildHostContent'>
 
-      <table id='freqHostTable' class='table table-hover'>
+      <table id='freqHostTable' class='table table-striped table-hover'>
         <thead>
           <th>Type</th>
           <th>Host</th>
@@ -97,10 +97,10 @@
         <tbody>
           <% [@stats[:deb], @stats[:rpm], @stats[:gem], @stats[:dmg]].each do |pkgtype| %>
             <tr>
-              <td><%= pkgtype[:type] %></td>
+              <td><strong><%= pkgtype[:type] %></strong></td>
               <td><%= pkgtype[:freqHost][0] %></td>
               <td><%= pkgtype[:freqHost][1] %></td>
-              <td><%= pkgtype[:freqHostPercent] %></td>
+              <td><%= "#{pkgtype[:freqHostPercent]}%" %></td>
             </tr>
           <% end %>
         </tbody>
