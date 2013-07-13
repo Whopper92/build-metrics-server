@@ -64,6 +64,7 @@
       <h4>Number of Builds</h4>
     </div>
     <div id='typeBuildNumberContent'>
+      <div class='yAxisLabel'>Builds</div>
       <script type='text/javascript'>
         createDistNumbersGraph(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>)
       </script>
@@ -72,9 +73,10 @@
 
   <div id='typeBuildSpeed'>
     <div id='typeBuildSpeedTitle' class='contentTitle'>
-      <h4>Average Build Speed (sec)</h4>
+      <h4>Average Build Speed</h4>
     </div>
     <div id='typeBuildSpeedContent'>
+      <div class='yAxisLabel'>Seconds</div>
       <script type='text/javascript'>
         createDistAvgSpeedGraph(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>)
       </script>
@@ -86,13 +88,12 @@
       <h4>Most Used Build Hosts</h4>
     </div>
     <div id='typeBuildHostContent'>
-
       <table id='freqHostTable' class='table table-striped table-hover'>
         <thead>
-          <th>Type</th>
-          <th>Host</th>
-          <th>Builds</th>
-          <th>%</th>
+          <th class='freqHostTableHead'>Type</th>
+          <th class='freqHostTableHead'>Host</th>
+          <th class='freqHostTableHead'>Builds</th>
+          <th class='freqHostTableHead'>Percentage of Builds</th>
         </thead>
         <tbody>
           <% [@stats[:deb], @stats[:rpm], @stats[:gem], @stats[:dmg]].each do |pkgtype| %>

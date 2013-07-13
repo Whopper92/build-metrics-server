@@ -41,6 +41,15 @@ th.trend {
   height: 100%;
 }
 
+.yAxisLabel {
+  float: left;
+  margin-top: 50%;
+  margin-left:-10px;
+  display: inline-block;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+}
+
 #typeBuildSpeed {
   display: inline-block;
   float: left;
@@ -64,3 +73,6 @@ th.trend {
   margin-left: -20px;
 }
 
+.freqHostTableHead {
+  font-size: 12px;
+}
