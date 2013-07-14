@@ -15,7 +15,7 @@ function createDistNumbersGraph(data) {
 
   var yScale = d3.scale.linear()
                  .domain([0, d3.max(data, function(d) {
-                    return parseInt(JSON.parse(d).num)
+                    return parseInt(JSON.parse(d).num) + 20
                   })])
                 .range([h - yPadding, 0]);
 
@@ -112,7 +112,7 @@ function createDistAvgSpeedGraph(data) {
 
   var yScale = d3.scale.linear()
                  .domain([0, d3.max(data, function(d) {
-                    return parseInt(JSON.parse(d).avgSpd)
+                    return parseInt(JSON.parse(d).avgSpd) + 20
                   })])
                 .range([h - yPadding, 0]);
 

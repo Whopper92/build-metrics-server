@@ -23,9 +23,63 @@ th.trend {
   margin-left: 10px;
 }
 
+.yAxisLabel {
+  float: left;
+  margin-top: 50%;
+  margin-left: -10px;
+  display: inline-block;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+}
+
 #resultCell {
  height: 10%;
  overflow: hidden;
+}
+
+#summaryContentTitle {
+  width: 100%;
+  height: 10%;
+}
+
+#summaryBuildNumber {
+  display: inline-block;
+  float: left;
+  margin-top:5px;
+  width: 30%;
+  height: 100%;
+}
+
+#summaryShipped {
+  display: inline-block;
+  float: left;
+  margin-top:5px;
+  margin-left:-5px;
+  width: 30%;
+  height: 100%;
+}
+
+#summaryFreqPackages {
+  display: inline-block;
+  float: right;
+  margin-top:5px;
+  width: 40%;
+  height: 40%;
+}
+
+#summaryFreqPackagesTitle {
+  margin-left: -15px;
+}
+
+#summaryMisc {
+  display: inline-block;
+  float: right;
+  width: 40%;
+  height: 60%;
+}
+
+#summaryMiscTitle {
+  margin-left: -15px;
 }
 
 #buildHostContentTitle {
@@ -41,15 +95,6 @@ th.trend {
   height: 100%;
 }
 
-.yAxisLabel {
-  float: left;
-  margin-top: 50%;
-  margin-left:-10px;
-  display: inline-block;
-  -webkit-transform: rotate(-90deg);
-  -moz-transform: rotate(-90deg);
-}
-
 #typeBuildSpeed {
   display: inline-block;
   float: left;
@@ -57,7 +102,6 @@ th.trend {
   margin-left:-5px;
   width: 30%;
   height: 100%;
-
 }
 
 #typeBuildHost {
@@ -66,6 +110,10 @@ th.trend {
   margin-top:5px;
   width: 40%;
   height: 100%;
+}
+
+#typeBuildHostTitle {
+  margin-left: -15px;
 }
 
 #freqHostTable {
