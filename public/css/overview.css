@@ -82,7 +82,12 @@ th.trend {
   margin-left: -15px;
 }
 
-#buildHostContentTitle {
+#teamContentTitle {
+  width: 100%;
+  height: 10%;
+}
+
+#typeContentTitle {
   width: 100%;
   height: 10%;
 }
@@ -116,6 +121,10 @@ th.trend {
   margin-left: -15px;
 }
 
+#typeBuildHostContent {
+  height: 85%;
+}
+
 #freqHostTable {
   margin-top: 5%;
   margin-left: -20px;
@@ -123,4 +132,8 @@ th.trend {
 
 .freqHostTableHead {
   font-size: 12px;
+}
+
+#freqHostPercentRow {
+  text-align: center;
 }

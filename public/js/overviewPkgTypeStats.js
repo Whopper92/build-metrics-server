@@ -3,8 +3,18 @@
 function createDistNumbersGraph(data) {
 
   console.log(data)
-  var w = 180
-  var h = 280
+  var screenWidth  = screen.width;
+  var screenHeight = screen.height;
+  if(screenWidth < 1900) {
+    var w           = 180
+    var h           = 280
+    var textPadding = 55
+  } else {
+    var w           = 350
+    var h           = 480
+    var textPadding = 70
+  }
+
   var xPadding = 40
   var yPadding = 30
 
@@ -35,7 +45,7 @@ function createDistNumbersGraph(data) {
       return xScale(i) + xPadding;
      })
      .attr('y', function(d) {
-      return yScale(JSON.parse(d).num) + yPadding / 2;
+      return yScale(JSON.parse(d).num) + yPadding / 3;
      })
      .attr('height', function(d) {
        console.log(h - yScale(JSON.parse(d).num))
@@ -66,7 +76,7 @@ function createDistNumbersGraph(data) {
         return JSON.parse(d).type
       })
       .attr('x', function(d, i) {
-        return xScale(i) + xPadding * 1.3;
+        return xScale(i) + textPadding;
       })
       .attr('y', function(d) {
         return h - 5
@@ -84,7 +94,7 @@ function createDistNumbersGraph(data) {
 
   svg.append('g')
       .attr('class', 'x axis xhistoAxis invisAxis')
-      .attr('transform', 'translate('+ xPadding +','+ (h - (yPadding -15)) + ')')
+      .attr('transform', 'translate('+ xPadding +','+ (h - (yPadding / 1.5)) + ')')
       .call(xAxis)
 
   var yAxis = d3.svg.axis()
@@ -93,15 +103,25 @@ function createDistNumbersGraph(data) {
 
   svg.append('g')
       .attr('class', 'y axis yhistoAxis')
-      .attr('transform', 'translate('+ xPadding +','+ yPadding / 2 + ')')
+      .attr('transform', 'translate('+ xPadding +','+ yPadding / 3 + ')')
       .call(yAxis)
 }
 
 function createDistAvgSpeedGraph(data) {
 
   console.log(data)
-  var w = 180
-  var h = 280
+  var screenWidth  = screen.width;
+  var screenHeight = screen.height;
+  if(screenWidth < 1900) {
+    var w           = 180
+    var h           = 280
+    var textPadding = 55
+  } else {
+    var w           = 350
+    var h           = 480
+    var textPadding = 70
+  }
+
   var xPadding = 40
   var yPadding = 30
 
@@ -132,7 +152,7 @@ function createDistAvgSpeedGraph(data) {
       return xScale(i) + xPadding;
      })
      .attr('y', function(d) {
-      return yScale(JSON.parse(d).avgSpd) + yPadding / 2;
+      return yScale(JSON.parse(d).avgSpd) + yPadding / 3;
      })
      .attr('height', function(d) {
        console.log(h - yScale(JSON.parse(d).avgSpd))
@@ -154,8 +174,6 @@ function createDistAvgSpeedGraph(data) {
          .attr('fill-opacity', '0.6');
       });
 
-
-
   // Create the labels
   svg.selectAll('text')
       .data(data)
@@ -165,7 +183,7 @@ function createDistAvgSpeedGraph(data) {
         return JSON.parse(d).type
       })
       .attr('x', function(d, i) {
-        return xScale(i) + xPadding * 1.3;
+        return xScale(i) + textPadding;
       })
       .attr('y', function(d) {
         return h - 5
@@ -175,6 +193,7 @@ function createDistAvgSpeedGraph(data) {
       .attr('font-family', 'Arial')
       .attr('font-weight', 'bold')
       .attr('font-size', '12px')
+
   // Create the Axes
   var xAxis = d3.svg.axis()
                 .scale(xScale)
@@ -182,7 +201,7 @@ function createDistAvgSpeedGraph(data) {
 
   svg.append('g')
       .attr('class', 'x axis xhistoAxis invisAxis')
-      .attr('transform', 'translate('+ xPadding +','+ (h - (yPadding -15)) + ')')
+      .attr('transform', 'translate('+ xPadding +','+ (h - (yPadding / 1.5)) + ')')
       .call(xAxis)
 
   var yAxis = d3.svg.axis()
@@ -191,8 +210,6 @@ function createDistAvgSpeedGraph(data) {
 
   svg.append('g')
       .attr('class', 'y axis yhistoAxis')
-      .attr('transform', 'translate('+ xPadding +','+ yPadding / 2 + ')')
+      .attr('transform', 'translate('+ xPadding +','+ yPadding / 3 + ')')
       .call(yAxis)
 }
-
-
