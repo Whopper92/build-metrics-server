@@ -19,27 +19,17 @@
   font-size: 12px;
 }
 
-.yhistoAxis text {
-
+.grid .tick line {
+  stroke: lightgrey;
+  opacity: 0.7;
+}
+.grid path {
+    stroke-width: 0;
 }
 
 .invisAxis line,
 .invisAxis text {
   display: none;
-}
-
-.overviewTooltip {
-  position: absolute;
-  top:50px;
-  left:40%;
-  width: 500px;
-  height: auto;
-  padding: 10px;
-  text-align:left;
-  background-color: white;
-  border-radius: 10px;
-  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
-  pointer-events:none;
 }
 
 .histoTooltip {
@@ -53,13 +43,11 @@
   pointer-events:none;
 }
 
-.histoTooltip.hidden,
-.overviewTooltip.hidden, {
+.histoTooltip.hidden {
   display: none;
 }
 
-.histoTooltip p,
-.overviewTooltip p {
+.histoTooltip p {
   margin-left:10px;
   font-family: sans-serif;
   font-size: 14px;

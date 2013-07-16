@@ -68,11 +68,11 @@
       <h4>Builds in Last 12 Weeks</h4>
     </div>
     <div id='summaryBuildNumberContent'>
-      <div class='yAxisLabel'>Builds</div>
+      <div id='summaryBuildsYLabel' class='yAxisLabel'>Builds</div>
       <script type='text/javascript'>
         createBuildTimeSeriesGraph(<%= @totalBuildsTimeSeries.to_json %>)
-        //createBuildTimeSeriesGraph(<%= "#{@totalBuildsTimeSeries.to_json}, #{@releaseBuildsTimeSeries.to_json}, #{@devBuildsTimeSeries.to_json}, #{@jenkinsBuildsTimeSeries.to_json}" %>)
       </script>
+      <div id='summaryBuildsXLabel'>Weeks Ago</div>
     </div>
   </div>
 

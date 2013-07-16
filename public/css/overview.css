@@ -50,6 +50,14 @@ th.trend {
   height: 100%;
 }
 
+#summaryBuildsYLabel {
+  margin-top: 35%;
+}
+
+#summaryBuildsXLabel {
+  margin-left: 40%;
+}
+
 #summaryShipped {
   display: inline-block;
   float: left;

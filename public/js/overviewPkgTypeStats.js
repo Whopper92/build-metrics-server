@@ -1,5 +1,4 @@
 // Functions to create D3 graphs relating to build hosts and package types
-
 function createDistNumbersGraph(data) {
 
   console.log(data)

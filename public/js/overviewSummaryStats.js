@@ -3,12 +3,12 @@ function createBuildTimeSeriesGraph(dataset) {
   var screenWidth  = screen.width;
   var screenGeight = screen.height;
   if(screenWidth <  1900) {
-    var w           = 280
-    var h           = 280
+    var w           = 260
+    var h           = 260
     var textPadding = 55
   } else {
-    var w           = 500
-    var h           = 480
+    var w           = 460
+    var h           = 460
     var textPadding = 70
   }
 
@@ -46,14 +46,15 @@ var points = svg.selectAll(".point")
          .enter()
          .append("svg:circle")
          .attr("stroke", "black")
-         .attr("fill", function(d, i) { return "steelblue" })
+         .attr("fill", 'steelblue')
          .attr("cx", function(d, i) { return xScale(i) + xPadding})
          .attr("cy", function(d, i) { return yScale(d) + yPadding - 14 })
-         .attr("r", function(d, i) { return 5 })
+         .attr('r', '5')
          .on('mouseover', function(d) {
             d3.select(this)
               .transition()
               .duration(250)
+              .attr('r', '10')
               .attr('fill', 'yellow')
               .attr('cursor', 'pointer')
           })
@@ -61,12 +62,39 @@ var points = svg.selectAll(".point")
            d3.select(this)
              .transition()
              .duration(250)
-             .attr('fill', 'steelblue');
+             .attr('fill', 'steelblue')
+             .attr('r', '5')
          })
 
   g.append("svg:path")
    .attr("d", line(dataset))
    .attr('stroke', 'steelblue');
+
+  var weeksAgo = 12
+  // Create the labels
+  svg.selectAll('text')
+      .data(dataset)
+      .enter()
+      .append('text')
+      .text(function(d) {
+        if ( weeksAgo != 1) {
+          weeksAgo--
+          return weeksAgo
+        } else {
+          return 'Now'
+        }
+      })
+      .attr('x', function(d, i) {
+        return xScale(i) + xPadding;
+      })
+      .attr('y', function(d) {
+        return h - 5
+      })
+      .attr('pointer-events', 'none')
+      .attr('text-anchor', 'middle')
+      .attr('font-family', 'Arial')
+      .attr('font-weight', 'bold')
+      .attr('font-size', '12px')
 
   // Create the Axes
   var xAxis = d3.svg.axis()
@@ -86,4 +114,21 @@ var points = svg.selectAll(".point")
       .attr('class', 'y axis yhistoAxis')
       .attr('transform', 'translate('+ xPadding +','+ yPadding / 3 + ')')
       .call(yAxis)
+
+  // Add grid lines
+
+  svg.append("g")
+      .attr("class", "grid")
+      .attr('transform', 'translate('+ xPadding +','+ yPadding / 3  + ')')
+      .call(make_y_axis(yScale)
+          .tickSize(-w, 0, 0)
+          .tickFormat("")
+      )
+}
+
+function make_y_axis(yScale) {
+    return d3.svg.axis()
+        .scale(yScale)
+        .orient("left")
+        .ticks(10)
 }
