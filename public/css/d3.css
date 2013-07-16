@@ -1,8 +1,6 @@
 /* D3 Specific elements */
 
-.histoBar:hover {
-  cursor: pointer;
-}
+/* Axes and lines */
 
 .axis path,
 .axis line,
@@ -31,6 +29,12 @@
   display: none;
 }
 
+/* Histogram specific elements */
+
+.histoBar:hover {
+  cursor: pointer;
+}
+
 .histoTooltip {
   position: absolute;
   width: 270px;
@@ -57,6 +61,9 @@
   margin-left:20px;
   font-size:18px;
 }
+
+/* Tooltip elements */
+
 .tooltipDesc {
   display:inline-block;
   font-weight:bold;

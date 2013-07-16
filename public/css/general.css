@@ -14,25 +14,13 @@ html, body {
   background-color: #F0F0F0;
 }
 
+/* Navigation bar components */
+
 .navbar .container {
   margin-left: 10px;
 }
 
-circle {
-  stroke: 0;
-  -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
-  -moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
-  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
-}
-
-path {
-    stroke-width: 2;
-    fill: none;
-}
-
-line {
-    stroke: black;
-}
+/* Generic structural elements */
 
 .main {
   position: relative;
@@ -103,4 +91,22 @@ line {
 
 .hidden {
   display: none;
+}
+
+/* SVG styling*/
+
+circle {
+  stroke: 0;
+  -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
+  -moz-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);
+}
+
+path {
+    stroke-width: 2;
+    fill: none;
+}
+
+line {
+    stroke: black;
 }
