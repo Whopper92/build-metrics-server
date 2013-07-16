@@ -51,7 +51,7 @@ function createDistNumbersGraph(data) {
        return h - yScale(JSON.parse(d).num) - yPadding;
      })
      .attr('width', xScale.rangeBand())
-     .attr('fill', 'cornflowerblue')
+     .attr('fill', 'steelblue')
      .attr('fill-opacity', '0.7')
      .on('mouseover', function(d) {
         d3.select(this)
@@ -158,7 +158,7 @@ function createDistAvgSpeedGraph(data) {
        return h - yScale(JSON.parse(d).avgSpd) - yPadding;
      })
      .attr('width', xScale.rangeBand())
-     .attr('fill', 'cornflowerblue')
+     .attr('fill', 'steelblue')
      .attr('fill-opacity', '0.7')
      .on('mouseover', function(d) {
         d3.select(this)

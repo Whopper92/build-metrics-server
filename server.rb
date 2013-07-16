@@ -44,6 +44,7 @@ class MetricServer < Sinatra::Base
     @@allPackageNames   = Metric.all(:fields => [:package_name], :unique => true, :order => [:package_name.asc])
     @@allDists          = Metric.all(:fields => [:dist], :unique => true, :order => [:dist.asc])
     @@allHosts          = Metric.all(:fields => [:build_loc], :unique => true, :order => [:build_loc.asc])
+    @@allUsers          = Metric.all(:fields => [:build_user], :unique => true, :order => [:build_user.asc])
     @@allPackageTypes   = ['deb', 'rpm', 'gem', 'dmg']
 
   #  =============================  ROUTES  =============================== #
@@ -72,10 +73,29 @@ class MetricServer < Sinatra::Base
 
     # Gather high level metrics. Some of this data is fabricated until real data can be aquired
     @totalBuildsTimeSeries   = [100, 120, 80, 90, 100, 140 ,70, 60, 80, 70, 80, 80]
+    @failedBuildsTimeSeries  = [12, 23, 6, 12, 12, 13 ,15, 7, 9, 12, 8, 5]
     @releaseBuildsTimeSeries = [50, 60, 40, 45, 50, 70 ,45, 30, 40, 50, 30, 40, 30]
     @jenkinsBuildsTimeSeries = [20, 20, 20, 15, 30, 30 ,25, 10, 10, 15, 20, 10, 20]
     @devBuildsTimeSeries     = [30, 40, 20, 30, 20, 40 ,20, 20, 10, 15, 20, 30, 30]
-    @buildSeries             = [@totalBuildsTimeSeries, @devBuildsTimeSeries, @releaseBuildsTimeSeries, @jenkinsBuildsTimeSeries]
+    @buildSeries             = [@totalBuildsTimeSeries, @failedBuildsTimeSeries, @devBuildsTimeSeries, @releaseBuildsTimeSeries, @jenkinsBuildsTimeSeries]
+
+    @stats[:shipped]         = Hash.new
+    @stats[:shipped][:final] = Hash[:type => 'Final', :count => 4]
+    @stats[:shipped][:rc]    = Hash[:type => 'RC', :count => 7]
+
+    @pkgNumBuilds = Hash.new
+    @@allPackageNames.each do |pkg|
+     @pkgNumBuilds[:"#{pkg.package_name}"] = Metric.count(:conditions => ['package_name = ?', "#{pkg.package_name}"])
+    end
+
+    @freqPackages = @pkgNumBuilds.sort_by { |k,v| -v }[0..2]
+
+    @userNumBuilds = Hash.new
+    @@allUsers.each do |user|
+     @userNumBuilds[:"#{user.build_user}"] = Metric.count(:conditions => ['build_user =?', "#{user.build_user}"])
+    end
+
+    @freqUsers = @userNumBuilds.sort_by { |k,v| -v }[0..2]
 
     # Gather aggregate data about each package type
     @@allPackageTypes.each do |type|

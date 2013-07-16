@@ -4,6 +4,7 @@ a     {font-family:sans-serif;}
 p     {color:black;margin-left:20px;}
 hr    {width:500;size:6;color:red;}
 li    {color:white;font-family:serif;list-style-position:inside;}
+h3, h4, h5 {color:#909090;}
 table {height:94%;margin-top:-20px;}
 tbody {height:100%;}
 .table tr { height: 10%; }

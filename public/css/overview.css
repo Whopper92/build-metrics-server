@@ -46,7 +46,7 @@ th.trend {
   display: inline-block;
   float: left;
   margin-top:5px;
-  width: 40%;
+  width: 37%;
   height: 100%;
 }
 
@@ -67,28 +67,47 @@ th.trend {
   height: 100%;
 }
 
+#summaryShippedTitle {
+  text-align: center;
+}
+
+#summaryShippedContent {
+  margin-left: 20px;
+}
+
 #summaryFreqPackages {
   display: inline-block;
   float: right;
   margin-top:5px;
-  width: 34%;
+  width: 35%;
   height: 40%;
 }
 
 #summaryFreqPackagesTitle {
+  margin-top: -30px;
   margin-left: -15px;
 }
 
-#summaryMisc {
+#freqPkgTable {
+  padding: 0px;
+}
+
+#freqPkgTable tr {
+  border-collapse: collapse;
+}
+
+#summaryFreqUsers {
   display: inline-block;
   float: right;
-  width: 40%;
-  height: 60%;
+  margin-top: 20px;
+  width: 35%;
+  height: 40%;
 }
 
-#summaryMiscTitle {
+#summaryFreqUsersTitle {
   margin-left: -15px;
 }
+
 
 #teamContentTitle {
   width: 100%;
@@ -130,7 +149,7 @@ th.trend {
 }
 
 #freqHostTable {
-  margin-top: 7%;
+  margin-top: 5%;
 }
 
 .freqHostTableHead {

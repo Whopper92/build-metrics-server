@@ -65,7 +65,7 @@
 
   <div id='summaryBuildNumber'>
     <div id='summaryBuildNumberTitle' class='contentTitle'>
-      <h4>Builds in Last 12 Weeks</h4>
+      <h4>Builds over Last 12 Weeks</h4>
     </div>
     <div id='summaryBuildNumberContent'>
       <div id='summaryBuildsYLabel' class='yAxisLabel'>Builds</div>
@@ -78,28 +78,60 @@
 
   <div id='summaryShipped'>
     <div id='summaryShippedTitle' class='contentTitle'>
-      <h4>Shipped Packages</h4>
+      <h4>Shipped Packages this Month</h4>
     </div>
     <div id='summaryShippedContent'>
       <div class='yAxisLabel'>Shipped</div>
+      <script type='text/javascript'>
+        createShippedGraph(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json] %>)
+      </script>
     </div>
   </div>
 
   <div id='summaryFreqPackages'>
     <div id='summaryFreqPackagesTitle' class='contentTitle'>
-      <h4>Frequently Built Packages</h4>
+      <h5>Frequently Built Packages</h5>
     </div>
     <div id='summaryFreqPackagesContent'>
+      <table id='freqPkgTable' class='table table-striped table-hover'>
+        <thead>
+          <th class='freqPkgTableHead'>Package</th>
+          <th class='freqPkgTableHead'>Builds</th>
+        </thead>
+        <tbody>
+          <% @freqPackages.each do |pkg| %>
+            <tr>
+              <td><strong><%= pkg[0] %></strong></td>
+              <td><%= pkg[1] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   </div>
 
-  <div id='summaryMisc'>
-    <div id='summaryMiscTitle' class='contentTitle'>
-      <h4>Miscellaneous Stats</h4>
+  <div id='summaryFreqUsers'>
+    <div id='summaryFreqUsersTitle' class='contentTitle'>
+      <h5>Most Active Users</h5>
     </div>
-    <div id='summaryMiscContent'>
+    <div id='summaryFreqUsersContent'>
+      <table id='freqPkgTable' class='table table-striped table-hover'>
+        <thead>
+          <th class='freqUsersTableHead'>Username</th>
+          <th class='freqUsersTableHead'>Builds</th>
+        </thead>
+        <tbody>
+          <% @freqUsers.each do |user| %>
+            <tr>
+              <td><strong><%= user[0] %></strong></td>
+              <td><%= user[1] %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     </div>
   </div>
+
 </div>
 
 <div id='typeContent' class='contentContainer contentColumnWideHalf contentLowerRight'>
