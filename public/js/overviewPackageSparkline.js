@@ -21,13 +21,13 @@ function createRecentSparkline(dataset, divid) {
             .range([0 + margin, h]);
 
   var vis = d3.select(divid)
-      .append("svg:svg")
+      .append('svg')
       .attr('class', 'sparklineTrend')
-      .attr("width", w)
-      .attr("height", h)
+      .attr('width', w)
+      .attr('height', h)
 
   var g = vis.append("svg:g")
-      .attr("transform", "translate(0, 25)");
+      .attr('transform', 'translate(0, 25)');
 
   var line = d3.svg.line()
       .x(function(d,i) { return xScale(i); })
@@ -35,8 +35,8 @@ function createRecentSparkline(dataset, divid) {
         return -1 * yScale(d);
       })
 
-  g.append("svg:path")
-   .attr("d", line(dataset))
+  g.append('path')
+   .attr('d', line(dataset))
    .attr('stroke', 'steelblue');
 }
 

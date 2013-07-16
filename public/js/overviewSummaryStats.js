@@ -27,12 +27,12 @@ function createBuildTimeSeriesGraph(dataset) {
                 .range([h - yPadding, 0]);
 
   var svg = d3.select('#summaryBuildNumberContent')
-      .append("svg:svg")
-      .attr("width", w)
-      .attr("height", h)
+      .append('svg')
+      .attr('width', w)
+      .attr('height', h)
 
-  var g = svg.append("svg:g")
-      .attr("transform", "translate(0, 25)");
+  var g = svg.append('g')
+      .attr('transform', 'translate(0, 25)');
 
   var line = d3.svg.line()
       .interpolate('cardinal')
@@ -41,14 +41,15 @@ function createBuildTimeSeriesGraph(dataset) {
         return yScale(d);
       })
 
-var points = svg.selectAll(".point")
+var points = svg.selectAll('.point')
          .data(dataset)
          .enter()
-         .append("svg:circle")
-         .attr("stroke", "black")
-         .attr("fill", 'steelblue')
-         .attr("cx", function(d, i) { return xScale(i) + xPadding})
-         .attr("cy", function(d, i) { return yScale(d) + yPadding - 14 })
+         .append('circle')
+         .attr('stroke', 'black')
+         .attr('stroke-width', '1px')
+         .attr('fill', 'steelblue')
+         .attr('cx', function(d, i) { return xScale(i) + xPadding})
+         .attr('cy', function(d, i) { return yScale(d) + yPadding - 14 })
          .attr('r', '5')
          .on('mouseover', function(d) {
             d3.select(this)
@@ -64,8 +65,8 @@ var points = svg.selectAll(".point")
              .attr('r', '5')
          })
 
-  g.append("svg:path")
-   .attr("d", line(dataset))
+  g.append('path')
+   .attr('d', line(dataset))
    .attr('stroke', 'steelblue');
 
   var weeksAgo = 12
@@ -115,19 +116,19 @@ var points = svg.selectAll(".point")
 
   // Add grid lines
 
-  svg.append("g")
-      .attr("class", "grid")
+  svg.append('g')
+      .attr('class', 'grid')
       .attr('transform', 'translate('+ xPadding +','+ yPadding / 3  + ')')
       .call(make_y_axis(yScale)
           .tickSize(-w, 0, 0)
-          .tickFormat("")
+          .tickFormat('')
       )
 }
 
 function make_y_axis(yScale) {
     return d3.svg.axis()
         .scale(yScale)
-        .orient("left")
+        .orient('left')
         .ticks(10)
 }
 
@@ -235,5 +236,4 @@ function createShippedGraph(dataset) {
       .attr('class', 'y axis yhistoAxis')
       .attr('transform', 'translate('+ xPadding +','+ yPadding / 2 + ')')
       .call(yAxis)
-
 }
