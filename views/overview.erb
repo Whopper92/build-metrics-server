@@ -50,7 +50,12 @@
   </table>
 </div>
 
-<div id='teamContent' class='contentContainer contentColumnNarrowHalf contentLowerLeft'></div>
+<div id='teamContent' class='contentContainer contentColumnNarrowHalf contentLowerLeft'>
+  <div id='teamContentTitle' class='contentTitle'>
+    <h3>Team Statistics</h3>
+  </div>
+
+</div>
 
 <div id='summaryContent' class='contentContainer contentColumnWideHalf contentUpperRight'>
 
@@ -60,10 +65,14 @@
 
   <div id='summaryBuildNumber'>
     <div id='summaryBuildNumberTitle' class='contentTitle'>
-      <h4>Builds over Time</h4>
+      <h4>Builds in Last 12 Weeks</h4>
     </div>
     <div id='summaryBuildNumberContent'>
       <div class='yAxisLabel'>Builds</div>
+      <script type='text/javascript'>
+        createBuildTimeSeriesGraph(<%= @totalBuildsTimeSeries.to_json %>)
+        //createBuildTimeSeriesGraph(<%= "#{@totalBuildsTimeSeries.to_json}, #{@releaseBuildsTimeSeries.to_json}, #{@devBuildsTimeSeries.to_json}, #{@jenkinsBuildsTimeSeries.to_json}" %>)
+      </script>
     </div>
   </div>
 
@@ -93,9 +102,9 @@
   </div>
 </div>
 
-<div id='buildHostContent' class='contentContainer contentColumnWideHalf contentLowerRight'>
+<div id='typeContent' class='contentContainer contentColumnWideHalf contentLowerRight'>
 
-  <div id='buildHostContentTitle' class='contentTitle'>
+  <div id='typeContentTitle' class='contentTitle'>
     <h3>Metrics by Package Type</h3>
   </div>
 
@@ -141,7 +150,7 @@
               <td><strong><%= pkgtype[:type] %></strong></td>
               <td><%= pkgtype[:freqHost][0] %></td>
               <td><%= pkgtype[:freqHost][1] %></td>
-              <td><%= "#{pkgtype[:freqHostPercent]}%" %></td>
+              <td id='freqHostPercentRow'><%= "#{pkgtype[:freqHostPercent]}%" %></td>
             </tr>
           <% end %>
         </tbody>

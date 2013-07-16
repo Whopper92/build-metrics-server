@@ -10,28 +10,12 @@ class MetricServer < Sinatra::Base
   attr_accessor :metrics, :avg, :error, :builds, :last_sat, :next_sat, :title
 
   #  =============================  METHODS  =============================== #
-  # Determine if a configuration file is present and return its location if it does
+  # Determine if a configuration file is present and return its location if it is
   def self.config_file
     ["/etc/metrics/db.conf", "#{File.dirname(__FILE__)}/conf/db.conf"].each do |config|
       return config if File.exists?(config)
     end
     nil
-  end
-
-  # Returns timestamps for both last Saturday and next Saturady, allowing for easy
-  # weekly stats
-  def get_saturdays
-    today = Time.now
-    @next_sat = today.dup
-    while not @next_sat.saturday?
-      @next_sat += 86400
-    end
-    @next_sat = Time.mktime(@next_sat.year, @next_sat.month, @next_sat.day) + 86399
-    @last_sat = today.dup
-    while not @last_sat.saturday?
-      @last_sat -= 86400
-    end
-    @last_sat = Time.mktime(@last_sat.year, @last_sat.month, @last_sat.day)
   end
 
   # Yields to the provided block if a configuration file is present, or throws
@@ -86,6 +70,14 @@ class MetricServer < Sinatra::Base
                                                       :dist         => package[:dist])
     end
 
+    # Gather high level metrics. Some of this data is fabricated until real data can be aquired
+    @totalBuildsTimeSeries   = [100, 120, 80, 90, 100, 140 ,70, 60, 80, 70, 80, 80]
+    @releaseBuildsTimeSeries = [50, 60, 40, 45, 50, 70 ,45, 30, 40, 50, 30, 40, 30]
+    @jenkinsBuildsTimeSeries = [20, 20, 20, 15, 30, 30 ,25, 10, 10, 15, 20, 10, 20]
+    @devBuildsTimeSeries     = [30, 40, 20, 30, 20, 40 ,20, 20, 10, 15, 20, 30, 30]
+    @buildSeries             = [@totalBuildsTimeSeries, @devBuildsTimeSeries, @releaseBuildsTimeSeries, @jenkinsBuildsTimeSeries]
+
+    # Gather aggregate data about each package type
     @@allPackageTypes.each do |type|
       @stats[:"#{type}"]                   = Hash[:type => "#{type}", :num => 0, :avgSpd => 0, :freqHost => '', :freqHostPercent => 0]
       @stats[:"#{type}"][:num]             = Metric.count(:conditions => ['package_type = ?', "#{type}"])

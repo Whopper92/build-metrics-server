@@ -1,21 +1,24 @@
 function createRecentSparkline(dataset, divid) {
 
   dataset = dataset.reverse();
-//  console.log(dataset)
-  var width  = screen.width;
-  var height = screen.height;
-//  console.log(width)
-  if(width <  1900) {
-    w = 180
+  var screenWidth  = screen.width;
+  var screenGeight = screen.height;
+  if(screenWidth <  1900) {
+    var w = 180
   } else {
-    w = 350
+    var w = 350
   }
 
-  h = 20
+  var h = 20
 
-  margin = 5,
-  y = d3.scale.linear().domain([0, d3.max(dataset)]).range([0 + margin, h]),
-  x = d3.scale.linear().domain([0, dataset.length]).range([0 + margin, w])
+  var margin = 5
+  var xScale = d3.scale.linear()
+            .domain([0, dataset.length])
+            .range([0 + margin, w]);
+
+  var yScale = d3.scale.linear()
+            .domain([0, d3.max(dataset)])
+            .range([0 + margin, h]);
 
   var vis = d3.select(divid)
       .append("svg:svg")
@@ -27,9 +30,13 @@ function createRecentSparkline(dataset, divid) {
       .attr("transform", "translate(0, 25)");
 
   var line = d3.svg.line()
-      .x(function(d,i) { return x(i); })
-      .y(function(d) { return -1 * y(d); })
+      .x(function(d,i) { return xScale(i); })
+      .y(function(d) {
+        return -1 * yScale(d);
+      })
 
-  g.append("svg:path").attr("d", line(dataset));
+  g.append("svg:path")
+   .attr("d", line(dataset))
+   .attr('stroke', 'steelblue');
 }
 

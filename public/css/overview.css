@@ -46,7 +46,7 @@ th.trend {
   display: inline-block;
   float: left;
   margin-top:5px;
-  width: 30%;
+  width: 40%;
   height: 100%;
 }
 
@@ -55,7 +55,7 @@ th.trend {
   float: left;
   margin-top:5px;
   margin-left:-5px;
-  width: 30%;
+  width: 25%;
   height: 100%;
 }
 
@@ -63,7 +63,7 @@ th.trend {
   display: inline-block;
   float: right;
   margin-top:5px;
-  width: 40%;
+  width: 34%;
   height: 40%;
 }
 
@@ -117,17 +117,12 @@ th.trend {
   height: 100%;
 }
 
-#typeBuildHostTitle {
-  margin-left: -15px;
-}
-
 #typeBuildHostContent {
   height: 85%;
 }
 
 #freqHostTable {
-  margin-top: 5%;
-  margin-left: -20px;
+  margin-top: 7%;
 }
 
 .freqHostTableHead {
