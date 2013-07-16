@@ -26,16 +26,16 @@ th.trend {
 /* Titles and headers */
 
 .contentTitle {
-  margin-top: -15px;
-  margin-left: 10px;
+  margin: -5px 0px 0px 10px;
+  width: 100%;
+  height: 10%;
 }
 
 /* General chart labels */
 
 .yAxisLabel {
   float: left;
-  margin-top: 50%;
-  margin-left: -10px;
+  margin: 50% 0px 0px -10px;
   display: inline-block;
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
@@ -43,17 +43,18 @@ th.trend {
 
 /* Recent build sparkline elements */
 
+#recentBuildsTable {
+  margin-top: -10px;
+  max-height: 100%;
+}
+
 #resultCell {
- height: 10%;
+ margin-top: 5px;
+ height: 20px;
  overflow: hidden;
 }
 
 /* Summary section elements*/
-
-#summaryContentTitle {
-  width: 100%;
-  height: 10%;
-}
 
 #summaryBuildNumber {
   display: inline-block;
@@ -74,8 +75,7 @@ th.trend {
 #summaryShipped {
   display: inline-block;
   float: left;
-  margin-top:5px;
-  margin-left:-5px;
+  margin: 5px 0px 0px -5px;
   width: 25%;
   height: 100%;
 }
@@ -88,6 +88,10 @@ th.trend {
   margin-left: 20px;
 }
 
+.summaryHalfChart {
+  margin-left: -10px;
+}
+
 #summaryFreqPackages {
   display: inline-block;
   float: right;
@@ -96,12 +100,8 @@ th.trend {
   height: 40%;
 }
 
-#summaryFreqPackagesTitle {
-  margin-left: -15px;
-}
-
-#freqPkgTable {
-  padding: 0px;
+.freqTable {
+  margin-top: -5px;
 }
 
 #freqPkgTable tr {
@@ -111,28 +111,14 @@ th.trend {
 #summaryFreqUsers {
   display: inline-block;
   float: right;
-  margin-top: 20px;
+  margin-top: 25px;
   width: 35%;
   height: 40%;
 }
 
-#summaryFreqUsersTitle {
-  margin-left: -15px;
-}
-
 /* Team stats section elements */
 
-#teamContentTitle {
-  width: 100%;
-  height: 10%;
-}
-
 /* Metrics by package type section elements */
-
-#typeContentTitle {
-  width: 100%;
-  height: 10%;
-}
 
 #typeBuildNumber {
   display: inline-block;
@@ -145,8 +131,7 @@ th.trend {
 #typeBuildSpeed {
   display: inline-block;
   float: left;
-  margin-top:5px;
-  margin-left:-5px;
+  margin: 5px 0px 0px -5px;
   width: 30%;
   height: 100%;
 }
@@ -159,12 +144,16 @@ th.trend {
   height: 100%;
 }
 
+.typeChartContent {
+  margin-top: -15px;
+}
+
 #typeBuildHostContent {
   height: 85%;
 }
 
 #freqHostTable {
-  margin-top: 5%;
+  margin-top: 1%;
 }
 
 .freqHostTableHead {

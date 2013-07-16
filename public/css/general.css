@@ -5,9 +5,8 @@ p     {color:black;margin-left:20px;}
 li    {color:white;font-family:serif;list-style-position:inside;}
 h3, h4, h5 {color:#707070;}
 table {height:94%;margin-top:-20px;}
-tbody {height:100%;}
-.table tr { height: 10%; }
-.table th, .table td   {height:10%;text-align:left;vertical-align:middle;}
+tbody {height:90%;}
+.table th, .table td {text-align:left;vertical-align:middle;}
 
 html, body {
   height: 100%;
@@ -24,9 +23,7 @@ html, body {
 
 .main {
   position: relative;
-  margin-top: 40px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 40px auto 0px auto;
   width: 95%;
   height: 90%;
 }

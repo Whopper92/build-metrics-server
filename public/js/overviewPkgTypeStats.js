@@ -10,7 +10,7 @@ function createDistNumbersGraph(data) {
     var textPadding = 55
   } else {
     var w           = 350
-    var h           = 480
+    var h           = 460
     var textPadding = 70
   }
 
@@ -117,7 +117,7 @@ function createDistAvgSpeedGraph(data) {
     var textPadding = 55
   } else {
     var w           = 350
-    var h           = 480
+    var h           = 460
     var textPadding = 70
   }
 

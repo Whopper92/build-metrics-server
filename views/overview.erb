@@ -1,8 +1,16 @@
+<!-- Overview View
+  The main dashboard display which leads to all other views.
+  Content: 4 sections including:
+    recent builds
+    summaries
+    team stats
+    metrics by package type
+-->
+
+<!-- Recent Builds section -->
 <div id='recentBuildsContent' class='contentContainer contentColumnNarrowHalf contentUpperLeft'>
-  <div id='recentBuildsTitle' class='contentTitle'>
-    <h3>Recent Builds</h3>
-  </div>
-  <table class='table table-striped table-hover'>
+  <h3 class='contentTitle'>Recent Builds</h3>
+  <table id='recentBuildsTable' class='table table-striped table-hover'>
     <thead>
       <th class='result'>Result</th>
       <th class='package'>Package</th>
@@ -50,23 +58,16 @@
   </table>
 </div>
 
+<!-- Team Stats section-->
 <div id='teamContent' class='contentContainer contentColumnNarrowHalf contentLowerLeft'>
-  <div id='teamContentTitle' class='contentTitle'>
-    <h3>Team Statistics</h3>
-  </div>
-
+  <h3 class='contentTitle'>Team Statistics</h3>
 </div>
 
+<!-- Summaries section -->
 <div id='summaryContent' class='contentContainer contentColumnWideHalf contentUpperRight'>
-
-  <div id='summaryContentTitle' class='contentTitle'>
-    <h3>Metric Summaries</h3>
-  </div>
-
+  <h3 class='contentTitle'>Metric Summaries</h3>
   <div id='summaryBuildNumber'>
-    <div id='summaryBuildNumberTitle' class='contentTitle'>
-      <h4>Builds over Last 12 Weeks</h4>
-    </div>
+      <h4 class='contentTitle'>Builds over Last 12 Weeks</h4>
     <div id='summaryBuildNumberContent'>
       <div id='summaryBuildsYLabel' class='yAxisLabel'>Builds</div>
       <script type='text/javascript'>
@@ -77,9 +78,7 @@
   </div>
 
   <div id='summaryShipped'>
-    <div id='summaryShippedTitle' class='contentTitle'>
-      <h4>Shipped Packages this Month</h4>
-    </div>
+    <h4 class='contentTitle'>Shipped Packages this Month</h4>
     <div id='summaryShippedContent'>
       <div class='yAxisLabel'>Shipped</div>
       <script type='text/javascript'>
@@ -89,11 +88,9 @@
   </div>
 
   <div id='summaryFreqPackages'>
-    <div id='summaryFreqPackagesTitle' class='contentTitle'>
-      <h5>Frequently Built Packages</h5>
-    </div>
+    <h5 class='summaryHalfChart contentTitle'>Frequently Built Packages</h5>
     <div id='summaryFreqPackagesContent'>
-      <table id='freqPkgTable' class='table table-striped table-hover'>
+      <table class='table table-striped table-hover freqTable'>
         <thead>
           <th class='freqPkgTableHead'>Package</th>
           <th class='freqPkgTableHead'>Builds</th>
@@ -111,11 +108,9 @@
   </div>
 
   <div id='summaryFreqUsers'>
-    <div id='summaryFreqUsersTitle' class='contentTitle'>
-      <h5>Most Active Users</h5>
-    </div>
+    <h5 class='summaryHalfChart contentTitle'>Most Active Users</h5>
     <div id='summaryFreqUsersContent'>
-      <table id='freqPkgTable' class='table table-striped table-hover'>
+      <table class='table table-striped table-hover freqTable'>
         <thead>
           <th class='freqUsersTableHead'>Username</th>
           <th class='freqUsersTableHead'>Builds</th>
@@ -131,20 +126,14 @@
       </table>
     </div>
   </div>
-
 </div>
 
+<!-- Metrics by Package Type Section -->
 <div id='typeContent' class='contentContainer contentColumnWideHalf contentLowerRight'>
-
-  <div id='typeContentTitle' class='contentTitle'>
-    <h3>Metrics by Package Type</h3>
-  </div>
-
+  <h3 class='contentTitle'>Metrics by Package Type</h3>
   <div id='typeBuildNumber'>
-    <div id='typeBuildNumberTitle' class='contentTitle'>
-      <h4>Number of Builds</h4>
-    </div>
-    <div id='typeBuildNumberContent'>
+      <h4 class='contentTitle'>Number of Builds</h4>
+    <div id='typeBuildNumberContent' class='typeChartContent'>
       <div class='yAxisLabel'>Builds</div>
       <script type='text/javascript'>
         createDistNumbersGraph(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>)
@@ -153,10 +142,8 @@
   </div>
 
   <div id='typeBuildSpeed'>
-    <div id='typeBuildSpeedTitle' class='contentTitle'>
-      <h4>Average Build Speed</h4>
-    </div>
-    <div id='typeBuildSpeedContent'>
+    <h4 class='contentTitle'>Average Build Speed</h4>
+    <div id='typeBuildSpeedContent' class='typeChartContent'>
       <div class='yAxisLabel'>Seconds</div>
       <script type='text/javascript'>
         createDistAvgSpeedGraph(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>)
@@ -165,16 +152,14 @@
   </div>
 
   <div id='typeBuildHost'>
-    <div id='typeBuildHostTitle' class='contentTitle'>
-      <h4>Most Used Build Hosts by Type</h4>
-    </div>
-    <div id='typeBuildHostContent'>
+    <h4 class='contentTitle'>Most Used Build Hosts by Type</h4>
+    <div id='typeBuildHostContent' class='typeChartContent'>
       <table id='freqHostTable' class='table table-striped table-hover'>
         <thead>
           <th class='freqHostTableHead'>Type</th>
           <th class='freqHostTableHead'>Host</th>
           <th class='freqHostTableHead'>Builds</th>
-          <th class='freqHostTableHead'>Percentage of Builds</th>
+          <th id='freqHostPercentRow' class='freqHostTableHead'>Percentage of Builds</th>
         </thead>
         <tbody>
           <% [@stats[:deb], @stats[:rpm], @stats[:gem], @stats[:dmg]].each do |pkgtype| %>

@@ -8,7 +8,7 @@ function createBuildTimeSeriesGraph(dataset) {
     var textPadding = 55
   } else {
     var w           = 460
-    var h           = 460
+    var h           = 440
     var textPadding = 70
   }
 
