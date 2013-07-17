@@ -14,14 +14,13 @@ function createBuildTimeSeriesGraph(dataset) {
 
   var xPadding = 30
   var yPadding = 40
-  console.log(dataset.length)
 
   var xScale = d3.scale.ordinal()
-                 .domain(d3.range(dataset.length))
+                 .domain(d3.range(dataset[0].length))
                  .rangeRoundBands([0, w - xPadding], 0.05);
 
   var yScale = d3.scale.linear()
-                 .domain([0, d3.max(dataset, function(d) {
+                 .domain([0, d3.max(dataset[0], function(d) {
                     return parseInt(JSON.parse(d)) + 10
                   })])
                 .range([h - yPadding, 0]);
@@ -34,22 +33,58 @@ function createBuildTimeSeriesGraph(dataset) {
   var g = svg.append('g')
       .attr('transform', 'translate(0, 25)');
 
-  var line = d3.svg.line()
+  var totalLine = d3.svg.line()
       .interpolate('cardinal')
       .x(function(d,i) { return xScale(i) + xPadding; })
       .y(function(d) {
-        return yScale(d);
+        return yScale(d) - yPadding / 3;
       })
 
-var points = svg.selectAll('.point')
-         .data(dataset)
+  var failedLine = d3.svg.line()
+      .interpolate('cardinal')
+      .x(function(d,i) { return xScale(i) + xPadding; })
+      .y(function(d) {
+        return yScale(d) - yPadding / 3;
+      })
+
+  var area = d3.svg.area()
+      .x(function(d, i) { return xScale(i) + xPadding; })
+      .y0(h - yPadding)
+      .y1(function(d) { return yScale(d) + yPadding / 3; });
+
+var totalPoints = svg.selectAll('.point')
+         .data(dataset[0])
          .enter()
          .append('circle')
          .attr('stroke', 'black')
          .attr('stroke-width', '1px')
          .attr('fill', 'steelblue')
          .attr('cx', function(d, i) { return xScale(i) + xPadding})
-         .attr('cy', function(d, i) { return yScale(d) + yPadding - 14 })
+         .attr('cy', function(d, i) { return yScale(d) + yPadding / 3 })
+         .attr('r', '5')
+         .on('mouseover', function(d) {
+            d3.select(this)
+              .transition()
+              .duration(250)
+              .attr('r', '10')
+              .attr('cursor', 'pointer')
+          })
+         .on('mouseout', function(d) {
+           d3.select(this)
+             .transition()
+             .duration(250)
+             .attr('r', '5')
+         })
+
+var failedPoints = svg.selectAll('.point')
+         .data(dataset[1])
+         .enter()
+         .append('circle')
+         .attr('stroke', 'black')
+         .attr('stroke-width', '1px')
+         .attr('fill', '#B80000')
+         .attr('cx', function(d, i) { return xScale(i) + xPadding})
+         .attr('cy', function(d, i) { return yScale(d) + yPadding / 3 })
          .attr('r', '5')
          .on('mouseover', function(d) {
             d3.select(this)
@@ -66,13 +101,17 @@ var points = svg.selectAll('.point')
          })
 
   g.append('path')
-   .attr('d', line(dataset))
+   .attr('d', totalLine(dataset[0]))
    .attr('stroke', 'steelblue');
+
+  g.append('path')
+   .attr('d', failedLine(dataset[1]))
+   .attr('stroke', '#B80000');
 
   var weeksAgo = 12
   // Create the labels
   svg.selectAll('text')
-      .data(dataset)
+      .data(dataset[0])
       .enter()
       .append('text')
       .text(function(d) {

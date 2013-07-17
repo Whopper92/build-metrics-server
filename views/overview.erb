@@ -67,11 +67,21 @@
 <div id='summaryContent' class='contentContainer contentColumnWideHalf contentUpperRight'>
   <h3 class='contentTitle'>Metric Summaries</h3>
   <div id='summaryBuildNumber'>
-      <h4 class='contentTitle'>Builds over Last 12 Weeks</h4>
+    <h4 class='contentTitle'>Builds over Last 12 Weeks</h4>
     <div id='summaryBuildNumberContent'>
       <div id='summaryBuildsYLabel' class='yAxisLabel'>Builds</div>
+      <div id='summaryBuildsLegend'>
+        Total<br>
+        Failed
+        <svg id='summaryBuildsLegendTotal' xmlns="http://www.w3.org/2000/svg" version="1.1">
+          <circle id='totalBuildsLegendCircle' class='legendCircle' cx='20' cy='8' r='4'></circle>
+        </svg>
+        <svg id='summaryBuildsLegendFailed'  xmlns="http://www.w3.org/2000/svg" version="1.1">
+          <circle id='failedBuildsLegendCircle' class='legendCircle' cx='20' cy='8' r='4'></circle>
+        </svg>
+      </div>
       <script type='text/javascript'>
-        createBuildTimeSeriesGraph(<%= @totalBuildsTimeSeries.to_json %>)
+        createBuildTimeSeriesGraph(<%= [@totalBuildsTimeSeries, @failedBuildsTimeSeries] %>)
       </script>
       <div id='summaryBuildsXLabel'>Weeks Ago</div>
     </div>
@@ -132,7 +142,7 @@
 <div id='typeContent' class='contentContainer contentColumnWideHalf contentLowerRight'>
   <h3 class='contentTitle'>Metrics by Package Type</h3>
   <div id='typeBuildNumber'>
-      <h4 class='contentTitle'>Number of Builds</h4>
+    <h4 class='contentTitle'>Number of Builds</h4>
     <div id='typeBuildNumberContent' class='typeChartContent'>
       <div class='yAxisLabel'>Builds</div>
       <script type='text/javascript'>

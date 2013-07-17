@@ -72,6 +72,33 @@ th.trend {
   margin-left: 40%;
 }
 
+#summaryBuildsLegend {
+  position: absolute;
+  top: 25%;
+  left: 30%;
+  width: 60px;
+  height: 60px;
+  opacity: 0.6;
+  font-size: 10px;
+  text-align: right;
+}
+
+#summaryBuildsLegendTotal {
+  position: absolute;
+  top: 5%;
+  left: 0;
+  height: 12px;
+  fill: steelblue;
+}
+
+#summaryBuildsLegendFailed {
+  position: absolute;
+  top: 40%;
+  left: 0;
+  height: 12px;
+  fill: #880000;
+}
+
 #summaryShipped {
   display: inline-block;
   float: left;
