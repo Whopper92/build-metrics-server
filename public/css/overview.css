@@ -35,13 +35,20 @@ th.trend {
 
 .yAxisLabel {
   float: left;
-  margin: 50% 0px 0px -10px;
+  margin: 200px 0px 0px -10px;
   display: inline-block;
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
 }
 
 /* Recent build sparkline elements */
+
+#recentBuildsContent {
+  position: relative;
+  min-width: 900px;
+  height: 540px;
+  margin: 25px 0 0 20px;
+}
 
 #recentBuildsTable {
   margin-top: -10px;
@@ -56,131 +63,101 @@ th.trend {
 
 /* Summary section elements*/
 
-#summaryBuildNumber {
-  display: inline-block;
-  float: left;
-  margin-top:5px;
-  width: 37%;
-  height: 100%;
+#summaryContent {
+  min-width: 1300px;
+  height: 540px;
+  margin-top: 25px;
 }
 
-#summaryBuildsYLabel {
-  margin-top: 35%;
+#summaryBuildNumber {
+  min-width: 540px;
+  margin-top: 10px;
 }
 
 #summaryBuildsXLabel {
-  margin-left: 40%;
+  margin-top: 350px;
+  margin-left: 38%;
 }
 
 #summaryBuildsLegend {
-  position: absolute;
-  top: 25%;
-  left: 30%;
-  width: 60px;
-  height: 60px;
+  position: relative;
+  display: block;
+  width: 80px;
+  height: 40px;
+  margin-top: -400px;
+  margin-left: 400px;
   opacity: 0.6;
-  font-size: 10px;
-  text-align: right;
 }
 
 #summaryBuildsLegendTotal {
-  position: absolute;
-  top: 5%;
-  left: 0;
   height: 12px;
+  margin-top: -30px;
   fill: steelblue;
 }
 
 #summaryBuildsLegendFailed {
-  position: absolute;
-  top: 40%;
-  left: 0;
   height: 12px;
   fill: #880000;
 }
 
 #summaryShipped {
-  display: inline-block;
-  float: left;
-  margin: 5px 0px 0px -5px;
-  width: 25%;
-  height: 100%;
-}
-
-#summaryShippedTitle {
-  text-align: center;
-}
-
-#summaryShippedContent {
-  margin-left: 20px;
+  margin-top: 10px;
 }
 
 .summaryHalfChart {
-  margin-left: -10px;
+  margin-top: 25px;
 }
 
-#summaryFreqPackages {
-  display: inline-block;
-  float: right;
-  margin-top:5px;
-  width: 35%;
-  height: 40%;
-}
-
-.freqTable {
-  margin-top: -5px;
-}
-
-#freqPkgTable tr {
-  border-collapse: collapse;
+#summaryTables {
+  min-width: 400px;
+  margin-top: 10px;
 }
 
 #summaryFreqUsers {
-  display: inline-block;
-  float: right;
-  margin-top: 25px;
-  width: 35%;
-  height: 40%;
+  margin-top: 20%;
 }
 
 /* Team stats section elements */
 
+#teamContent {
+  min-width: 900px;
+  height: 540px;
+  margin: 25px 0 0 20px;
+}
+
 /* Metrics by package type section elements */
+
+#typeContent {
+  min-width: 1300px;
+  height: 540px;
+  margin-top: 25px;
+}
 
 #typeBuildNumber {
   display: inline-block;
   float: left;
-  margin-top:5px;
-  width: 30%;
-  height: 100%;
+  margin-top:15px;
+  margin-left: -1px;
 }
 
 #typeBuildSpeed {
   display: inline-block;
-  float: left;
-  margin: 5px 0px 0px -5px;
-  width: 30%;
-  height: 100%;
+  margin-top: 15px;
 }
 
 #typeBuildHost {
   display: inline-block;
-  float: right;
-  margin-top:5px;
-  width: 40%;
-  height: 100%;
+  min-width: 450px;
+  margin-top: 15px;
+  margin-left: -20px;
 }
 
 .typeChartContent {
   margin-top: -15px;
 }
 
-#typeBuildHostContent {
-  height: 85%;
-}
-
 #freqHostTable {
-  margin-top: 1%;
+  margin-top: 25px;
 }
 
 .freqHostTableHead {

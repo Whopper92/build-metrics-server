@@ -1,19 +1,10 @@
 function createBuildTimeSeriesGraph(dataset) {
 
-  var screenWidth  = screen.width;
-  var screenGeight = screen.height;
-  if(screenWidth <  1900) {
-    var w           = 260
-    var h           = 260
-    var textPadding = 55
-  } else {
-    var w           = 460
-    var h           = 440
-    var textPadding = 70
-  }
-
-  var xPadding = 30
-  var yPadding = 40
+  var w           = 460
+  var h           = 445
+  var textPadding = 70
+  var xPadding    = 30
+  var yPadding    = 40
 
   var xScale = d3.scale.ordinal()
                  .domain(d3.range(dataset[0].length))
@@ -174,20 +165,11 @@ function make_y_axis(yScale) {
 function createShippedGraph(dataset) {
 
   console.log(dataset)
-  var screenWidth  = screen.width;
-  var screenGeight = screen.height;
-  if(screenWidth <  1900) {
-    var w           = 110
-    var h           = 260
-    var textPadding = 20
-  } else {
-    var w           = 200
-    var h           = 460
-    var textPadding = 40
-  }
-
-  var xPadding = 30
-  var yPadding = 40
+  var w           = 200
+  var h           = 440
+  var textPadding = 40
+  var xPadding    = 30
+  var yPadding    = 40
 
 // Set X and Y scales for dynamic data handling
   var xScale = d3.scale.ordinal()

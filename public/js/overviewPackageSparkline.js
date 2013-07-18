@@ -1,14 +1,7 @@
 function createRecentSparkline(dataset, divid) {
 
   dataset = dataset.reverse();
-  var screenWidth  = screen.width;
-  var screenGeight = screen.height;
-  if(screenWidth <  1900) {
-    var w = 180
-  } else {
-    var w = 350
-  }
-
+  var w = 350
   var h = 20
 
   var margin = 5

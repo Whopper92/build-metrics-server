@@ -2,20 +2,11 @@
 function createDistNumbersGraph(data) {
 
   console.log(data)
-  var screenWidth  = screen.width;
-  var screenHeight = screen.height;
-  if(screenWidth < 1900) {
-    var w           = 180
-    var h           = 280
-    var textPadding = 55
-  } else {
-    var w           = 350
-    var h           = 460
-    var textPadding = 70
-  }
-
-  var xPadding = 40
-  var yPadding = 30
+  var w           = 350
+  var h           = 460
+  var textPadding = 70
+  var xPadding    = 40
+  var yPadding    = 30
 
   // Set X and Y scales for dynamic data handling
   var xScale = d3.scale.ordinal()
@@ -116,13 +107,13 @@ function createDistAvgSpeedGraph(data) {
     var h           = 280
     var textPadding = 55
   } else {
-    var w           = 350
-    var h           = 460
-    var textPadding = 70
   }
 
-  var xPadding = 40
-  var yPadding = 30
+  var w           = 350
+  var h           = 460
+  var textPadding = 70
+  var xPadding    = 40
+  var yPadding    = 30
 
   // Set X and Y scales for dynamic data handling
   var xScale = d3.scale.ordinal()
