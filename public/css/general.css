@@ -16,7 +16,16 @@ html, body {
 /* Navigation bar components */
 
 .navbar .container {
-  margin-left: 10px;
+  margin-left: 40px;
+}
+
+#logoImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 5px;
+  width: 30px;
+  height: 40px;
 }
 
 /* Generic structural elements */
@@ -37,52 +46,6 @@ html, body {
 
 .contentContainer {
   background-color: white;
-}
-
-.contentColumnFull {
-  margin-top: 20px;
-  width: 35%;
-  height: 95%;
-}
-
-.contentColumnWideHalf {
-  width: 60%;
-  height: 48%;
-}
-
-.contentColumnNarrowHalf {
-  width: 40%;
-  height: 48%;
-}
-
-.contentUpperLeft {
-  position: absolute;
-  left: 0;
-  margin-top: 20px;
-  margin-left: -10px;
-}
-
-.contentUpperRight {
-  position: absolute;
-  right: 0;
-  margin-top: 20px;
-  margin-right: -10px;
-}
-
-.contentLowerLeft {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  margin-top: 15px;
-  margin-left: -10px;
-}
-
-.contentLowerRight {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  margin-top: 15px;
-  margin-right: -10px;
 }
 
 .hidden {
