@@ -121,7 +121,7 @@ th.trend {
 
 #teamContent {
   min-width: 900px;
-  height: 540px;
+  height: 560px;
   margin: 25px 0 0 20px;
 }
 
@@ -129,8 +129,9 @@ th.trend {
 
 #typeContent {
   min-width: 1300px;
-  height: 540px;
+  height: 560px;
   margin-top: 25px;
+  padding-bottom: 5px;
 }
 
 #typeBuildNumber {
@@ -157,6 +158,7 @@ th.trend {
 }
 
 #freqHostTable {
+  height: 400px;
   margin-top: 25px;
 }
 

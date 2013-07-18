@@ -19,13 +19,19 @@ html, body {
   margin-left: 40px;
 }
 
-#logoImage {
+.logoImage {
   position: absolute;
   top: 0;
   left: 0;
   margin-left: 5px;
   width: 30px;
   height: 40px;
+}
+
+#footer {
+  height: 30px;
+  margin-top: 5px;
+  background-color: #1b1b1b;
 }
 
 /* Generic structural elements */
