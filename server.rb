@@ -80,8 +80,8 @@ class MetricServer < Sinatra::Base
     @buildSeries             = [@totalBuildsTimeSeries, @failedBuildsTimeSeries, @devBuildsTimeSeries, @releaseBuildsTimeSeries, @jenkinsBuildsTimeSeries]
 
     @stats[:shipped]         = Hash.new
-    @stats[:shipped][:final] = Hash[:type => 'Final', :count => 4]
-    @stats[:shipped][:rc]    = Hash[:type => 'RC', :count => 7]
+    @stats[:shipped][:final] = Hash[:key => 'Final', :count => 4]
+    @stats[:shipped][:rc]    = Hash[:key => 'RC', :count => 7]
 
     @pkgNumBuilds = Hash.new
     @@allPackageNames.each do |pkg|
@@ -99,8 +99,8 @@ class MetricServer < Sinatra::Base
 
     # Gather aggregate data about each package type
     @@allPackageTypes.each do |type|
-      @stats[:"#{type}"]                   = Hash[:type => "#{type}", :num => 0, :avgSpd => 0, :freqHost => '', :freqHostPercent => 0]
-      @stats[:"#{type}"][:num]             = Metric.count(:conditions => ['package_type = ?', "#{type}"])
+      @stats[:"#{type}"]                   = Hash[:key => "#{type}", :count => 0, :avgSpd => 0, :freqHost => '', :freqHostPercent => 0]
+      @stats[:"#{type}"][:count]           = Metric.count(:conditions => ['package_type = ?', "#{type}"])
       @stats[:"#{type}"][:avgSpd]          = Metric.avg(:jenkins_build_time, :conditions => ['package_type = ?', "#{type}"])
       @stats[:"#{type}"][:freqHost]        = Metric.aggregate(:build_loc, :all.count, :conditions => ['package_type = ?', "#{type}"]).sort {|a,b| b[1] <=> a[1]}[0]
       @stats[:"#{type}"][:freqHost][0]     = /^[^\.]*/.match(@stats[:"#{type}"][:freqHost][0])
@@ -111,8 +111,8 @@ class MetricServer < Sinatra::Base
 
     # Gather team statistics
     @teamNumBuilds           = Hash.new
-    @teamNumBuilds[:release] = Hash[:team => 'Release', :count => 102]
-    @teamNumBuilds[:other]   = Hash[:team => 'Other', :count => 42]
+    @teamNumBuilds[:release] = Hash[:key => 'Release', :count => 102]
+    @teamNumBuilds[:other]   = Hash[:key => 'Other', :count => 42]
     @otherTeamBuildSeries    = [10, 12, 16, 7, 12, 20, 14, 14, 10, 9, 4, 19]
 
     erb :overview
