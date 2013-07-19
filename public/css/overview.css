@@ -47,7 +47,7 @@ th.trend {
   position: relative;
   min-width: 900px;
   height: 540px;
-  margin: 25px 0 0 20px;
+  margin: 25px 0 0 28px;
 }
 
 #recentBuildsTable {
@@ -122,7 +122,7 @@ th.trend {
 #teamContent {
   min-width: 900px;
   height: 560px;
-  margin: 25px 0 0 20px;
+  margin: 25px 0 0 28px;
 }
 
 /* Metrics by package type section elements */

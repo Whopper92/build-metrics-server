@@ -43,7 +43,6 @@ html, body {
 }
 
 .basicBox {
-  text-align: center;
   border-style: groove;
   border-width: 1px;
   border-color: #480000;

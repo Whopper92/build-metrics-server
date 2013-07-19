@@ -1,6 +1,5 @@
 function createTeamHisto(dataset) {
 
-  console.log('1!!111')
   console.log(dataset)
   console.log(dataset.length)
   var w           = 200
@@ -102,7 +101,7 @@ function createTeamHisto(dataset) {
 function createTeamTimeSeries(dataset) {
 
   console.log(dataset)
-  var w           = 400
+  var w           = 460
   var h           = 450
   var textPadding = 40
   var xPadding    = 30
