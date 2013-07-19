@@ -125,6 +125,10 @@ th.trend {
   margin: 25px 0 0 28px;
 }
 
+#teamsBuildsXLabel {
+  margin-left: 220px;
+}
+
 /* Metrics by package type section elements */
 
 #typeContent {
