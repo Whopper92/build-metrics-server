@@ -147,53 +147,73 @@
     <!-- Team Stats section-->
     <div id='teamContent' class='span4 contentContainer'>
       <h3 class='contentTitle'>Team Statistics</h3>
+      <div class='row-fluid'>
+        <div id='teamBuildComparison' class='span5'>
+          <h4 class='contentTitle'>Number of Builds by Team</h4>
+          <div id='teamBuildComparisonContent'>
+            <div class='yAxisLabel'>Builds</div>
+              <script type='text/javascript'>
+                createTeamHisto(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json]  %>)
+              </script>
+          </div>
+        </div>
+        <div id='otherTeamSeries' class='span7'>
+          <h4 class='contentTitle'>Builds by Other Teams over Last 12 Weeks</h4>
+          <div id='otherTeamSeriesContent'>
+            <div class='yAxisLabel'>Builds</div>
+             <script type='text/javascript'>
+               createTeamTimeSeries(<%= @otherTeamBuildSeries %>)
+              </script>
+          </div>
+      </div>
     </div>
-
+  </div>
     <!-- Metrics by Package Type Section -->
     <div id='typeContent' class='span7 contentContainer'>
       <h3 class='contentTitle'>Metrics by Package Type</h3>
-
-      <div id='typeBuildNumber' class='span4'>
-        <h4 class='contentTitle'>Number of Builds</h4>
-        <div id='typeBuildNumberContent' class='typeChartContent'>
-          <div class='yAxisLabel'>Builds</div>
-          <script type='text/javascript'>
-            createDistNumbersGraph(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>)
-          </script>
+      <div class='row-fluid'>
+        <div id='typeBuildNumber' class='span4'>
+          <h4 class='contentTitle'>Number of Builds</h4>
+          <div id='typeBuildNumberContent' class='typeChartContent'>
+            <div class='yAxisLabel'>Builds</div>
+            <script type='text/javascript'>
+               createDistNumbersGraph(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>)
+            </script>
+          </div>
         </div>
-      </div>
 
-      <div id='typeBuildSpeed' class='span4'>
-        <h4 class='contentTitle'>Average Build Speed</h4>
-        <div id='typeBuildSpeedContent' class='typeChartContent'>
-          <div class='yAxisLabel'>Seconds</div>
-          <script type='text/javascript'>
-            createDistAvgSpeedGraph(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>)
-          </script>
+        <div id='typeBuildSpeed' class='span4'>
+          <h4 class='contentTitle'>Average Build Speed</h4>
+          <div id='typeBuildSpeedContent' class='typeChartContent'>
+            <div class='yAxisLabel'>Seconds</div>
+            <script type='text/javascript'>
+              createDistAvgSpeedGraph(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>)
+            </script>
+          </div>
         </div>
-      </div>
 
-      <div id='typeBuildHost' class='span3'>
-        <h4 class='contentTitle'>Most Used Build Hosts by Type</h4>
-        <div id='typeBuildHostContent' class='typeChartContent'>
-          <table id='freqHostTable' class='table table-striped table-hover'>
-            <thead>
-              <th class='freqHostTableHead'>Type</th>
-              <th class='freqHostTableHead'>Host</th>
-              <th class='freqHostTableHead'>Builds</th>
-              <th id='freqHostPercentRow' class='freqHostTableHead'>Percentage of Builds</th>
-            </thead>
-            <tbody>
-              <% [@stats[:deb], @stats[:rpm], @stats[:gem], @stats[:dmg]].each do |pkgtype| %>
-                <tr>
-                  <td><strong><%= pkgtype[:type] %></strong></td>
-                  <td><%= pkgtype[:freqHost][0] %></td>
-                  <td><%= pkgtype[:freqHost][1] %></td>
-                  <td id='freqHostPercentRow'><%= "#{pkgtype[:freqHostPercent]}%" %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+        <div id='typeBuildHost' class='span3'>
+          <h4 class='contentTitle'>Most Used Build Hosts by Type</h4>
+          <div id='typeBuildHostContent' class='typeChartContent'>
+            <table id='freqHostTable' class='table table-striped table-hover'>
+              <thead>
+                <th class='freqHostTableHead'>Type</th>
+                <th class='freqHostTableHead'>Host</th>
+                <th class='freqHostTableHead'>Builds</th>
+                <th id='freqHostPercentRow' class='freqHostTableHead'>Percentage of Builds</th>
+              </thead>
+              <tbody>
+                <% [@stats[:deb], @stats[:rpm], @stats[:gem], @stats[:dmg]].each do |pkgtype| %>
+                  <tr>
+                    <td><strong><%= pkgtype[:type] %></strong></td>
+                    <td><%= pkgtype[:freqHost][0] %></td>
+                    <td><%= pkgtype[:freqHost][1] %></td>
+                    <td id='freqHostPercentRow'><%= "#{pkgtype[:freqHostPercent]}%" %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

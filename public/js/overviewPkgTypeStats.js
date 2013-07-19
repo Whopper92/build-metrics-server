@@ -1,20 +1,20 @@
 // Functions to create D3 graphs relating to build hosts and package types
-function createDistNumbersGraph(data) {
+function createDistNumbersGraph(dataset) {
 
-  console.log(data)
+  console.log(dataset)
   var w           = 350
-  var h           = 460
+  var h           = 440
   var textPadding = 70
   var xPadding    = 40
   var yPadding    = 30
 
   // Set X and Y scales for dynamic data handling
   var xScale = d3.scale.ordinal()
-                 .domain(d3.range(data.length))
+                 .domain(d3.range(dataset.length))
                  .rangeRoundBands([0, w - xPadding], 0.05);
 
   var yScale = d3.scale.linear()
-                 .domain([0, d3.max(data, function(d) {
+                 .domain([0, d3.max(dataset, function(d) {
                     return parseInt(JSON.parse(d).num) + 20
                   })])
                 .range([h - yPadding, 0]);
@@ -27,7 +27,7 @@ function createDistNumbersGraph(data) {
 
   // Create the Bars
   svg.selectAll('rect')
-     .data(data)
+     .data(dataset)
      .enter()
      .append('rect')
      .attr('class', 'histoBar')
@@ -59,7 +59,7 @@ function createDistNumbersGraph(data) {
 
   // Create the labels
   svg.selectAll('text')
-      .data(data)
+      .data(dataset)
       .enter()
       .append('text')
       .text(function(d) {
@@ -97,31 +97,23 @@ function createDistNumbersGraph(data) {
       .call(yAxis)
 }
 
-function createDistAvgSpeedGraph(data) {
+function createDistAvgSpeedGraph(dataset) {
 
-  console.log(data)
-  var screenWidth  = screen.width;
-  var screenHeight = screen.height;
-  if(screenWidth < 1900) {
-    var w           = 180
-    var h           = 280
-    var textPadding = 55
-  } else {
-  }
+  console.log(dataset)
 
   var w           = 350
-  var h           = 460
+  var h           = 440
   var textPadding = 70
   var xPadding    = 40
   var yPadding    = 30
 
   // Set X and Y scales for dynamic data handling
   var xScale = d3.scale.ordinal()
-                 .domain(d3.range(data.length))
+                 .domain(d3.range(dataset.length))
                  .rangeRoundBands([0, w - xPadding], 0.05);
 
   var yScale = d3.scale.linear()
-                 .domain([0, d3.max(data, function(d) {
+                 .domain([0, d3.max(dataset, function(d) {
                     return parseInt(JSON.parse(d).avgSpd) + 20
                   })])
                 .range([h - yPadding, 0]);
@@ -134,7 +126,7 @@ function createDistAvgSpeedGraph(data) {
 
   // Create the Bars
   svg.selectAll('rect')
-     .data(data)
+     .data(dataset)
      .enter()
      .append('rect')
      .attr('class', 'histoBar')
@@ -166,7 +158,7 @@ function createDistAvgSpeedGraph(data) {
 
   // Create the labels
   svg.selectAll('text')
-      .data(data)
+      .data(dataset)
       .enter()
       .append('text')
       .text(function(d) {

@@ -109,6 +109,12 @@ class MetricServer < Sinatra::Base
       @stats[:"#{type}"][:freqHostPercent] = (@stats[:"#{type}"][:freqHostPercent] * 100).round(0)
     end
 
+    # Gather team statistics
+    @teamNumBuilds           = Hash.new
+    @teamNumBuilds[:release] = Hash[:team => 'Release', :count => 102]
+    @teamNumBuilds[:other]   = Hash[:team => 'Other', :count => 42]
+    @otherTeamBuildSeries    = [10, 12, 16, 7, 12, 20, 14, 14, 10, 9, 4, 19]
+
     erb :overview
   end
 
