@@ -1,4 +1,4 @@
-function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid) {
+function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid, units) {
 
   var w           = width
   var h           = height
@@ -56,12 +56,41 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
      .attr('fill', 'steelblue')
      .attr('fill-opacity', '0.7')
      .on('mouseover', function(d) {
+
+        var container = document.getElementById(divid.substring(1));
+        var topPos = 0;
+        var leftPos = 0;
+        while(container.tagName != "BODY") {
+            topPos += container.offsetTop;
+            leftPos += container.offsetLeft;
+            container = container.offsetParent;
+        }
+
+        var tooltipID     = '#histogramToolTip';
+        var contentTitle  = '#histogramToolTipTitle';
+        var contentFooter = '#histogramToolTipFooter';
+        var xPosition     = parseFloat(d3.select(this).attr('x')) + leftPos - 20;
+        var yPosition     = (parseFloat(d3.select(this).attr('y'))) + topPos / 1.1;
+
+         if(divid == '#typeBuildSpeedContent') {
+           hashCount = JSON.parse(d).avgSpd.toFixed(2)
+         } else {
+           hashCount = JSON.parse(d).count
+         }
+
+        displayTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosition, JSON.parse(d).key, hashCount, units);
+
         d3.select(this)
           .transition()
           .duration(250)
           .attr('fill-opacity', '1');
+
       })
      .on('mouseout', function(d) {
+
+      var tooltipID = '#histogramToolTip';
+      hideTooltip(tooltipID)
+
        d3.select(this)
          .transition()
          .duration(250)
@@ -106,4 +135,30 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
       .attr('class', 'y axis yhistoAxis')
       .attr('transform', 'translate('+ xPadding +','+ yPadding / 3 + ')')
       .call(yAxis)
+}
+
+function displayTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosition, key, count, units) {
+
+  console.log('POSITIONS')
+  console.log(xPosition)
+  console.log(yPosition)
+
+  d3.select(tooltipID)
+    .style('left', xPosition + 'px')
+    .style('top', yPosition + 'px')
+    .select(contentTitle)
+    .text(key + ': ' + count + ' ' + units);
+
+  d3.select(tooltipID)
+    .style('left', xPosition + 'px')
+    .style('top', yPosition + 'px')
+    .select(contentFooter)
+    .text('Click for additional data');
+
+    d3.select(tooltipID).classed('hidden', false);
+}
+
+function hideTooltip(tooltipID) {
+
+  d3.select(tooltipID).classed('hidden', true);
 }

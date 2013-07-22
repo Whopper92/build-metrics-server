@@ -62,7 +62,6 @@
     </table>
   </div>
 
-
 <!-- Summaries section -->
   <div id='summaryContent' class='span7 contentContainer'>
     <div id='summaryContentTitle' class='row-fluid'>
@@ -96,7 +95,7 @@
         <div id='summaryShippedContent'>
           <div class='yAxisLabel'>Shipped</div>
             <script type='text/javascript'>
-              createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 0, '#summaryShippedContent' )
+              createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 0, '#summaryShippedContent', 'shipped' )
             </script>
           </div>
         </div>
@@ -120,30 +119,37 @@
               </tbody>
             </table>
           </div>
-          </div>
-          <div id='summaryFreqUsers'>
-            <h4 class='summaryHalfTableTitle contentTitle'>Most Active Users</h5>
-            <div id='summaryFreqUsersContent' class='summaryHalfChart'>
-              <table class='table table-striped table-hover freqTable'>
-                <thead>
-                  <th class='freqUsersTableHead'>Username</th>
-                  <th class='freqUsersTableHead'>Builds</th>
-                </thead>
-                <tbody>
-                  <% @freqUsers.each do |user| %>
-                    <tr>
-                      <td><strong><%= user[0] %></strong></td>
-                      <td><%= user[1] %></td>
-                    </tr>
-                  <% end %>
-                </tbody>
-              </table>
-            </div>
+        </div>
+        <div id='summaryFreqUsers'>
+          <h4 class='summaryHalfTableTitle contentTitle'>Most Active Users</h5>
+          <div id='summaryFreqUsersContent' class='summaryHalfChart'>
+            <table class='table table-striped table-hover freqTable'>
+              <thead>
+                <th class='freqUsersTableHead'>Username</th>
+                <th class='freqUsersTableHead'>Builds</th>
+              </thead>
+              <tbody>
+                <% @freqUsers.each do |user| %>
+                  <tr>
+                    <td><strong><%= user[0] %></strong></td>
+                    <td><%= user[1] %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </div>
   </div>
+</div>
+
+  <!-- Tooltips for graphs and charts, to be styled by D3 -->
+<div id='histogramToolTip' class='hidden histoToolTip'>
+  <p><strong><span id='histogramToolTipTitle'</span></strong></p>
+  <span id='histogramToolTipFooter' class='toolTipDesc'></span>
+</div>
+
   <!-- Bottom fluid row -->
 
   <div id='bottomRowContainer' class='row-fluid'>
@@ -159,7 +165,7 @@
           <div id='teamBuildComparisonContent'>
             <div class='yAxisLabel'>Builds</div>
               <script type='text/javascript'>
-                createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent')
+                createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent', 'builds')
               </script>
           </div>
         </div>
@@ -187,7 +193,7 @@
           <div id='typeBuildNumberContent' class='typeChartContent'>
             <div class='yAxisLabel'>Builds</div>
             <script type='text/javascript'>
-              createHistogram(<%=[@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 100, '#typeBuildNumberContent')
+              createHistogram(<%=[@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 100, '#typeBuildNumberContent', 'builds')
             </script>
           </div>
         </div>
@@ -197,7 +203,7 @@
           <div id='typeBuildSpeedContent' class='typeChartContent'>
             <div class='yAxisLabel'>Seconds</div>
             <script type='text/javascript'>
-              createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#typeBuildSpeedContent')
+              createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#typeBuildSpeedContent', 'seconds')
             </script>
           </div>
         </div>
