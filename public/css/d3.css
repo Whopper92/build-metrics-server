@@ -38,7 +38,8 @@
 
 /* Tooltip elements */
 
-.histoToolTip {
+.histoToolTip,
+.tableModal {
   position: absolute;
   width: 250px;
   height: auto;
@@ -49,19 +50,25 @@
   pointer-events:none;
 }
 
-.histoToolTip.hidden {
+.tableModal {
+  width: 350px;
+}
+
+.histoToolTip.hidden,
+.tableModal.hiden {
   display: none;
 }
 
-.histoToolTip p {
-  margin-left:10px;
+.histoToolTip p,
+.tableModal p {
+  margin-left:5px;
   font-family: sans-serif;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .histoToolTip span,
-.overviewToolTip span {
-  font-size:18px;
+.tableModal span {
+  font-size: 14px;
 }
 
 .toolTipDesc {

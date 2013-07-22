@@ -6,7 +6,7 @@ li    {color:white;font-family:serif;list-style-position:inside;}
 h3, h4, h5 {color:#707070;}
 table {height:92%;margin-top:-20px;}
 tbody {height:80%;}
-.table th, .table td {text-align:left;vertical-align:middle;}
+.table th, .table td {text-align:left;vertical-align:middle;cursor:pointer;}
 
 html, body {
   height: 100%;
