@@ -70,7 +70,7 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
         var contentTitle  = '#histogramToolTipTitle';
         var contentFooter = '#histogramToolTipFooter';
         var xPosition     = parseFloat(d3.select(this).attr('x')) + leftPos - 20;
-        var yPosition     = (parseFloat(d3.select(this).attr('y'))) + topPos / 1.1;
+        var yPosition     = (parseFloat(d3.select(this).attr('y'))) + topPos - 60;
 
          if(divid == '#typeBuildSpeedContent') {
            hashCount = JSON.parse(d).avgSpd.toFixed(2)
@@ -138,10 +138,6 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
 }
 
 function displayTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosition, key, count, units) {
-
-  console.log('POSITIONS')
-  console.log(xPosition)
-  console.log(yPosition)
 
   d3.select(tooltipID)
     .style('left', xPosition + 'px')
