@@ -24,7 +24,9 @@
       </thead>
       <tbody>
       <% @stats[:latest].each do |row| %>
-        <tr>
+        <% rowID        = "sparkline#{row.id}row" %>
+        <% modalMessage = "#{row.package_name} (#{row.dist}): built in #{row.jenkins_build_time.round(2)} seconds."%>
+        <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()'>
           <% if row.success == true
                circleColor = 'limegreen'
              else
@@ -111,7 +113,9 @@
               </thead>
               <tbody>
                 <% @freqPackages.each do |pkg| %>
-                  <tr>
+                  <% rowID        = "#{pkg[0][0...1]}#{pkg[1]}" %>
+                  <% modalMessage = "#{pkg[0]}: built #{pkg[1]} times"%>
+                  <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()'>
                     <td><strong><%= pkg[0] %></strong></td>
                     <td><%= pkg[1] %></td>
                   </tr>
@@ -130,7 +134,10 @@
               </thead>
               <tbody>
                 <% @freqUsers.each do |user| %>
-                  <tr>
+                  <% rowID        = "#{user[0]}#{user[1]}" %>
+                  <% modalMessage = "#{user[0]} has built #{user[1]} packages."%>
+                  <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()'>
+
                     <td><strong><%= user[0] %></strong></td>
                     <td><%= user[1] %></td>
                   </tr>

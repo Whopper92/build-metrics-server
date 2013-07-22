@@ -4,8 +4,8 @@ function createTableRowModal(rowID, modalContent) {
   var topPos = 0;
   var leftPos = 0;
   while(container.tagName != "BODY") {
-    topPos += container.offsetTop - 15;
-    leftPos += container.offsetLeft + 10;
+    topPos   += container.offsetTop - 15;
+    leftPos  += container.offsetLeft + 10;
     container = container.offsetParent;
   }
 
