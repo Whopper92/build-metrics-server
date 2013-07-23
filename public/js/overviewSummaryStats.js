@@ -43,53 +43,94 @@ function createBuildTimeSeriesGraph(dataset) {
       .y0(h - yPadding)
       .y1(function(d) { return yScale(d) + yPadding / 3; });
 
-var totalPoints = svg.selectAll('.point')
-         .data(dataset[0])
-         .enter()
-         .append('circle')
-         .attr('stroke', 'black')
-         .attr('stroke-width', '1px')
-         .attr('fill', 'steelblue')
-         .attr('cx', function(d, i) { return xScale(i) + xPadding})
-         .attr('cy', function(d, i) { return yScale(d) + yPadding / 3 })
-         .attr('r', '5')
-         .on('mouseover', function(d) {
-            d3.select(this)
-              .transition()
-              .duration(250)
-              .attr('r', '10')
-              .attr('cursor', 'pointer')
-          })
-         .on('mouseout', function(d) {
-           d3.select(this)
-             .transition()
-             .duration(250)
-             .attr('r', '5')
-         })
+  var totalPoints = svg.selectAll('.point')
+       .data(dataset[0])
+       .enter()
+       .append('circle')
+       .attr('stroke', 'black')
+       .attr('stroke-width', '1px')
+       .attr('fill', 'steelblue')
+       .attr('cx', function(d, i) { return xScale(i) + xPadding})
+       .attr('cy', function(d, i) { return yScale(d) + yPadding / 3 })
+       .attr('r', '5')
+       .on('mouseover', function(d) {
 
-var failedPoints = svg.selectAll('.point')
-         .data(dataset[1])
-         .enter()
-         .append('circle')
-         .attr('stroke', 'black')
-         .attr('stroke-width', '1px')
-         .attr('fill', '#B80000')
-         .attr('cx', function(d, i) { return xScale(i) + xPadding})
-         .attr('cy', function(d, i) { return yScale(d) + yPadding / 3 })
-         .attr('r', '5')
-         .on('mouseover', function(d) {
-            d3.select(this)
-              .transition()
-              .duration(250)
-              .attr('r', '10')
-              .attr('cursor', 'pointer')
-          })
-         .on('mouseout', function(d) {
-           d3.select(this)
-             .transition()
-             .duration(250)
-             .attr('r', '5')
-         })
+          var container = document.getElementById('summaryBuildNumber');
+          var topPos = 0;
+          var leftPos = 0;
+          while(container.tagName != "BODY") {
+            topPos += container.offsetTop;
+            leftPos += container.offsetLeft;
+            container = container.offsetParent;
+          }
+
+          var xPosition = parseFloat(d3.select(this).attr('cx')) + leftPos - 10;
+          var yPosition = parseFloat(d3.select(this).attr('cy')) + topPos - 10;
+          var tooltipID     = '#histogramToolTip';
+          var contentTitle  = '#histogramToolTipTitle';
+          var contentFooter = '#histogramToolTipFooter';
+
+          displayLineTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosition, d);
+
+          d3.select(this)
+            .transition()
+            .duration(250)
+            .attr('r', '10')
+            .attr('cursor', 'pointer')
+        })
+       .on('mouseout', function(d) {
+
+         var tooltipID = '#histogramToolTip';
+         hideTooltip(tooltipID)
+         d3.select(this)
+           .transition()
+           .duration(250)
+           .attr('r', '5')
+       })
+
+  var failedPoints = svg.selectAll('.point')
+       .data(dataset[1])
+       .enter()
+       .append('circle')
+       .attr('stroke', 'black')
+       .attr('stroke-width', '1px')
+       .attr('fill', '#B80000')
+       .attr('cx', function(d, i) { return xScale(i) + xPadding})
+       .attr('cy', function(d, i) { return yScale(d) + yPadding / 3 })
+       .attr('r', '5')
+       .on('mouseover', function(d) {
+
+          var container = document.getElementById('summaryBuildNumber');
+          var topPos = 0;
+          var leftPos = 0;
+          while(container.tagName != "BODY") {
+            topPos += container.offsetTop;
+            leftPos += container.offsetLeft;
+            container = container.offsetParent;
+          }
+
+          var xPosition = parseFloat(d3.select(this).attr('cx')) + leftPos - 10;
+          var yPosition = parseFloat(d3.select(this).attr('cy')) + topPos - 10;
+          var tooltipID     = '#histogramToolTip';
+          var contentTitle  = '#histogramToolTipTitle';
+          var contentFooter = '#histogramToolTipFooter';
+
+          displayLineTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosition, d);
+
+          d3.select(this)
+            .transition()
+            .duration(250)
+            .attr('r', '10')
+            .attr('cursor', 'pointer')
+        })
+       .on('mouseout', function(d) {
+         var tooltipID = '#histogramToolTip';
+         hideTooltip(tooltipID)
+         d3.select(this)
+           .transition()
+           .duration(250)
+           .attr('r', '5')
+       })
 
   g.append('path')
    .attr('d', totalLine(dataset[0]))
@@ -160,4 +201,26 @@ function make_y_axis(yScale) {
         .scale(yScale)
         .orient('left')
         .ticks(10)
+}
+
+function displayLineTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosition, count) {
+
+  d3.select(tooltipID)
+    .style('left', xPosition + 'px')
+    .style('top', yPosition + 'px')
+    .select(contentTitle)
+    .text(count + ' builds');
+
+  d3.select(tooltipID)
+    .style('left', xPosition + 'px')
+    .style('top', yPosition + 'px')
+    .select(contentFooter)
+    .text('Click for additional data');
+
+    d3.select(tooltipID).classed('hidden', false);
+}
+
+function hideTooltip(tooltipID) {
+
+  d3.select(tooltipID).classed('hidden', true);
 }

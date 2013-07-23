@@ -43,6 +43,24 @@ function createTeamTimeSeries(dataset) {
        .attr('cy', function(d, i) { return yScale(d) + yPadding / 3 })
        .attr('r', '5')
        .on('mouseover', function(d) {
+
+          var container = document.getElementById('otherTeamSeries');
+          var topPos = 0;
+          var leftPos = 0;
+          while(container.tagName != "BODY") {
+            topPos += container.offsetTop;
+            leftPos += container.offsetLeft;
+            container = container.offsetParent;
+          }
+
+          var xPosition = parseFloat(d3.select(this).attr('cx')) + leftPos - 10;
+          var yPosition = parseFloat(d3.select(this).attr('cy')) + topPos - 10;
+          var tooltipID     = '#histogramToolTip';
+          var contentTitle  = '#histogramToolTipTitle';
+          var contentFooter = '#histogramToolTipFooter';
+
+          displayLineTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosition, d);
+
           d3.select(this)
             .transition()
             .duration(250)
@@ -50,6 +68,8 @@ function createTeamTimeSeries(dataset) {
             .attr('cursor', 'pointer')
         })
        .on('mouseout', function(d) {
+         var tooltipID = '#histogramToolTip';
+         hideTooltip(tooltipID)
          d3.select(this)
            .transition()
            .duration(250)
@@ -114,4 +134,26 @@ function createTeamTimeSeries(dataset) {
           .tickSize(-w, 0, 0)
           .tickFormat('')
       )
+}
+
+function displayLineTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosition, count) {
+
+  d3.select(tooltipID)
+    .style('left', xPosition + 'px')
+    .style('top', yPosition + 'px')
+    .select(contentTitle)
+    .text(count + ' builds');
+
+  d3.select(tooltipID)
+    .style('left', xPosition + 'px')
+    .style('top', yPosition + 'px')
+    .select(contentFooter)
+    .text('Click for additional data');
+
+    d3.select(tooltipID).classed('hidden', false);
+}
+
+function hideTooltip(tooltipID) {
+
+  d3.select(tooltipID).classed('hidden', true);
 }

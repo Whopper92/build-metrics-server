@@ -114,7 +114,7 @@
               <tbody>
                 <% @freqPackages.each do |pkg| %>
                   <% rowID        = "#{pkg[0][0...1]}#{pkg[1]}" %>
-                  <% modalMessage = "#{pkg[0]}: built #{pkg[1]} times"%>
+                  <% modalMessage = "#{pkg[0]}: built #{pkg[1]} times."%>
                   <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()'>
                     <td><strong><%= pkg[0] %></strong></td>
                     <td><%= pkg[1] %></td>
@@ -235,7 +235,7 @@
               <tbody>
                 <% [@stats[:deb], @stats[:rpm], @stats[:gem], @stats[:dmg]].each do |pkgtype| %>
                   <% rowID        = "#{pkgtype[:key]}row"%>
-                  <% modalMessage = "#{pkgtype[:freqHost][0]}: #{pkgtype[:freqHostPercent]}% of all #{pkgtype[:key]} builds" %>
+                  <% modalMessage = "#{pkgtype[:freqHost][0]}: #{pkgtype[:freqHostPercent]}% of all #{pkgtype[:key]} builds." %>
                   <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()'>
                     <td><strong><%= pkgtype[:key] %></strong></td>
                     <td><%= pkgtype[:freqHost][0] %></td>
