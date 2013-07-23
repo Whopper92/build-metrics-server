@@ -76,7 +76,7 @@
         <div id='summaryBuildNumberContent'>
           <div class='yAxisLabel'>Builds</div>
           <script type='text/javascript'>
-            createBuildTimeSeriesGraph(<%= [@totalBuildsTimeSeries, @failedBuildsTimeSeries] %>)
+            createLineGraph(<%= @totalBuildsTimeSeries %>, <%= @failedBuildsTimeSeries %>, 460, 445, 70, '#summaryBuildNumberContent', '#summaryBuildsGraph', 'builds')
           </script>
           <div id='summaryBuildsLegend'>
             <svg id='summaryBuildsLegendTotal' xmlns="http://www.w3.org/2000/svg" version="1.1">
@@ -186,7 +186,7 @@
           <div id='otherTeamSeriesContent'>
             <div class='yAxisLabel'>Builds</div>
              <script type='text/javascript'>
-               createTeamTimeSeries(<%= @otherTeamBuildSeries %>)
+                createLineGraph(<%= @otherTeamBuildSeries %>, <%= [] %>, 460, 450, 40, '#otherTeamSeriesContent', '#otherTeamGraph', 'builds')
               </script>
             <div id='teamsBuildsXLabel'>Weeks Ago</div>
           </div>

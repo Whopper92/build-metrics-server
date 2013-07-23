@@ -136,25 +136,3 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
       .attr('transform', 'translate('+ xPadding +','+ yPadding / 3 + ')')
       .call(yAxis)
 }
-
-function displayTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosition, key, count, units) {
-
-  d3.select(tooltipID)
-    .style('left', xPosition + 'px')
-    .style('top', yPosition + 'px')
-    .select(contentTitle)
-    .text(key + ': ' + count + ' ' + units);
-
-  d3.select(tooltipID)
-    .style('left', xPosition + 'px')
-    .style('top', yPosition + 'px')
-    .select(contentFooter)
-    .text('Click for additional data');
-
-    d3.select(tooltipID).classed('hidden', false);
-}
-
-function hideTooltip(tooltipID) {
-
-  d3.select(tooltipID).classed('hidden', true);
-}
