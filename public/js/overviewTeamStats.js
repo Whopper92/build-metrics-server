@@ -55,9 +55,9 @@ function createTeamTimeSeries(dataset) {
 
           var xPosition = parseFloat(d3.select(this).attr('cx')) + leftPos - 10;
           var yPosition = parseFloat(d3.select(this).attr('cy')) + topPos - 10;
-          var tooltipID     = '#histogramToolTip';
-          var contentTitle  = '#histogramToolTipTitle';
-          var contentFooter = '#histogramToolTipFooter';
+          var tooltipID     = '#graphToolTip';
+          var contentTitle  = '#graphToolTipTitle';
+          var contentFooter = '#graphToolTipFooter';
 
           displayLineTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosition, d);
 
@@ -68,7 +68,7 @@ function createTeamTimeSeries(dataset) {
             .attr('cursor', 'pointer')
         })
        .on('mouseout', function(d) {
-         var tooltipID = '#histogramToolTip';
+         var tooltipID = '#graphToolTip';
          hideTooltip(tooltipID)
          d3.select(this)
            .transition()

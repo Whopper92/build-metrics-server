@@ -55,7 +55,7 @@ function createBuildTimeSeriesGraph(dataset) {
        .attr('r', '5')
        .on('mouseover', function(d) {
 
-          var container = document.getElementById('summaryBuildNumber');
+          var container = document.getElementById('summaryBuildNumberContent');
           var topPos = 0;
           var leftPos = 0;
           while(container.tagName != "BODY") {
@@ -64,11 +64,11 @@ function createBuildTimeSeriesGraph(dataset) {
             container = container.offsetParent;
           }
 
-          var xPosition = parseFloat(d3.select(this).attr('cx')) + leftPos - 10;
-          var yPosition = parseFloat(d3.select(this).attr('cy')) + topPos - 10;
-          var tooltipID     = '#histogramToolTip';
-          var contentTitle  = '#histogramToolTipTitle';
-          var contentFooter = '#histogramToolTipFooter';
+          var xPosition = parseFloat(d3.select(this).attr('cx')) + leftPos - 40;
+          var yPosition = parseFloat(d3.select(this).attr('cy')) + topPos - 20;
+          var tooltipID     = '#graphToolTip';
+          var contentTitle  = '#graphToolTipTitle';
+          var contentFooter = '#graphToolTipFooter';
 
           displayLineTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosition, d);
 
@@ -80,7 +80,7 @@ function createBuildTimeSeriesGraph(dataset) {
         })
        .on('mouseout', function(d) {
 
-         var tooltipID = '#histogramToolTip';
+         var tooltipID = '#graphToolTip';
          hideTooltip(tooltipID)
          d3.select(this)
            .transition()
@@ -111,9 +111,9 @@ function createBuildTimeSeriesGraph(dataset) {
 
           var xPosition = parseFloat(d3.select(this).attr('cx')) + leftPos - 10;
           var yPosition = parseFloat(d3.select(this).attr('cy')) + topPos - 10;
-          var tooltipID     = '#histogramToolTip';
-          var contentTitle  = '#histogramToolTipTitle';
-          var contentFooter = '#histogramToolTipFooter';
+          var tooltipID     = '#graphToolTip';
+          var contentTitle  = '#graphToolTipTitle';
+          var contentFooter = '#graphToolTipFooter';
 
           displayLineTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosition, d);
 
@@ -124,7 +124,7 @@ function createBuildTimeSeriesGraph(dataset) {
             .attr('cursor', 'pointer')
         })
        .on('mouseout', function(d) {
-         var tooltipID = '#histogramToolTip';
+         var tooltipID = '#graphToolTip';
          hideTooltip(tooltipID)
          d3.select(this)
            .transition()
