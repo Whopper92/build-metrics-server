@@ -1,4 +1,4 @@
-function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid, units) {
+function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid, units, url) {
 
   var w           = width
   var h           = height
@@ -56,7 +56,6 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
      .attr('fill', 'steelblue')
      .attr('fill-opacity', '0.7')
      .on('mouseover', function(d) {
-
         var container = document.getElementById(divid.substring(1));
         var topPos = 0;
         var leftPos = 0;
@@ -87,7 +86,6 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
 
       })
      .on('mouseout', function(d) {
-
       var tooltipID = '#graphToolTip';
       hideTooltip(tooltipID)
 
@@ -95,6 +93,9 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
          .transition()
          .duration(250)
          .attr('fill-opacity', '0.6');
+      })
+      .on('click', function(d) {
+        document.location.href = url + '/' + JSON.parse(d).key
       });
 
   // Create the labels

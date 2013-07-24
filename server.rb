@@ -134,6 +134,16 @@ class MetricServer < Sinatra::Base
     erb :package
   end
 
+  get '/type/:type' do
+    if params[:type] == 'gem'
+      @title = 'Overview of Rubygem Statistics'
+    else
+      @title = "Overview of distributions using #{params[:type]} packages"
+    end
+
+    erb :typeStats
+  end
+
   # Listener for incoming metrics. Stores the data in the metrics database
   # Expects a hash with the following keys:
   post '/overview/metrics' do

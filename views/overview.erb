@@ -10,7 +10,7 @@
 <!-- Recent Builds section -->
 <div id='topRowContainer' class='row-fluid'>
   <div id='recentBuildsContent' class='span4 contentContainer'>
-    <div id ='typeContentTitle' class='row-fluid'>
+    <div id ='recentBuildsContentTitle' class='row-fluid'>
       <h3 class='contentTitle span4'>Recent Builds</h3>
       <span class='span2 offset6'>
         <div class="btn-group">
@@ -123,7 +123,7 @@
         <div id='summaryShippedContent'>
           <div class='yAxisLabel'>Shipped</div>
             <script type='text/javascript'>
-              createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 0, '#summaryShippedContent', 'shipped' )
+              createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 0, '#summaryShippedContent', 'shipped', '/temp' )
             </script>
           </div>
         </div>
@@ -231,7 +231,7 @@
           <div id='teamBuildComparisonContent'>
             <div class='yAxisLabel'>Builds</div>
               <script type='text/javascript'>
-                createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent', 'builds')
+                createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent', 'builds', '/temp')
               </script>
           </div>
         </div>
@@ -255,13 +255,25 @@
           <div class="btn-group">
             <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-wrench"></i></button>
             <ul class='dropdown-menu pull-right'>
-              <li><a tabindex="-1" href="#">Action</a></li>
+              <li><a tabindex="-1" href="#">Adjust Timescale</a></li>
             </ul>
           </div>
           <div class="btn-group">
             <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-search"></i></button>
             <ul class='dropdown-menu pull-right'>
-              <li><a tabindex="-1" href="#">Action</a></li>
+              <li class="dropdown-submenu pull-left">
+                <a tabindex="-1" href="#">Detailed View</a>
+                <ul class="dropdown-menu">
+                  <li><a tabindex="-1" href="/type/deb">Deb</a></li>
+                  <li><a tabindex="-1" href="/type/rpm">RPM</a></li>
+                  <li><a tabindex="-1" href="/type/gem">Gem</a></li>
+                  <li><a tabindex="-1" href="/type/dmg">Dmg</a></li>
+                </ul>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <a tabindex="-1" href="#">More Views</a>
+              </li>
             </ul>
           </div>
         </span>
@@ -272,7 +284,7 @@
           <div id='typeBuildNumberContent' class='typeChartContent'>
             <div class='yAxisLabel'>Builds</div>
             <script type='text/javascript'>
-              createHistogram(<%=[@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 100, '#typeBuildNumberContent', 'builds')
+              createHistogram(<%=[@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 100, '#typeBuildNumberContent', 'builds', '/type')
             </script>
           </div>
         </div>
@@ -282,7 +294,7 @@
           <div id='typeBuildSpeedContent' class='typeChartContent'>
             <div class='yAxisLabel'>Seconds</div>
             <script type='text/javascript'>
-              createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#typeBuildSpeedContent', 'seconds')
+              createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#typeBuildSpeedContent', 'seconds', '/type')
             </script>
           </div>
         </div>
@@ -290,8 +302,6 @@
         <div id='typeBuildHost' class='span3'>
           <h4 class='contentTitle'>Most Used Build Hosts by Type</h4>
           <div id='typeBuildHostContent' class='typeChartContent'>
-
-
             <table id='freqHostTable' class='table table-striped table-hover'>
               <thead>
                 <th class='freqHostTableHead'>Type</th>
