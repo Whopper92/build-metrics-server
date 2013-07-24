@@ -16,13 +16,13 @@
         <div class="btn-group">
           <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-wrench"></i></button>
           <ul class='dropdown-menu pull-right'>
-            <li><a tabindex="-1" href="#">Action</a></li>
+            <li><a tabindex="-1" href="#">Adjust Timescale</a></li>
           </ul>
         </div>
         <div class="btn-group">
           <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-search"></i></button>
           <ul class='dropdown-menu pull-right'>
-            <li><a tabindex="-1" href="#">Action</a></li>
+            <li><a tabindex="-1" href="#">Historical Build Log</a></li>
           </ul>
         </div>
       </span>
@@ -85,13 +85,24 @@
         <div class="btn-group">
           <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-wrench"></i></button>
           <ul class='dropdown-menu pull-right'>
-            <li><a tabindex="-1" href="#">Action</a></li>
+            <li><a tabindex="-1" href="#">Adjust Timescale</a></li>
           </ul>
         </div>
         <div class="btn-group">
           <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-search"></i></button>
           <ul class='dropdown-menu pull-right'>
-            <li><a tabindex="-1" href="#">Action</a></li>
+            <li class="dropdown-submenu pull-left">
+              <a tabindex="-1" href="#">Detailed View</a>
+              <ul class="dropdown-menu">
+                <li><a tabindex="-1" href="/summary/builds">Builds</a></li>
+                <li><a tabindex="-1" href="/summary/builds">Shipped</a></li>
+                <li><a tabindex="-1" href="/summary/users">Users</a></li>
+              </ul>
+            </li>
+            <li class="divider"></li>
+            <li>
+              <a tabindex="-1" href="#">More Views</a>
+            </li>
           </ul>
         </div>
       </span>
@@ -123,7 +134,7 @@
         <div id='summaryShippedContent'>
           <div class='yAxisLabel'>Shipped</div>
             <script type='text/javascript'>
-              createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 0, '#summaryShippedContent', 'shipped', '/temp' )
+              createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 0, '#summaryShippedContent', 'shipped', '/summary/shipped/' )
             </script>
           </div>
         </div>
@@ -214,13 +225,13 @@
           <div class="btn-group">
             <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-wrench"></i></button>
             <ul class='dropdown-menu pull-right'>
-              <li><a tabindex="-1" href="#">Action</a></li>
+              <li><a tabindex="-1" href="#">Adjust Timescale</a></li>
             </ul>
           </div>
           <div class="btn-group">
             <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-search"></i></button>
             <ul class='dropdown-menu pull-right'>
-              <li><a tabindex="-1" href="#">Action</a></li>
+              <li><a tabindex="-1" href="#">Detailed View</a></li>
             </ul>
           </div>
         </span>
@@ -231,7 +242,7 @@
           <div id='teamBuildComparisonContent'>
             <div class='yAxisLabel'>Builds</div>
               <script type='text/javascript'>
-                createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent', 'builds', '/temp')
+                createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent', 'builds', '/summary/shipped')
               </script>
           </div>
         </div>
@@ -268,6 +279,7 @@
                   <li><a tabindex="-1" href="/summary/type/rpm">RPM</a></li>
                   <li><a tabindex="-1" href="/summary/type/gem">Gem</a></li>
                   <li><a tabindex="-1" href="/summary/type/dmg">Dmg</a></li>
+                  <li><a tabindex="-1" href="/summary/hosts">Build Hosts</a></li>
                 </ul>
               </li>
               <li class="divider"></li>
@@ -313,7 +325,7 @@
                 <% [@stats[:deb], @stats[:rpm], @stats[:gem], @stats[:dmg]].each do |pkgtype| %>
                   <% rowID        = "#{pkgtype[:key]}row"%>
                   <% modalMessage = "#{pkgtype[:freqHost][0]}: #{pkgtype[:freqHostPercent]}% of all #{pkgtype[:key]} builds." %>
-                  <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()' onclick='document.location.href=<%= "\"/summary/type/#{pkgtype[:key]}\"" %>'>
+                  <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()' onclick='document.location.href=<%= "\"/summary/hosts/#{pkgtype[:freqHost][0]}\"" %>'>
                     <td><strong><%= pkgtype[:key] %></strong></td>
                     <td><%= pkgtype[:freqHost][0] %></td>
                     <td><%= pkgtype[:freqHost][1] %></td>
