@@ -264,10 +264,10 @@
               <li class="dropdown-submenu pull-left">
                 <a tabindex="-1" href="#">Detailed View</a>
                 <ul class="dropdown-menu">
-                  <li><a tabindex="-1" href="/type/deb">Deb</a></li>
-                  <li><a tabindex="-1" href="/type/rpm">RPM</a></li>
-                  <li><a tabindex="-1" href="/type/gem">Gem</a></li>
-                  <li><a tabindex="-1" href="/type/dmg">Dmg</a></li>
+                  <li><a tabindex="-1" href="/summary/type/deb">Deb</a></li>
+                  <li><a tabindex="-1" href="/summary/type/rpm">RPM</a></li>
+                  <li><a tabindex="-1" href="/summary/type/gem">Gem</a></li>
+                  <li><a tabindex="-1" href="/summary/type/dmg">Dmg</a></li>
                 </ul>
               </li>
               <li class="divider"></li>
@@ -284,7 +284,7 @@
           <div id='typeBuildNumberContent' class='typeChartContent'>
             <div class='yAxisLabel'>Builds</div>
             <script type='text/javascript'>
-              createHistogram(<%=[@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 100, '#typeBuildNumberContent', 'builds', '/type')
+              createHistogram(<%=[@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 100, '#typeBuildNumberContent', 'builds', 'summary/type')
             </script>
           </div>
         </div>
@@ -294,7 +294,7 @@
           <div id='typeBuildSpeedContent' class='typeChartContent'>
             <div class='yAxisLabel'>Seconds</div>
             <script type='text/javascript'>
-              createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#typeBuildSpeedContent', 'seconds', '/type')
+              createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#typeBuildSpeedContent', 'seconds', '/summary/type')
             </script>
           </div>
         </div>
@@ -313,7 +313,7 @@
                 <% [@stats[:deb], @stats[:rpm], @stats[:gem], @stats[:dmg]].each do |pkgtype| %>
                   <% rowID        = "#{pkgtype[:key]}row"%>
                   <% modalMessage = "#{pkgtype[:freqHost][0]}: #{pkgtype[:freqHostPercent]}% of all #{pkgtype[:key]} builds." %>
-                  <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()' onclick='document.location.href=<%= "\"/type/#{pkgtype[:key]}\"" %>'>
+                  <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()' onclick='document.location.href=<%= "\"/summary/type/#{pkgtype[:key]}\"" %>'>
                     <td><strong><%= pkgtype[:key] %></strong></td>
                     <td><%= pkgtype[:freqHost][0] %></td>
                     <td><%= pkgtype[:freqHost][1] %></td>

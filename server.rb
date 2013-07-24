@@ -134,7 +134,7 @@ class MetricServer < Sinatra::Base
     erb :package
   end
 
-  get '/type/:type' do
+  get '/summary/type/:type' do
     if params[:type] == 'gem'
       @title = 'Overview of Rubygem Statistics'
     else
