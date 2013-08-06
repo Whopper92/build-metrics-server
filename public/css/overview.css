@@ -32,6 +32,15 @@ th.trend {
   height: 10%;
 }
 
+/* Modals and interactive elements */
+
+#recentBuildsModal {
+  width: 700px;
+}
+#recentBuildsModalTimeTable {
+  margin-top: 10px;
+}
+
 /* General chart labels */
 
 .yAxisLabel {
@@ -55,6 +64,15 @@ th.trend {
  margin-top: 5px;
  height: 20px;
  overflow: hidden;
+}
+
+#recentBuildsModalTimeTable {
+  width: 400px;
+}
+
+#recentBuildsModalLogButton {
+  float: right;
+  margin: -5px -10px 0 0;
 }
 
 /* Summary section elements*/

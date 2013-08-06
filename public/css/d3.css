@@ -39,7 +39,8 @@
 /* Tooltip elements */
 
 .graphToolTip,
-.tableModal {
+.tableModal,
+.sideBarModal {
   position: absolute;
   width: 250px;
   height: auto;
@@ -52,6 +53,16 @@
 
 .tableModal {
   width: 350px;
+}
+
+.sideBarModal {
+  position: fixed;
+  margin-right: 0;
+  z-index: 99999;
+  top: 40px;
+  right: 0px;
+  width: 500px;
+  height: 700px;
 }
 
 .graphToolTip.hidden,

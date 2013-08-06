@@ -39,7 +39,24 @@
       <% @stats[:latest].each do |row| %>
         <% rowID        = "sparkline#{row.id}row" %>
         <% modalMessage = "#{row.package_name} (#{row.dist}): built in #{row.jenkins_build_time.round(2)} seconds."%>
-        <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()'>
+        <%
+           log = row.build_log.gsub! /'|"/, ''
+           recentBuildsDataHash = Hash[ :date                => row.date,
+                                        :package_name        => row.package_name,
+                                        :dist                => row.dist,
+                                        :package_type        => row.package_type,
+                                        :jenkins_build_time  => row.jenkins_build_time,
+                                        :package_build_time  => row.package_build_time,
+                                        :build_user          => row.build_user,
+                                        :build_loc           => row.build_loc,
+                                        :version             => row.version,
+                                        :pe_version          => row.pe_version,
+                                        :success             => row.success,
+                                        :build_log           => row.build_log
+                                      ]
+        %>
+
+        <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()' onclick='createRecentBuildsModal(<%= recentBuildsDataHash.to_json  %>)'>
           <% if row.success == true
                circleColor = 'limegreen'
              else
@@ -198,6 +215,86 @@
   <p id='tableModalTitle'></p>
   <span id='tableModalFooter' class='toolTipDesc'></span>
 </div>
+
+<div id='recentBuildsModal' class="modal fade">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 id='recentBuildsModalTitle' class="modal-title"></h4>
+      </div>
+      <div class="modal-body">
+        <div class='row-fluid'>
+          <span class='span5'>
+            <table class='table'>
+              <tbody>
+                <tr>
+                  <td>Package:</td>
+                  <td id='recentBuildsModalPackageCell'></td>
+                </tr>
+                <tr>
+                  <td>Package Type:</td>
+                  <td id='recentBuildsModalTypeCell'></td>
+                </tr>
+                <tr>
+                  <td>Distribution:</td>
+                  <td id='recentBuildsModalDistCell'>squeeze</td>
+                </tr>
+                <tr>
+                  <td>Builder:</td>
+                  <td id='recentBuildsModalBuilderCell'>whopper</td>
+                </tr>
+                <tr>
+                  <td>Build Host:</td>
+                  <td id='recentBuildsModalHostCell'>wheezy-builder-1</td>
+                </tr>
+              </tbody>
+            </table>
+          </span>
+          <span class='span5 offset1'>
+            <table class='table'>
+              <tbody>
+                <tr>
+                  <td>Version:</td>
+                  <td id='recentBuildsModalVersionCell'>1.0.2</td>
+                </tr>
+                <tr>
+                  <td>PE Version:</td>
+                  <td id='recentBuildsModalPeVersionCell'>Not a PE build</td>
+                </tr>
+              </tbody>
+            </table>
+          </span>
+        </div>
+
+        <div class='row-fluid'>
+          <table id='recentBuildsModalTimeTable' class='table'>
+            <tbody>
+              <tr><td>This package was built remotely via Jenkins</td></tr>
+              <tr>
+                <td>Package Build Time:</td>
+                <td id='recentBuildsModalPackageTimeCell'></td>
+              </tr>
+              <tr>
+                <td>Jenkins Build Time:</td>
+                <td id='recentBuildsModalJenkinsTimeCell'></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div id='recentBuildsModalStatus'>
+          <i id='recentBuildsModalStatusIcon'></i><span id='recentBuildsModalStatusText'></span>
+          <button id='recentBuildsModalLogButton' class="btn btn-primary" type="button">View Build Log</button>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
   <!-- Universal modal popup for clicks on main data views -->
 <div id='dataModal' class="modal hide fade">

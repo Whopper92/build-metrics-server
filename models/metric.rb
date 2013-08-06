@@ -12,7 +12,7 @@ class Metric
   property :version, String
   property :pe_version, String
   property :success, Boolean
-  property :build_log, Text
+  property :build_log, Text, :length => 500000
 end
 
 # Perform basic sanity checks and initialize all relationships

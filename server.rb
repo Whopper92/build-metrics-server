@@ -157,6 +157,7 @@ class MetricServer < Sinatra::Base
     end
     params[:build_log] = `wget -q #{params[:build_log]} -O -` if params[:jenkins_build_time] != nil
     params[:package_build_time] = nil if params[:package_build_time] == "N/A"
+
     render_page do
       begin
         Metric.create( params )
