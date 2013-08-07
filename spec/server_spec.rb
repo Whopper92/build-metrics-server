@@ -14,7 +14,6 @@ describe MetricServer do
 
   it 'should load the overview page' do
     get '/overview'
-    puts MetricServer.instance_variable_get(:@stats[:latest])
     last_response.should be_ok
   end
 
