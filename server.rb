@@ -18,18 +18,18 @@ class MetricServer < Sinatra::Base
     nil
   end
 
-  # Yields to the provided block if a configuration file is present, or throws
-  # an error if it is not
+  # Yields to the provided block if a configuration file is present, or throws an error if it is not
   def render_page(*args, &block)
     if @@configured == true
       yield block
     else
-      puts "(Temporary error): no configuration file present, and no DB could be reached"
+      puts "No configuration file present, and no DB could be reached"
     end
   end
 
   config = YAML.load_file(config_file) if config_file
 
+  # Load
   if config
     @@configured = true
     DataMapper::Logger.new($stdout, :debug)
@@ -72,6 +72,7 @@ class MetricServer < Sinatra::Base
     end
 
     # Gather high level metrics. Some of this data is fabricated until real data can be aquired
+    # These arrays are used to create a time series of number of builds by various teams
     @totalBuildsTimeSeries   = [100, 120, 80, 90, 100, 140 ,70, 60, 80, 70, 80, 80]
     @failedBuildsTimeSeries  = [12, 23, 6, 12, 12, 13 ,15, 7, 9, 12, 8, 5]
     @releaseBuildsTimeSeries = [50, 60, 40, 45, 50, 70 ,45, 30, 40, 50, 30, 40, 30]
@@ -79,10 +80,12 @@ class MetricServer < Sinatra::Base
     @devBuildsTimeSeries     = [30, 40, 20, 30, 20, 40 ,20, 20, 10, 15, 20, 30, 30]
     @buildSeries             = [@totalBuildsTimeSeries, @failedBuildsTimeSeries, @devBuildsTimeSeries, @releaseBuildsTimeSeries, @jenkinsBuildsTimeSeries]
 
+    # Collect data on shipped RC and final packages
     @stats[:shipped]         = Hash.new
     @stats[:shipped][:final] = Hash[:key => 'Final', :count => 4]
     @stats[:shipped][:rc]    = Hash[:key => 'RC', :count => 7]
 
+    # Gather the number of times each package has been built and find the top 3
     @pkgNumBuilds = Hash.new
     @@allPackageNames.each do |pkg|
      @pkgNumBuilds[:"#{pkg.package_name}"] = Metric.count(:conditions => ['package_name = ?', "#{pkg.package_name}"])
@@ -90,6 +93,7 @@ class MetricServer < Sinatra::Base
 
     @freqPackages = @pkgNumBuilds.sort_by { |k,v| -v }[0..2]
 
+    # Find the users who most frequently run builds
     @userNumBuilds = Hash.new
     @@allUsers.each do |user|
      @userNumBuilds[:"#{user.build_user}"] = Metric.count(:conditions => ['build_user =?', "#{user.build_user}"])
@@ -118,19 +122,9 @@ class MetricServer < Sinatra::Base
     erb :overview
   end
 
+  # A dynamic route for each individual package view
   get '/package/:package' do
-    @title = "Overview of #{params[:package]}"
 
-    @stats = Hash.new
-    @stats[:latest] = Metric.all(
-                        :order => [:date.desc],
-                        :limit => 7,
-                        :jenkins_build_time.not => nil,
-                        :package_name => params[:package])
-    @trends = Hash.new
-    @trends[params[:package]] = Metric.all(:fields       => [:jenkins_build_time],
-                                           :order        => [:date.desc],
-                                           :package_name => params[:package])
     erb :package
   end
 
@@ -146,6 +140,8 @@ class MetricServer < Sinatra::Base
 
   # Listener for incoming metrics. Stores the data in the metrics database
   # Expects a hash with the following keys:
+  # date, package_name, dist, package_type, build_user, build_loc, version, pe_version, package_build_time, jenkins_build_time,  success, build_log
+  # See README for details on each of these variables
   post '/overview/metrics' do
     # Format some paramters and download the Jenkins build log for storage
     puts params.inspect
@@ -155,6 +151,7 @@ class MetricServer < Sinatra::Base
         when /true/    then true
         else false
     end
+    # Download the build log from jenkins if the build was run through jenkins
     params[:build_log] = `wget -q #{params[:build_log]} -O -` if params[:jenkins_build_time] != nil
     params[:package_build_time] = nil if params[:package_build_time] == "N/A"
 

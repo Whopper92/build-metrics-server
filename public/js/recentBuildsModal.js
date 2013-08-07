@@ -1,6 +1,7 @@
+/* Creates the modal popup triggered when a recent
+build is clicked in the recent builds graphic on the
+overview dashboard */
 function createRecentBuildsModal(data) {
-  // Create the sidebar modal for a recent build
-
   var date    = data.date.slice(0,10)
   var hours   = data.date.slice(11,13)
   var minutes = data.date.slice(14,16)
@@ -118,7 +119,7 @@ function createRecentBuildsModal(data) {
   // Setup the build log
   d3.select('#logModal')
     .select('#logTitle')
-    .text(data.package_name + ' build log')
+    .text(data.package_name + ' Build Log')
 
  d3.select('#logModal')
     .select('#logContent')

@@ -1,5 +1,6 @@
+/* Creates a standard histogram for the dataset which is provided. Also
+requires additional parameters for graph spacing margins*/
 function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid, units, url) {
-
   var w           = width
   var h           = height
   var textPadding = txtPadding

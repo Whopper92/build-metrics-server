@@ -2,29 +2,13 @@
 /* Styling for the overview view */
 
 /* General table styling */
-
-th.result {
-  width: 5%;
-}
-
-th.dist {
-  width: 15%;
-}
-
-th.package {
-  width: 25%;
-}
-
-th.buildTime {
-  width: 15%;
-}
-
-th.trend {
- width: 30%;
-}
+th.result {width: 5%;}
+th.dist {width: 15%;}
+th.package {width: 25%;}
+th.buildTime {width: 15%;}
+th.trend {width: 30%;}
 
 /* Titles and headers */
-
 .contentTitle {
   display: inline-block;
   margin: -5px 0px 0px 10px;
@@ -33,7 +17,6 @@ th.trend {
 }
 
 /* Modals and interactive elements */
-
 #recentBuildsModal {
   width: 700px;
 }
@@ -56,7 +39,6 @@ th.trend {
 }
 
 /* General chart labels */
-
 .yAxisLabel {
   float: left;
   margin: 200px 0px 0px -10px;
@@ -66,7 +48,6 @@ th.trend {
 }
 
 /* Recent build sparkline elements */
-
 #recentBuildsContent {
   position: relative;
   min-width: 900px;
@@ -94,7 +75,6 @@ th.trend {
 }
 
 /* Summary section elements*/
-
 #summaryContent {
   min-width: 1300px;
   height: 540px;
@@ -107,8 +87,7 @@ th.trend {
 }
 
 #summaryBuildsXLabel {
-  margin-top: 350px;
-  margin-left: 38%;
+  margin: 350px 0 0 38%;
 }
 
 #summaryBuildsLegend {
@@ -116,8 +95,7 @@ th.trend {
   display: block;
   width: 80px;
   height: 40px;
-  margin-top: -400px;
-  margin-left: 400px;
+  margin: -400px 0 0 400px;
   opacity: 0.6;
 }
 
@@ -150,7 +128,6 @@ th.trend {
 }
 
 /* Team stats section elements */
-
 #teamContent {
   min-width: 900px;
   height: 560px;
@@ -166,7 +143,6 @@ th.trend {
 }
 
 /* Metrics by package type section elements */
-
 #typeContent {
   min-width: 1300px;
   height: 560px;

@@ -1,5 +1,6 @@
+/* Creates a standard line graph for the dataset which is provided. Also
+requires additional parameters for graph spacing margins*/
 function createLineGraph(totalDataset, failedDataset, width, height, txtPadding, divID, graphID, units) {
-
   /* Define variables for use with graph generation*/
   var w           = width
   var h           = height

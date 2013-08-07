@@ -1,5 +1,7 @@
+/* Creates the sparklines present in the recent builds graphic
+on the overview dashboard. Requires a divid to allow for dynamic
+positioning */
 function createRecentSparkline(dataset, divid) {
-
   dataset = dataset.reverse();
   var w = 350
   var h = 20

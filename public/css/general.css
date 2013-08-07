@@ -1,5 +1,4 @@
 /* Generic Elements */
-
 a     {font-family:sans-serif;}
 p     {color:black;margin-left:20px;}
 li    {color:white;font-family:serif;list-style-position:inside;}
@@ -14,7 +13,6 @@ html, body {
 }
 
 /* Navigation bar components */
-
 .navbar .container {
   margin-left: 40px;
 }
@@ -39,7 +37,6 @@ html, body {
 }
 
 /* Generic structural elements */
-
 .main {
   position: relative;
   margin: 40px auto 0px auto;
@@ -55,7 +52,6 @@ html, body {
 }
 
 /* Buttons and widgets */
-
 .btn-group {
   float: right;
 }
@@ -68,7 +64,6 @@ html, body {
 }
 
 /* SVG styling*/
-
 circle {
   stroke: 0;
   -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 1);

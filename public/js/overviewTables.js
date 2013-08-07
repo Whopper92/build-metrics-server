@@ -1,5 +1,6 @@
+/* Creates the modals which are triggered by hovering
+over any table row on the overview dashboard */
 function createTableRowModal(rowID, modalContent) {
-
   var container = document.getElementById(rowID.id);
   var topPos = 0;
   var leftPos = 0;
