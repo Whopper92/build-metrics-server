@@ -1,12 +1,9 @@
 function createRecentBuildsModal(data) {
   // Create the sidebar modal for a recent build
 
-  console.log(data.package_build_time)
   var date    = data.date.slice(0,10)
   var hours   = data.date.slice(11,13)
   var minutes = data.date.slice(14,16)
-  console.log(hours)
-  console.log(minutes)
 
   // Convert time
   if(parseInt(hours) > 12) {
@@ -52,7 +49,7 @@ function createRecentBuildsModal(data) {
 
   d3.select('#recentBuildsModal')
     .select('#recentBuildsModalHostCell')
-    .text(data.build_host)
+    .text(data.build_loc)
 
   d3.select('#recentBuildsModal')
     .select('#recentBuildsModalVersionCell')
@@ -60,13 +57,19 @@ function createRecentBuildsModal(data) {
 
   d3.select('#recentBuildsModal')
     .select('#recentBuildsModalPeVersionCell')
-    .text(data.pe_version)
+    .text(function(d) {
+      if(data.pe_version != 'N/A') {
+        return date.pe_version
+      } else {
+        return 'Not a PE build'
+      }
+    })
 
   d3.select('#recentBuildsModal')
     .select('#recentBuildsModalPackageTimeCell')
     .text(function(d) {
       if(data.package_build_time != null) {
-        return data.package_build_time
+        return parseFloat(data.package_build_time).toFixed(2) + ' seconds'
       } else {
         return 'Not Available'
       }
@@ -76,7 +79,7 @@ function createRecentBuildsModal(data) {
     .select('#recentBuildsModalJenkinsTimeCell')
     .text(function(d) {
       if(data.jenkins_build_time != null) {
-        return data.jenkins_build_time
+        return parseFloat(data.jenkins_build_time).toFixed(2) + ' seconds'
       } else {
         return 'Not Available'
       }
@@ -91,7 +94,6 @@ function createRecentBuildsModal(data) {
         return 'alert alert-error'
       }
     })
-
 
   d3.select('#recentBuildsModal')
     .select('#recentBuildsModalStatusIcon')
@@ -113,6 +115,26 @@ function createRecentBuildsModal(data) {
       }
     })
 
+  // Setup the build log
+  d3.select('#logModal')
+    .select('#logTitle')
+    .text(data.package_name + ' build log')
 
-    d3.select('#recentBuildsModal').classed('hidden', false);
+ d3.select('#logModal')
+    .select('#logContent')
+    .html('<pre>' + data.build_log + '</pre>')
+
+  d3.select('#logBody')
+    .style('max-height', function(d) {
+      if(screen.height > 900) {
+        return '1000px'
+      } else {
+        return '600px'
+      }
+    })
+}
+
+function createBuildLogModal() {
+  $('#logModal').modal('show')
+  console.log('SHOWING')
 }

@@ -37,8 +37,22 @@ th.trend {
 #recentBuildsModal {
   width: 700px;
 }
+
+#recentBuildsModal .modal-body {
+  max-height: 420px;
+}
+
 #recentBuildsModalTimeTable {
   margin-top: 10px;
+}
+
+#logModal {
+  margin: -80px 0 0 -550px;
+  width: 1100px;
+}
+
+#logModal .modal-body {
+  max-height: 600px;
 }
 
 /* General chart labels */
@@ -67,12 +81,16 @@ th.trend {
 }
 
 #recentBuildsModalTimeTable {
-  width: 400px;
+  width: 450px;
 }
 
 #recentBuildsModalLogButton {
   float: right;
   margin: -5px -10px 0 0;
+}
+
+.recentBuildsModalLabel {
+  font-weight: bold;
 }
 
 /* Summary section elements*/

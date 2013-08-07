@@ -84,23 +84,3 @@ path {
 line {
     stroke: black;
 }
-
-
-
-      <span class='span2 offset6'>
-        <div class="btn-group">
-          <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-wrench"></i></button>
-          <ul class='dropdown-menu'>
-            <li><a tabindex="-1" href="#">Action</a></li>
-          </ul>
-        </div>
-        <div class="btn-group">
-          <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-search"></i></button>
-          <ul class='dropdown-menu'>
-            <li><a tabindex="-1" href="#">Action</a></li>
-          </ul>
-        </div>
-      </span>
-
-
-
