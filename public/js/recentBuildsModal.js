@@ -60,7 +60,7 @@ function createRecentBuildsModal(data) {
     .select('#recentBuildsModalPeVersionCell')
     .text(function(d) {
       if(data.pe_version != 'N/A') {
-        return date.pe_version
+        return data.pe_version
       } else {
         return 'Not a PE build'
       }

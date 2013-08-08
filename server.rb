@@ -66,9 +66,10 @@ class MetricServer < Sinatra::Base
     @trends = Hash.new
     @stats[:latest].each do |package|
       @trends["#{package[:package_name]}-#{package[:dist]}"] = Metric.all(:fields => [:jenkins_build_time],
-                                                      :order        => [:date.desc],
-                                                      :package_name => package[:package_name],
-                                                      :dist         => package[:dist])
+                                                      :order                  => [:date.desc],
+                                                      :package_name           => package[:package_name],
+                                                      :dist                   => package[:dist],
+                                                      :jenkins_build_time.not => nil)
     end
 
     # Gather high level metrics. Some of this data is fabricated until real data can be aquired
