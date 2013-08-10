@@ -146,15 +146,23 @@ class MetricServer < Sinatra::Base
   post '/overview/metrics' do
     # Format some paramters and download the Jenkins build log for storage
     puts params.inspect
-    params[:date]       = Time.now.to_s
+    params[:date]    = Time.now.to_s
+    params[:dist]    = params[:dist][3..-1] if params[:dist][0..2].match(/[\d]+\.[\d]+/)
+    params[:dist]    = 'sles11' if params[:dist] == 'sl11'
     params[:success] = case params[:success]
         when /SUCCESS/ then true
         when /true/    then true
         else false
     end
+
     # Download the build log from jenkins if the build was run through jenkins
     params[:build_log] = `wget -q #{params[:build_log]} -O -` if params[:jenkins_build_time] != nil
-    params[:package_build_time] = nil if params[:package_build_time] == "N/A"
+    params[:package_build_time] = nil if params[:package_build_time] == 'N/A'
+
+    # A bit of a hack to make sure we get the package build time, which is a problem for dynamic Jenkins builds
+    if params[:package_build_time] == nil and params[:jenkins_build_time] != nil and params[:build_log] != nil
+      params[:package_build_time] = /(?:Finished building in:) ([\d]+\.?[\d]*)/.match(params[:build_log])[1]
+    end
 
     render_page do
       begin
