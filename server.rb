@@ -161,7 +161,7 @@ class MetricServer < Sinatra::Base
 
     # A bit of a hack to make sure we get the package build time, which is a problem for dynamic Jenkins builds
     if params[:package_build_time] == nil and params[:jenkins_build_time] != nil and params[:build_log] != nil
-      if /(?:Finished building in:) ([\d]+\.?[\d]*)/.match(params[:build_log]) == true
+      if /(?:Finished building in:) ([\d]+\.?[\d]*)/.match(params[:build_log])
         params[:package_build_time]  = /(?:Finished building in:) ([\d]+\.?[\d]*)/.match(params[:build_log])[1]
       else
         params[:package_build_time] = params[:jenkins_build_time] if params[:package_build_time] == nil
