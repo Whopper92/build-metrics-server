@@ -52,7 +52,15 @@
                   </a>
                   <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                     <li><a href="#">Jenkins</a></li>
-                    <li><a href="#">Distribution Stats</a></li>
+                    <li class='dropdown-submenu pull-left'>
+                      <a tabindex='-1' href="#">Package Types</a>
+                      <ul class='dropdown-menu'>
+                        <% @packageTypes.each do |type|%>
+                          <li><a tabindex="-1" href="/summary/type/<%= type %>"><%= type %></a></li>
+                        <% end %>
+                      </ul>
+                    </li>
+                    <li><a href="#">Distributions</a></li>
                   </ul>
                 </li>
               </ul>

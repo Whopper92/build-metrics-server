@@ -19,12 +19,30 @@
     <div class='row-fluid'>
       <div id='typeSummaryBuildNumber' class='span4'>
         <h4 class='contentTitle'>Number of Builds this Month</h4>
+        <div id='typeSummaryBuildContent' class='typeChartContent'>
+          <div class='yAxisLabel'>Builds</div>
+          <script type='text/javascript'>
+            createHistogram(<%= [@stats[:jenkinsBuilds].to_json, @stats[:localBuilds].to_json] %>, 200, 440, 70, 200, '#typeSummaryBuildContent', 'builds', '#')
+          </script>
+        </div>
       </div>
       <div id='typeSummaryAvgSpeed' class='span4'>
         <h4 class='contentTitle'>Average Speed</h4>
+        <div id='typeSummarySpeedContent' class='typeChartContent'>
+          <div class='yAxisLabel'>Seconds</div>
+          <script type='text/javascript'>
+            createHistogram(<%= [@stats[:jenkinsBuilds].to_json, @stats[:localBuilds].to_json] %>, 200, 440, 70, 10, '#typeSummarySpeedContent', 'seconds', '#')
+          </script>
+        </div>
       </div>
       <div id='typeSummaryHosts' class='span4'>
         <h4 class='contentTitle'>Build Host Usage</h4>
+        <div id='typeSummaryHostContent' class='typeChartContent'>
+          <div class='yAxisLabel'>Percent</div>
+          <script type='text/javascript'>
+            createHistogram(<%= @hostDataArray %>, 500, 440, 70, 50, '#typeSummaryHostContent', 'percent', '#')
+          </script>
+        </div>
       </div>
     </div>
   </div>

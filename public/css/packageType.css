@@ -13,6 +13,15 @@
   margin-top: 25px;
 }
 
+#typeSummaryBuildContent,
+#typeSummarySpeedContent {
+  margin-top: 10px;
+}
+
+#typeSummaryHostContent {
+  margin: 10px 0 0 -150px;
+}
+
 #generalStatsContent {
   min-width: 900px;
   height: 560px;

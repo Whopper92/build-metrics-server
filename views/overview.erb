@@ -151,7 +151,7 @@
     <!-- Team Stats section-->
     <div id='teamContent' class='span4 contentContainer'>
       <div id='teamContentTitle' class='row-fluid'>
-
+        <h3 class='contentTitle span4'>Team Statistics</h3>
         <span class='span2 offset6'>
           <div class="btn-group">
             <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-wrench"></i></button>
@@ -206,10 +206,9 @@
               <li class="dropdown-submenu pull-left">
                 <a tabindex="-1" href="#">Detailed View</a>
                 <ul class="dropdown-menu">
-                  <li><a tabindex="-1" href="/summary/type/deb">Deb</a></li>
-                  <li><a tabindex="-1" href="/summary/type/rpm">RPM</a></li>
-                  <li><a tabindex="-1" href="/summary/type/gem">Gem</a></li>
-                  <li><a tabindex="-1" href="/summary/type/dmg">Dmg</a></li>
+                  <% @packageTypes.each do |type| %>
+                    <li><a tabindex="-1" href="/summary/type/<%= type %>"><%= type %></a></li>
+                  <% end %>
                   <li><a tabindex="-1" href="/summary/hosts">Build Hosts</a></li>
                 </ul>
               </li>

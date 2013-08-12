@@ -1,12 +1,22 @@
 /* Creates a standard histogram for the dataset which is provided. Also
 requires additional parameters for graph spacing margins*/
 function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid, units, url) {
+  console.log(dataset)
   var w           = width
   var h           = height
   var textPadding = txtPadding
   var xPadding    = 40
   var yPadding    = 30
 
+  // Graphs are either about number of builds or average speed
+  if(units == 'seconds') {
+    var graphType = 'speed'
+  } else if(units == 'percent') {
+    var graphType = 'percent'
+    dataset = dataset.sort()
+  } else {
+    var graphType = 'builds'
+  }
   // Set X and Y scales for dynamic data handling
   var xScale = d3.scale.ordinal()
                  .domain(d3.range(dataset.length))
@@ -14,8 +24,10 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
 
   var yScale = d3.scale.linear()
                  .domain([0, d3.max(dataset, function(d) {
-                  if(divid == '#typeBuildSpeedContent') {
+                  if(graphType == 'speed') {
                     return parseInt(JSON.parse(d).avgSpd) + yAxisPadding
+                  } else if(graphType == 'percent') {
+                    return 100
                   } else {
                     return parseInt(JSON.parse(d).count) + yAxisPadding
                   }
@@ -38,16 +50,19 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
       return xScale(i) + xPadding;
      })
      .attr('y', function(d) {
-       if(divid == '#typeBuildSpeedContent') {
+       if(graphType == 'speed') {
          return yScale(JSON.parse(d).avgSpd) + yPadding / 3;
+       } else if(graphType == 'percent') {
+         return yScale(JSON.parse(d).percent) + yPadding / 3;
        } else {
          return yScale(JSON.parse(d).count) + yPadding / 3;
        }
      })
      .attr('height', function(d) {
-       console.log(h - yScale(JSON.parse(d).count))
-       if(divid == '#typeBuildSpeedContent') {
+       if(graphType == 'speed') {
          return h - yScale(JSON.parse(d).avgSpd) - yPadding;
+       } else if(graphType == 'percent') {
+         return h - yScale(JSON.parse(d).percent) - yPadding;
        } else {
          return h - yScale(JSON.parse(d).count) - yPadding;
        }
@@ -72,8 +87,10 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
         var xPosition     = parseFloat(d3.select(this).attr('x')) + leftPos - 20;
         var yPosition     = (parseFloat(d3.select(this).attr('y'))) + topPos - 60;
 
-         if(divid == '#typeBuildSpeedContent') {
+         if(graphType == 'speed') {
            hashCount = JSON.parse(d).avgSpd.toFixed(2)
+         } else if(graphType == 'percent') {
+           hashCount = JSON.parse(d).percent
          } else {
            hashCount = JSON.parse(d).count
          }
