@@ -1,0 +1,26 @@
+/* Styling for the package type dashboard view */
+
+#recentBuildsContent {
+  position: relative;
+  min-width: 900px;
+  height: 540px;
+  margin: 25px 0 0 28px;
+}
+
+#typeSummaryContent {
+  min-width: 1300px;
+  height: 540px;
+  margin-top: 25px;
+}
+
+#generalStatsContent {
+  min-width: 900px;
+  height: 560px;
+  margin: 25px 0 0 28px;
+}
+
+#distSpeedContent {
+  min-width: 1300px;
+  height: 560px;
+  margin-top: 25px;
+}

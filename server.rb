@@ -130,13 +130,34 @@ class MetricServer < Sinatra::Base
   end
 
   get '/summary/type/:type' do
-    if params[:type] == 'gem'
-      @title = 'Overview of Rubygem Statistics'
-    else
-      @title = "Overview of distributions using #{params[:type]} packages"
+    @packageType = case params[:type]
+      when 'deb' then 'Debian'
+      when 'rpm' then 'RPM'
+      when 'gem' then 'RubyGem'
+      when 'dmg' then 'DMG'
     end
 
-    erb :typeStats
+    # First, get all data about the latest 6 builds
+    @stats = Hash.new
+    @stats[:latest] = Metric.all(
+                        :order => [:date.desc],
+                        :limit => 6,
+                        :jenkins_build_time.not => nil,
+                        :package_type => params[:type])
+
+    # Next, for each recent build find all build times for the appropriate dist to formulate a trend
+    @trends = Hash.new
+    @stats[:latest].each do |package|
+      @trends["#{package[:package_name]}-#{package[:dist]}"] = Metric.all(:fields => [:jenkins_build_time],
+                                                      :order                  => [:date.desc],
+                                                      :package_name           => package[:package_name],
+                                                      :dist                   => package[:dist],
+                                                      :jenkins_build_time.not => nil,
+                                                      :package_type           => params[:type])
+    end
+
+
+    erb :pkgTypeBoard
   end
 
   # Listener for incoming metrics. Stores the data in the metrics database

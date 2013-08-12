@@ -1,0 +1,32 @@
+<!--
+  pkgTypeBoard template
+  Used for dynamic data relating to each package type (deb, rpm...)
+-->
+
+<div id='topRowContainer' class='row-fluid'>
+  <div id='recentBuildsContent' class='span4 contentContainer'>
+    <div id='recentBuildsContentTitle' class='row-fluid'>
+      <h3 class='contentTitle span4'>Latest <%= @packageType %> Builds</h3>
+    </div>
+    <%= erb :recentBuildsTable %>
+  </div>
+
+  <div id='typeSummaryContent' class='span7 contentContainer'>
+    <div id='typeSummaryContentTitle' class='row-fluid'>
+      <h3 class='contentTitle span4'><%= @packageType %> Packaging Summaries</h3>
+    </div>
+  </div>
+</div>
+
+<div id='bottomRowContainer' class='row-fluid'>
+  <div id='generalStatsContent' class='span4 contentContainer'>
+    <div id='generalStatsContentTitle' class='row-fluid'>
+      <h3 class='contentTitle span4'>General <%= @packageType %> Stats</h3>
+    </div>
+  </div>
+  <div id='distSpeedContent' class='span7 contentContainer'>
+    <div id='distSpeedContentTitle' class='row-fluid'>
+      <h3 class='contentTitle span4'>Average Build Speed by Distribution</h3>
+    </div>
+  </div>
+</div>
