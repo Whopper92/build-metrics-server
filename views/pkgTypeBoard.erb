@@ -8,12 +8,24 @@
     <div id='recentBuildsContentTitle' class='row-fluid'>
       <h3 class='contentTitle span4'>Latest <%= @packageType %> Builds</h3>
     </div>
+    <!-- Use a multi-purpose template to generate the table -->
     <%= erb :recentBuildsTable %>
   </div>
 
   <div id='typeSummaryContent' class='span7 contentContainer'>
     <div id='typeSummaryContentTitle' class='row-fluid'>
       <h3 class='contentTitle span4'><%= @packageType %> Packaging Summaries</h3>
+    </div>
+    <div class='row-fluid'>
+      <div id='typeSummaryBuildNumber' class='span4'>
+        <h4 class='contentTitle'>Number of Builds this Month</h4>
+      </div>
+      <div id='typeSummaryAvgSpeed' class='span4'>
+        <h4 class='contentTitle'>Average Speed</h4>
+      </div>
+      <div id='typeSummaryHosts' class='span4'>
+        <h4 class='contentTitle'>Build Host Usage</h4>
+      </div>
     </div>
   </div>
 </div>
@@ -26,10 +38,29 @@
   </div>
   <div id='distSpeedContent' class='span7 contentContainer'>
     <div id='distSpeedContentTitle' class='row-fluid'>
-      <h3 class='contentTitle span4'>Average Build Speed by Distribution</h3>
+      <h3 class='contentTitle span4'><%= @packageType %> Breakdown by Distribution</h3>
     </div>
+      <div id='typeSummaryHosts' class='span6'>
+        <h4 class='contentTitle'>Average Build Speed</h4>
+      </div>
+      <div id='typeSummaryHosts' class='span5'>
+        <h4 class='contentTitle'>Failure Rate</h4>
+      </div>
   </div>
 </div>
 
 <!-- Tooltips for graphs and charts, to be styled by D3 -->
 <%= erb :tooltips %>
+
+<!-- If the screen resolution is small, stretch each box to fill the width of the screen -->
+<script type='text/javascript'>
+  var recentBuilds = document.getElementById("recentBuildsContent");
+  var generalStats = document.getElementById("generalStatsContent");
+  if(screen.width < 1600) {
+    recentBuilds.style.minWidth   = "1300px";
+    generalStats.style.minWidth   = "1300px";
+  } else {
+    recentBuilds.style.minWidth = "900px";
+    generalStats.style.minWidth = "900px";
+  }
+</script>
