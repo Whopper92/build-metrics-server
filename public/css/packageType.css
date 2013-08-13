@@ -19,7 +19,11 @@
 }
 
 #typeSummaryHostContent {
-  margin: 10px 0 0 -150px;
+  margin: 10px 0 0 0;
+}
+
+#typeSummaryAvgSpeed {
+  margin-left: -20px;
 }
 
 #generalStatsContent {

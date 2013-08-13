@@ -13,7 +13,11 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
     var graphType = 'speed'
   } else if(units == 'percent') {
     var graphType = 'percent'
-    dataset = dataset.sort()
+    if(dataset.length < 5 && dataset.length > 1) {
+      w = 200
+    } else if(dataset.length == 1) {
+      w = 120
+    }
   } else {
     var graphType = 'builds'
   }
