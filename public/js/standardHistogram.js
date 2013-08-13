@@ -14,18 +14,21 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
   } else if(units == 'percent') {
     var graphType = 'percent'
     textPadding += 8
-    if(dataset.length < 5 && dataset.length > 1) {
-      w = 200
-    } else if(dataset.length == 1) {
-      w = 120
-    }
   } else {
     var graphType = 'builds'
+  }
+
+  if(graphType == 'percent' && dataset.length > 1 && dataset.length <= 3) {
+    var rangeBand = 0.5
+  } else if(graphType == 'percent' && dataset.length == 1) {
+    var rangeBand = 0.7
+  } else {
+    var rangeBand = 0.05
   }
   // Set X and Y scales for dynamic data handling
   var xScale = d3.scale.ordinal()
                  .domain(d3.range(dataset.length))
-                 .rangeRoundBands([0, w - xPadding], 0.05);
+                 .rangeRoundBands([0, w - xPadding], rangeBand);
 
   var yScale = d3.scale.linear()
                  .domain([0, d3.max(dataset, function(d) {
@@ -43,20 +46,7 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
   var svg = d3.select(divid)
               .append('svg')
               .attr({width: w, height: h})
-              .style('margin-left', function(d) {
-                if(graphType == 'percent') {
-                  if(dataset.length >= 1 && dataset.length <= 3) {
-                    d3.select(divid)
-                      .select('#percentGraphTitle')
-                      .style('margin-left', '150px');
-                    return '0px'
-                  } else if(dataset.length >= 4) {
-                    return '-15px'
-                  }
-                } else {
-                  return '-15px'
-                }
-              });
+              .style('margin-left', '-15px');
 
   // Create the Bars
   svg.selectAll('rect')
