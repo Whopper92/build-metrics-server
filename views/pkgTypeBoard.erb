@@ -38,7 +38,7 @@
       <div id='typeSummaryHosts' class='span5'>
         <h4 class='contentTitle'>Build Host Usage</h4>
         <div id='typeSummaryHostContent' class='typeChartContent'>
-          <div class='yAxisLabel'>Percent</div>
+          <div id='percentGraphTitle' class='yAxisLabel'>Percent</div>
           <script type='text/javascript'>
             createHistogram(<%= @hostDataArray %>, 500, 440, 70, 50, '#typeSummaryHostContent', 'percent', '#')
           </script>

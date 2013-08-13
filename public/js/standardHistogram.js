@@ -43,7 +43,20 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
   var svg = d3.select(divid)
               .append('svg')
               .attr({width: w, height: h})
-              .style('margin-left', '-15px');
+              .style('margin-left', function(d) {
+                if(graphType == 'percent') {
+                  if(dataset.length >= 1 && dataset.length <= 3) {
+                    d3.select(divid)
+                      .select('#percentGraphTitle')
+                      .style('margin-left', '150px');
+                    return '0px'
+                  } else if(dataset.length >= 4) {
+                    return '-15px'
+                  }
+                } else {
+                  return '-15px'
+                }
+              });
 
   // Create the Bars
   svg.selectAll('rect')
