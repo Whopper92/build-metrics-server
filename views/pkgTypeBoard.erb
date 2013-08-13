@@ -31,7 +31,7 @@
         <div id='typeSummarySpeedContent' class='typeChartContent'>
           <div class='yAxisLabel'>Seconds</div>
           <script type='text/javascript'>
-            createHistogram(<%= [@stats[:jenkinsBuilds].to_json, @stats[:localBuilds].to_json] %>, 200, 440, 70, 10, '#typeSummarySpeedContent', 'seconds', '#')
+            createHistogram(<%= [@stats[:jenkinsBuilds].to_json, @stats[:localBuilds].to_json] %>, 200, 440, 80, 10, '#typeSummarySpeedContent', 'seconds', '#')
           </script>
         </div>
       </div>

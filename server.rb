@@ -159,8 +159,8 @@ class MetricServer < Sinatra::Base
     end
 
     # Gather stats about Jenkins and local builds
-    @stats[:jenkinsBuilds]          = Hash[:key => 'Jenkins', :count => 0, :avgSpd => 0]
-    @stats[:localBuilds]            = Hash[:key => 'Local', :count => 0, :avgSpd => 0]
+    @stats[:jenkinsBuilds]          = Hash[:key => 'Jenkins Jobs', :count => 0, :avgSpd => 0]
+    @stats[:localBuilds]            = Hash[:key => 'Builds', :count => 0, :avgSpd => 0]
     @stats[:jenkinsBuilds][:count]  = Metric.count(:package_type => params[:type], :jenkins_build_time.not => nil)
     @stats[:localBuilds][:count]    = Metric.count(:package_type => params[:type], :jenkins_build_time => nil, :package_build_time.not => nil)
     @stats[:jenkinsBuilds][:avgSpd] = Metric.avg(:jenkins_build_time, :package_type => params[:type], :jenkins_build_time.not => nil)

@@ -13,6 +13,7 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
     var graphType = 'speed'
   } else if(units == 'percent') {
     var graphType = 'percent'
+    textPadding += 8
     if(dataset.length < 5 && dataset.length > 1) {
       w = 200
     } else if(dataset.length == 1) {
@@ -126,7 +127,7 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
       .enter()
       .append('text')
       .text(function(d) {
-        return JSON.parse(d).key
+        return JSON.parse(d).key.substring(0,16)
       })
       .attr('x', function(d, i) {
         return xScale(i) + textPadding;
@@ -138,7 +139,13 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
       .attr('text-anchor', 'middle')
       .attr('font-family', 'Arial')
       .attr('font-weight', 'bold')
-      .attr('font-size', '12px')
+      .attr('font-size', function(d) {
+        if(graphType == 'percent') {
+          return '9px'
+        } else {
+          return '12px'
+        }
+      })
 
   // Create the Axes
   var xAxis = d3.svg.axis()
