@@ -11,10 +11,10 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
   // Graphs are either about number of builds, average speed or percentages
   if(units == 'seconds') {
     var graphType = 'speed'
-  } else if(units == 'percent') {
+  } else if(units == '%') {
     var graphType = 'percent'
     textPadding += 8
-  } else if(units == 'percent failed') {
+  } else if(units == '% failed') {
     var graphType = 'failed'
     textPadding += 8
   } else {
@@ -27,14 +27,16 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
   } else if(graphType == 'speed') {
     if(dataset.length < 2) {
       var rangeBand = 0.8
-    } else if(dataset.length > 10) {
+    } else if(dataset.length < 10) {
       textPadding += 2 * dataset.length
+    } else if(dataset.length > 10) {
+      textPadding += 0.2 * dataset.length
     }
   } else if(graphType == 'percent') {
-      if(dataset.length > 1 && dataset.length <= 3) {
-        var rangeBand = 0.5
-      } else if(dataset.length == 1) {
+      if(dataset.length == 1) {
         var rangeBand = 0.7
+      } else if(dataset.length > 1 && dataset.length <= 3) {
+        var rangeBand = 0.5
       }
   } else if(graphType == 'failed') {
     if(dataset.length == 1) {
@@ -105,7 +107,13 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
        }
      })
      .attr('width', xScale.rangeBand())
-     .attr('fill', 'steelblue')
+     .attr('fill', function(d) {
+        if(graphType == 'failed') {
+          return '#600000'
+        } else {
+          return 'steelblue'
+        }
+      })
      .attr('fill-opacity', '0.7')
      .on('mouseover', function(d) {
         var container = document.getElementById(divid.substring(1));

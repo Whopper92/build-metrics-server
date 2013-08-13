@@ -19,7 +19,14 @@ function displayTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosi
     .style('left', xPosition + 'px')
     .style('top', yPosition + 'px')
     .select(contentTitle)
-    .text(label + count + ' ' + units);
+    .text(function() {
+      if(units == '%' || units == '% failed') {
+        return label + count + units
+      } else {
+        return label + count + ' ' + units
+      }
+    })
+
 
   d3.select(tooltipID)
     .style('left', xPosition + 'px')

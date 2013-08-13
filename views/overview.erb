@@ -66,9 +66,6 @@
         <h4 class='contentTitle'>Builds over Last 12 Weeks</h4>
         <div id='summaryBuildNumberContent'>
           <div class='yAxisLabel'>Builds</div>
-          <script type='text/javascript'>
-            createLineGraph(<%= @totalBuildsTimeSeries %>, <%= @failedBuildsTimeSeries %>, 460, 445, 70, '#summaryBuildNumberContent', '#summaryBuildsGraph', 'builds')
-          </script>
           <div id='summaryBuildsLegend'>
             <svg id='summaryBuildsLegendTotal' xmlns="http://www.w3.org/2000/svg" version="1.1">
               <circle id='totalBuildsLegendCircle' class='legendCircle' cx='20' cy='4' r='4'></circle>
@@ -87,9 +84,6 @@
         <h4 class='contentTitle'>Shipped Packages this Month</h4>
         <div id='summaryShippedContent'>
           <div class='yAxisLabel'>Shipped</div>
-            <script type='text/javascript'>
-              createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 0, '#summaryShippedContent', 'shipped', '/summary/shipped/' )
-            </script>
           </div>
         </div>
 
@@ -172,18 +166,12 @@
           <h4 class='contentTitle'>Number of Builds by Team</h4>
           <div id='teamBuildComparisonContent'>
             <div class='yAxisLabel'>Builds</div>
-              <script type='text/javascript'>
-                createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent', 'builds', '/summary/shipped')
-              </script>
           </div>
         </div>
         <div id='otherTeamSeries' class='span7'>
           <h4 class='contentTitle'>Builds by Teams other than Release over Last 12 Weeks</h4>
           <div id='otherTeamSeriesContent'>
             <div class='yAxisLabel'>Builds</div>
-             <script type='text/javascript'>
-                createLineGraph(<%= @otherTeamBuildSeries %>, <%= [] %>, 460, 450, 40, '#otherTeamSeriesContent', '#otherTeamGraph', 'builds')
-              </script>
             <div id='teamsBuildsXLabel'>Weeks Ago</div>
           </div>
       </div>
@@ -225,9 +213,6 @@
           <h4 class='contentTitle'>Number of Builds</h4>
           <div id='typeBuildNumberContent' class='typeChartContent'>
             <div class='yAxisLabel'>Builds</div>
-            <script type='text/javascript'>
-              createHistogram(<%=[@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 100, '#typeBuildNumberContent', 'builds', 'summary/type')
-            </script>
           </div>
         </div>
 
@@ -235,9 +220,6 @@
           <h4 class='contentTitle'>Average Build Speed</h4>
           <div id='typeBuildSpeedContent' class='typeChartContent'>
             <div class='yAxisLabel'>Seconds</div>
-            <script type='text/javascript'>
-              createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#typeBuildSpeedContent', 'seconds', '/summary/type')
-            </script>
           </div>
         </div>
 
@@ -271,15 +253,29 @@
   </div>
 </div>
 
-<!-- If the screen resolution is small, stretch each box to fill the width of the screen -->
 <script type='text/javascript'>
-  var recentBuilds = document.getElementById("recentBuildsContent");
-  var teamBuilds   = document.getElementById("teamContent");
-  if(screen.width < 1600) {
-    recentBuilds.style.minWidth = "1300px";
-    teamBuilds.style.minWidth   = "1300px";
-  } else {
-    recentBuilds.style.minWidth = "900px";
-    teamBuilds.style.minWidth   = "900px";
-  }
+  $(document).ready(function() {
+    // Generate the graphs
+    $(function() {
+      createLineGraph(<%= @totalBuildsTimeSeries %>, <%= @failedBuildsTimeSeries %>, 460, 445, 70, '#summaryBuildNumberContent', '#summaryBuildsGraph', 'builds')
+      createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 0, '#summaryShippedContent', 'shipped', '/summary/shipped/' )
+      createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent', 'builds', '/summary/shipped')
+      createLineGraph(<%= @otherTeamBuildSeries %>, <%= [] %>, 460, 450, 40, '#otherTeamSeriesContent', '#otherTeamGraph', 'builds')
+      createHistogram(<%=[@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 100, '#typeBuildNumberContent', 'builds', 'summary/type')
+      createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#typeBuildSpeedContent', 'seconds', '/summary/type')
+    })
+
+      // Resize the data sections for small resolutions
+    $(function() {
+      var recentBuilds = document.getElementById("recentBuildsContent");
+      var teamBuilds   = document.getElementById("teamContent");
+      if(screen.width < 1600) {
+        recentBuilds.style.minWidth = "1300px";
+        teamBuilds.style.minWidth   = "1300px";
+      } else {
+        recentBuilds.style.minWidth = "900px";
+        teamBuilds.style.minWidth   = "900px";
+      }
+    })
+  })
 </script>

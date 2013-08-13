@@ -21,27 +21,18 @@
         <h4 class='contentTitle'>Number of Builds this Month</h4>
         <div id='typeSummaryBuildContent' class='typeChartContent'>
           <div class='yAxisLabel'>Builds</div>
-          <script type='text/javascript'>
-            createHistogram(<%= [@stats[:jenkinsBuilds].to_json, @stats[:localBuilds].to_json] %>, 200, 440, 70, <%= @stats[:jenkinsBuilds][:count] * 0.2  %>, '#typeSummaryBuildContent', 'builds', '#')
-          </script>
         </div>
       </div>
       <div id='typeSummaryAvgSpeed' class='span3'>
         <h4 class='contentTitle'>Average Speed</h4>
         <div id='typeSummarySpeedContent' class='typeChartContent'>
           <div class='yAxisLabel'>Seconds</div>
-          <script type='text/javascript'>
-            createHistogram(<%= [@stats[:jenkinsBuilds].to_json, @stats[:localBuilds].to_json] %>, 200, 440, 80, <%= @stats[:jenkinsBuilds][:avgSpd] * 0.2 %>, '#typeSummarySpeedContent', 'seconds', '#')
-          </script>
         </div>
       </div>
       <div id='typeSummaryHosts' class='span5'>
         <h4 class='contentTitle'>Build Host Usage</h4>
         <div id='typeSummaryHostContent' class='typeChartContent'>
           <div class='yAxisLabel yAxisPushLeft'>Percentage</div>
-          <script type='text/javascript'>
-            createHistogram(<%= @hostDataArray %>, 450, 440, 70, 50, '#typeSummaryHostContent', 'percent', 'summary/hosts')
-          </script>
         </div>
       </div>
     </div>
@@ -62,18 +53,12 @@
         <h4 class='contentTitle'>Average Build Speed</h4>
         <div id='typeDistSpeedContent' class='typeChartContent'>
           <div id='distSpeedYAxis' class='yAxisLabel yAxisPushLeft'>Seconds</div>
-          <script type='text/javascript'>
-            createHistogram(<%= @distDataArray %>, 600, 440, 65, 10, '#typeDistSpeedContent', 'seconds', '#')
-          </script>
         </div>
       </div>
       <div id='typeDistFailure' class='span6'>
         <h4 class='contentTitle'>Failure Rate</h4>
         <div id='typeDistFailureContent' class='typeChartContent'>
           <div id='typeDistFailureYAxis' class='yAxisLabel'>Percentage</div>
-          <script type='text/javascript'>
-            createHistogram(<%= @distDataArray %>, 600, 440, 55, 100, '#typeDistFailureContent', 'percent failed', '#')
-          </script>
         </div>
       </div>
   </div>
@@ -82,15 +67,26 @@
 <!-- Tooltips for graphs and charts, to be styled by D3 -->
 <%= erb :tooltips %>
 
-<!-- If the screen resolution is small, stretch each box to fill the width of the screen -->
 <script type='text/javascript'>
-  var recentBuilds = document.getElementById("recentBuildsContent");
-  var generalStats = document.getElementById("generalStatsContent");
-  if(screen.width < 1600) {
-    recentBuilds.style.minWidth   = "1300px";
-    generalStats.style.minWidth   = "1300px";
-  } else {
-    recentBuilds.style.minWidth = "900px";
-    generalStats.style.minWidth = "900px";
-  }
+  $(document).ready(function() {
+    // Generate the graphs
+    $(function() {
+      createHistogram(<%= [@stats[:jenkinsBuilds].to_json, @stats[:localBuilds].to_json] %>, 200, 440, 70, <%= @stats[:jenkinsBuilds][:count] * 0.2  %>, '#typeSummaryBuildContent', 'builds', '#')
+      createHistogram(<%= [@stats[:jenkinsBuilds].to_json, @stats[:localBuilds].to_json] %>, 200, 440, 80, <%= @stats[:jenkinsBuilds][:avgSpd] * 0.2 %>, '#typeSummarySpeedContent', 'seconds', '#')
+      createHistogram(<%= @hostDataArray %>, 450, 440, 70, 50, '#typeSummaryHostContent', '%', 'summary/hosts')
+      createHistogram(<%= @distDataArray %>, 600, 440, 65, 10, '#typeDistSpeedContent', 'seconds', '#')
+      createHistogram(<%= @distDataArray %>, 600, 440, 55, 100, '#typeDistFailureContent', '% failed', '#')
+    })
+
+    // Resize the data sections for small resolutions
+    var recentBuilds = document.getElementById("recentBuildsContent");
+    var generalStats = document.getElementById("generalStatsContent");
+    if(screen.width < 1600) {
+      recentBuilds.style.minWidth   = "1300px";
+      generalStats.style.minWidth   = "1300px";
+    } else {
+      recentBuilds.style.minWidth = "900px";
+      generalStats.style.minWidth = "900px";
+    }
+  })
 </script>
