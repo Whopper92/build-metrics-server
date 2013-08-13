@@ -38,9 +38,9 @@
       <div id='typeSummaryHosts' class='span5'>
         <h4 class='contentTitle'>Build Host Usage</h4>
         <div id='typeSummaryHostContent' class='typeChartContent'>
-          <div id='percentGraphTitle' class='yAxisLabel'>Percent</div>
+          <div class='yAxisLabel yAxisPushLeft'>Percentage</div>
           <script type='text/javascript'>
-            createHistogram(<%= @hostDataArray %>, 500, 440, 70, 50, '#typeSummaryHostContent', 'percent', 'summary/hosts')
+            createHistogram(<%= @hostDataArray %>, 450, 440, 70, 50, '#typeSummaryHostContent', 'percent', 'summary/hosts')
           </script>
         </div>
       </div>
@@ -54,15 +54,27 @@
       <h3 class='contentTitle span4'>General <%= @packageType %> Stats</h3>
     </div>
   </div>
-  <div id='distSpeedContent' class='span7 contentContainer'>
+  <div id='distContent' class='span7 contentContainer'>
     <div id='distSpeedContentTitle' class='row-fluid'>
       <h3 class='contentTitle span4'><%= @packageType %> Breakdown by Distribution</h3>
     </div>
-      <div id='typeSummaryHosts' class='span6'>
+      <div id='typeDistSpeed' class='span6'>
         <h4 class='contentTitle'>Average Build Speed</h4>
+        <div id='typeDistSpeedContent' class='typeChartContent'>
+          <div id='distSpeedYAxis' class='yAxisLabel yAxisPushLeft'>Seconds</div>
+          <script type='text/javascript'>
+            createHistogram(<%= @distDataArray %>, 600, 440, 65, 10, '#typeDistSpeedContent', 'seconds', '#')
+          </script>
+        </div>
       </div>
-      <div id='typeSummaryHosts' class='span5'>
+      <div id='typeDistFailure' class='span6'>
         <h4 class='contentTitle'>Failure Rate</h4>
+        <div id='typeDistFailureContent' class='typeChartContent'>
+          <div id='typeDistFailureYAxis' class='yAxisLabel'>Percentage</div>
+          <script type='text/javascript'>
+            createHistogram(<%= @distDataArray %>, 600, 440, 55, 100, '#typeDistFailureContent', 'percent failed', '#')
+          </script>
+        </div>
       </div>
   </div>
 </div>

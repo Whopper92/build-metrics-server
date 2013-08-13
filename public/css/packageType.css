@@ -14,12 +14,22 @@
 }
 
 #typeSummaryBuildContent,
-#typeSummarySpeedContent {
+#typeSummarySpeedContent,
+#typeDistSpeedContent,
+#typeDistFailureContent {
   margin-top: 10px;
 }
 
 #typeSummaryHostContent {
   margin: 10px 0 0 0;
+}
+
+#typeDistSpeed {
+  margin-left: -10px;
+}
+
+#typeDistFailure {
+  margin-left: 30px;
 }
 
 #typeSummaryAvgSpeed {
@@ -32,8 +42,16 @@
   margin: 25px 0 0 28px;
 }
 
-#distSpeedContent {
+#distContent {
   min-width: 1300px;
   height: 560px;
   margin-top: 25px;
+}
+
+.yAxisPushLeft {
+  margin-left: -10px;
+}
+
+#typeDistFailureYAxis {
+  margin-left: -60px;
 }

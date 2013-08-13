@@ -178,6 +178,18 @@ class MetricServer < Sinatra::Base
       @hostDataArray << @stats["#{hostName}"].to_json
     end
 
+    # Collect stats for each distribution of this package type, including average speed and failure percentage
+    @distDataArray = []
+    allDists   = Metric.all(:fields => [:dist], :unique => true, :package_type => params[:type], :order => [:dist.asc])
+    allDists.each do |dist|
+      numBuilds = Metric.count(:dist => dist.dist)
+      @stats["#{dist.dist}"]           = Hash[:key => "#{dist.dist}", :avgSpd => 0, :failPercent => 0]
+      @stats["#{dist.dist}"][:avgSpd]  = Metric.avg(:package_build_time, :dist => dist.dist, :package_build_time.not => nil)
+      @stats["#{dist.dist}"][:failPercent] = (Metric.count(:dist => dist.dist, :success => false) / Float(numBuilds))
+      @stats["#{dist.dist}"][:failPercent] = (@stats["#{dist.dist}"][:failPercent] * 100).round(0)
+      @distDataArray << @stats["#{dist.dist}"].to_json
+    end
+
     erb :pkgTypeBoard
   end
 

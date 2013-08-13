@@ -8,23 +8,46 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
   var xPadding    = 40
   var yPadding    = 30
 
-  // Graphs are either about number of builds or average speed
+  // Graphs are either about number of builds, average speed or percentages
   if(units == 'seconds') {
     var graphType = 'speed'
   } else if(units == 'percent') {
     var graphType = 'percent'
     textPadding += 8
+  } else if(units == 'percent failed') {
+    var graphType = 'failed'
+    textPadding += 8
   } else {
     var graphType = 'builds'
   }
 
-  if(graphType == 'percent' && dataset.length > 1 && dataset.length <= 3) {
-    var rangeBand = 0.5
-  } else if(graphType == 'percent' && dataset.length == 1) {
-    var rangeBand = 0.7
-  } else {
+  var rangeBand = 0.05
+  if(graphType == 'builds') {
     var rangeBand = 0.05
+  } else if(graphType == 'speed') {
+    if(dataset.length < 2) {
+      var rangeBand = 0.8
+    } else if(dataset.length > 10) {
+      textPadding += 2 * dataset.length
+    }
+  } else if(graphType == 'percent') {
+      if(dataset.length > 1 && dataset.length <= 3) {
+        var rangeBand = 0.5
+      } else if(dataset.length == 1) {
+        var rangeBand = 0.7
+      }
+  } else if(graphType == 'failed') {
+    if(dataset.length == 1) {
+      var rangeBand = 0.7
+    } else if(dataset.length > 1 && dataset.length <= 3) {
+      var rangeBand = 0.5
+    } else if(dataset.length < 10) {
+      textPadding += 2 * dataset.length
+    } else if(dataset.length > 10) {
+      textPadding += 0.2 * dataset.length
+    }
   }
+
   // Set X and Y scales for dynamic data handling
   var xScale = d3.scale.ordinal()
                  .domain(d3.range(dataset.length))
@@ -35,6 +58,8 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
                   if(graphType == 'speed') {
                     return parseInt(JSON.parse(d).avgSpd) + yAxisPadding
                   } else if(graphType == 'percent') {
+                    return 100
+                  } else if(graphType == 'failed') {
                     return 100
                   } else {
                     return parseInt(JSON.parse(d).count) + yAxisPadding
@@ -62,6 +87,8 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
          return yScale(JSON.parse(d).avgSpd) + yPadding / 3;
        } else if(graphType == 'percent') {
          return yScale(JSON.parse(d).percent) + yPadding / 3;
+       } else if(graphType == 'failed') {
+         return yScale(JSON.parse(d).failPercent) + yPadding / 3;
        } else {
          return yScale(JSON.parse(d).count) + yPadding / 3;
        }
@@ -71,10 +98,11 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
          return h - yScale(JSON.parse(d).avgSpd) - yPadding;
        } else if(graphType == 'percent') {
          return h - yScale(JSON.parse(d).percent) - yPadding;
+       } else if(graphType == 'failed') {
+         return h - yScale(JSON.parse(d).failPercent) - yPadding;
        } else {
          return h - yScale(JSON.parse(d).count) - yPadding;
        }
-
      })
      .attr('width', xScale.rangeBand())
      .attr('fill', 'steelblue')
@@ -99,6 +127,8 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
            hashCount = JSON.parse(d).avgSpd.toFixed(2)
          } else if(graphType == 'percent') {
            hashCount = JSON.parse(d).percent
+         } else if(graphType == 'failed') {
+          hashCount = JSON.parse(d).failPercent
          } else {
            hashCount = JSON.parse(d).count
          }
