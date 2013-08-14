@@ -12,7 +12,8 @@ th.trend {width: 30%;}
   width: 700px;
 }
 
-#recentBuildsModal .modal-body {
+#recentBuildsModal .modal-body,
+#packageSelectionModal .modal-body {
   max-height: 420px;
 }
 
@@ -27,6 +28,11 @@ th.trend {width: 30%;}
 
 #logModal .modal-body {
   max-height: 600px;
+}
+
+#packageSelectionNameCell {
+  font-size: 18px;
+  font-weight: bold;
 }
 
 /* General chart labels */

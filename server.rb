@@ -54,7 +54,7 @@ class MetricServer < Sinatra::Base
 
   get '/overview' do
     @title = "Packaging Overview"
-
+    @allPackages = @@allPackageNames
     # First, get all data about the latest 6 builds
     @stats = Hash.new
     @stats[:latest] = Metric.all(
@@ -126,13 +126,15 @@ class MetricServer < Sinatra::Base
 
   # A dynamic route for each individual package view
   get '/package/:package' do
+    @allPackages = @@allPackageNames
 
     erb :package
   end
 
   get '/summary/type/:type' do
     @packageTypes = @@allPackageTypes
-    @packageType = case params[:type]
+    @allPackages  = @@allPackageNames
+    @packageType  = case params[:type]
       when 'deb' then 'Debian'
       when 'rpm' then 'RPM'
       when 'gem' then 'RubyGem'
@@ -200,11 +202,6 @@ class MetricServer < Sinatra::Base
     @stats[:general][:failureRate]      = Metric.count(:package_type => params[:type], :success => false) / Float(@stats[:general][:totalBuilds])
     @stats[:general][:failureRate]      = (@stats[:general][:failureRate] * 100).round(0)
 
-    puts '!!!'
-    puts @stats[:general][:totalBuilds]
-    puts @stats[:general][:mostBuiltDist][0]
-    puts @stats[:general][:mostBuiltPackage][0]
-    puts @stats[:general][:failureRate]
     erb :pkgTypeBoard
   end
 

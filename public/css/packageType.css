@@ -75,11 +75,11 @@
 }
 
 #generalStatsTableLeft {
-  margin-left: 10px;
+  margin-left: 50px;
 }
 
 #generalStatsTableRight {
-  margin-left: -10px;
+  margin-left: -50px;
 }
 
 #generalStatsTotalBuildsCell {
