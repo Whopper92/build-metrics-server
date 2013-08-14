@@ -55,3 +55,38 @@
 #typeDistFailureYAxis {
   margin-left: -60px;
 }
+
+.generalStatsTable {
+  margin-top: 30px;
+}
+
+.generalStatsTable td {
+  vertical-align: center;
+  height: 150px;
+}
+
+.generalStatsTableLabel {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.generalStatsTableCell {
+  font-size: 40px;
+}
+
+#generalStatsTableLeft {
+  margin-left: 10px;
+}
+
+#generalStatsTableRight {
+  margin-left: -10px;
+}
+
+#generalStatsTotalBuildsCell {
+  color: steelblue;
+}
+
+
+#generalStatsFailureCell {
+  color: #600000;
+}

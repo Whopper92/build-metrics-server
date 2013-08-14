@@ -190,6 +190,21 @@ class MetricServer < Sinatra::Base
       @distDataArray << @stats["#{dist.dist}"].to_json
     end
 
+    @stats[:general]                    = Hash.new
+    @stats[:general][:totalBuilds]      = Metric.count(:package_type => params[:type])
+    #@stats[:general][:releaseBuilds]   = Metric.count(:package_type => params[:type], :team => 'release')
+    @stats[:general][:releaseBuilds]    = 620
+    @stats[:general][:otherBuilds]      = 293
+    @stats[:general][:mostBuiltDist]    = Metric.aggregate(:dist, :all.count, :conditions => ['package_type = ?', "#{params[:type]}"]).sort {|a,b| b[1] <=> a[1]}[0]
+    @stats[:general][:mostBuiltPackage] = Metric.aggregate(:package_name, :all.count, :conditions => ['package_type = ?', "#{params[:type]}"]).sort {|a,b| b[1] <=> a[1]}[0]
+    @stats[:general][:failureRate]      = Metric.count(:package_type => params[:type], :success => false) / Float(@stats[:general][:totalBuilds])
+    @stats[:general][:failureRate]      = (@stats[:general][:failureRate] * 100).round(0)
+
+    puts '!!!'
+    puts @stats[:general][:totalBuilds]
+    puts @stats[:general][:mostBuiltDist][0]
+    puts @stats[:general][:mostBuiltPackage][0]
+    puts @stats[:general][:failureRate]
     erb :pkgTypeBoard
   end
 

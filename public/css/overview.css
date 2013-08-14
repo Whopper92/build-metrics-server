@@ -78,6 +78,8 @@ th.trend {width: 30%;}
 }
 
 #summaryBuildsXLabel {
+  position: relative;
+  display: block;
   margin: 350px 0 0 38%;
 }
 
