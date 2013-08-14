@@ -77,18 +77,30 @@ th.trend {width: 30%;}
   margin-top: 10px;
 }
 
+#summaryBuildNumberContent {
+  position: relative;
+  top: -60px;
+  left: -25px;
+  margin-left: 30px;
+}
+
+#summaryBuildsYLabel {
+  position: relative;
+  top: 80px;
+}
+
 #summaryBuildsXLabel {
   position: relative;
-  display: block;
-  margin: 350px 0 0 38%;
+  top: 470px;
+  left: 38%;
 }
 
 #summaryBuildsLegend {
   position: relative;
-  display: block;
+  top: -100px;
+  left: 400px;
   width: 80px;
   height: 40px;
-  margin: -400px 0 0 400px;
   opacity: 0.6;
 }
 
@@ -132,7 +144,9 @@ th.trend {width: 30%;}
 }
 
 #teamsBuildsXLabel {
-  margin-left: 220px;
+  position: relative;
+  top: 470px;
+  left: 200px;
 }
 
 /* Metrics by package type section elements */

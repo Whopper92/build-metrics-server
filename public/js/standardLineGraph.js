@@ -25,7 +25,6 @@ function createLineGraph(totalDataset, failedDataset, width, height, txtPadding,
       .attr('width', w)
       .attr('height', h)
       .attr('id', graphID)
-
   var g = svg.append('g')
       .attr('transform', 'translate(0, 25)');
 
