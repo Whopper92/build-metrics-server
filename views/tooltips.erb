@@ -21,7 +21,7 @@
       <table class='table table-hover'>
         <tbody>
           <% @allPackages.each do |pkg| %>
-            <tr>
+            <tr class='row-fluid' onclick='document.location.href=<%= "\"/package/#{pkg.package_name}\"" %>'>
               <td id='packageSelectionNameCell'><%= pkg.package_name %></td>
               <td><i class='icon-chevron-right'></i></td>
             </tr>

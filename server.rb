@@ -126,7 +126,8 @@ class MetricServer < Sinatra::Base
 
   # A dynamic route for each individual package view
   get '/package/:package' do
-    @allPackages = @@allPackageNames
+    @packageTypes = @@allPackageTypes
+    @allPackages  = @@allPackageNames
 
     erb :package
   end
