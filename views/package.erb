@@ -102,16 +102,30 @@
   </div>
 </div>
 
+ <!-- Tooltips for graphs and charts, to be styled by D3 -->
+   <%= erb :tooltips %>
+
 <script type='text/javascript'>
   $(document).ready(function() {
-
+      // Resize the data sections for small resolutions
+    $(function() {
+      var recentBuilds = document.getElementById("recentBuildsContent");
+      var teamBuilds   = document.getElementById("generalStatsContent");
+      if(screen.width < 1600) {
+        recentBuilds.style.minWidth = "1300px";
+        teamBuilds.style.minWidth   = "1300px";
+      } else {
+        recentBuilds.style.minWidth = "900px";
+        teamBuilds.style.minWidth   = "900px";
+      }
+    })
   })
 </script>
 
 
 
 
- <!-- Tooltips for graphs and charts, to be styled by D3 -->
-   <%= erb :tooltips %>
+
+
 
 

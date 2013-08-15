@@ -52,9 +52,15 @@ class MetricServer < Sinatra::Base
     redirect to('/overview')
   end
 
+  get '/package' do
+    @allPackages  = @@allPackageNames
+    @packageTypes = @@allPackageTypes
+    erb :packageSelection
+  end
+
   get '/overview' do
     @title = "Packaging Overview"
-    @allPackages = @@allPackageNames
+    @packageTypes = @@allPackageTypes
     # First, get all data about the latest 6 builds
     @stats = Hash.new
     @stats[:latest] = Metric.all(
@@ -103,7 +109,6 @@ class MetricServer < Sinatra::Base
     @freqUsers = @userNumBuilds.sort_by { |k,v| -v }[0..2]
 
     # Gather aggregate data about each package type
-    @packageTypes = @@allPackageTypes
     @@allPackageTypes.each do |type|
       @stats[:"#{type}"]                   = Hash[:key => "#{type}", :count => 0, :avgSpd => 0, :freqHost => '', :freqHostPercent => 0]
       @stats[:"#{type}"][:count]           = Metric.count(:conditions => ['package_type = ?', "#{type}"])
@@ -127,7 +132,6 @@ class MetricServer < Sinatra::Base
   # A dynamic route for each individual package view
   get '/package/:package' do
     @packageTypes = @@allPackageTypes
-    @allPackages  = @@allPackageNames
     @packageName  = params[:package]
 
     # First, get all data about the latest 6 builds
@@ -156,12 +160,19 @@ class MetricServer < Sinatra::Base
     @stats[:general][:FOSSBuilds]    = Metric.count(:package_name => params[:package], :pe_version => 'N/A')
     @stats[:general][:PEBuilds]      = Metric.count(:package_name => params[:package], :pe_version.not => 'N/A')
 
+    @stats[:jenkinsBuilds]          = Hash[:key => 'Jenkins Jobs', :count => 0, :avgSpd => 0]
+    @stats[:localBuilds]            = Hash[:key => 'Local Builds', :count => 0, :avgSpd => 0]
+    @stats[:jenkinsBuilds][:count]  = Metric.count(:package_name => params[:package], :jenkins_build_time.not => nil)
+    @stats[:localBuilds][:count]    = Metric.count(:package_name => params[:package], :jenkins_build_time => nil, :package_build_time.not => nil)
+    @stats[:jenkinsBuilds][:avgSpd] = Metric.avg(:jenkins_build_time, :package_name => params[:package], :jenkins_build_time.not => nil)
+    @stats[:localBuilds][:avgSpd]   = Metric.avg(:package_build_time, :package_name => params[:package], :package_build_time.not => nil)
+
+
     erb :package
   end
 
   get '/summary/type/:type' do
     @packageTypes = @@allPackageTypes
-    @allPackages  = @@allPackageNames
     @packageType  = case params[:type]
       when 'deb' then 'Debian'
       when 'rpm' then 'RPM'

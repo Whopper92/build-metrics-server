@@ -14,7 +14,7 @@ th.trend {width: 30%;}
 
 #recentBuildsModal .modal-body,
 #packageSelectionModal .modal-body {
-  max-height: 420px;
+  max-height: 380px;
 }
 
 #recentBuildsModalTimeTable {

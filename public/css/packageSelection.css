@@ -1,0 +1,21 @@
+#packageSelectionContainer {
+  margin-top: 20px;
+}
+
+#packageSelectionTitle {
+  margin-left: 10px;
+}
+
+#packageSelectionMain {
+  margin-top: 10px;
+}
+
+.packageSelectionTable {
+  margin-top: 0px;
+  margin-bottom: none;
+}
+
+#packageSelectionCell {
+  font-size: 24px;
+  font-weight: bold;
+}
