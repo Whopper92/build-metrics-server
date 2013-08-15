@@ -17,20 +17,14 @@
       <h3 class='contentTitle span6'><%= @packageName %> Packaging Summaries</h3>
     </div>
     <div class='row-fluid'>
-      <div id='typeSummaryBuildNumber' class='span3'>
+      <div id='packageSummaryBuildNumber' class='span5'>
         <h4 class='contentTitle'>Number of Builds this Month</h4>
         <div id='typeSummaryBuildContent' class='typeChartContent'>
           <div class='yAxisLabel'>Builds</div>
         </div>
       </div>
-      <div id='typeSummaryAvgSpeed' class='span3'>
-        <h4 class='contentTitle'>Average Speed</h4>
-        <div id='typeSummarySpeedContent' class='typeChartContent'>
-          <div class='yAxisLabel'>Seconds</div>
-        </div>
-      </div>
-      <div id='typeSummaryHosts' class='span5'>
-        <h4 class='contentTitle'>Build Host Usage</h4>
+      <div id='packageSummaryFreqUsers' class='span5 offset1'>
+        <h4 class='contentTitle'>Frequent Builders</h4>
         <div id='typeSummaryHostContent' class='typeChartContent'>
           <div class='yAxisLabel yAxisPushLeft'>Percentage</div>
         </div>
@@ -84,21 +78,18 @@
     </div>
   </div>
   <div id='distContent' class='span7 contentContainer'>
-    <div id='distSpeedContentTitle' class='row-fluid'>
-      <h3 class='contentTitle span6'><%= @packageName %> Breakdown by Distribution</h3>
+    <div id='typeDistSpeed' class='span5'>
+      <h4 class='contentTitle'>Package Build Speed</h4>
+      <div id='typeDistSpeedContent' class='typeChartContent'>
+        <div id='distSpeedYAxis' class='yAxisLabel yAxisPushLeft'>Seconds</div>
+      </div>
     </div>
-      <div id='typeDistSpeed' class='span6'>
-        <h4 class='contentTitle'>Average Build Speed</h4>
-        <div id='typeDistSpeedContent' class='typeChartContent'>
-          <div id='distSpeedYAxis' class='yAxisLabel yAxisPushLeft'>Seconds</div>
-        </div>
+    <div id='typeDistFailure' class='span5 offset1'>
+      <h4 class='contentTitle'>Failure Rate</h4>
+      <div id='typeDistFailureContent' class='typeChartContent'>
+        <div id='typeDistFailureYAxis' class='yAxisLabel'>Percentage</div>
       </div>
-      <div id='typeDistFailure' class='span6'>
-        <h4 class='contentTitle'>Failure Rate</h4>
-        <div id='typeDistFailureContent' class='typeChartContent'>
-          <div id='typeDistFailureYAxis' class='yAxisLabel'>Percentage</div>
-        </div>
-      </div>
+    </div>
   </div>
 </div>
 
