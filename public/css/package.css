@@ -1,0 +1,13 @@
+#buildStatsContent {
+  min-width: 1300px;
+  height: 560px;
+  margin-top: 25px;
+}
+
+#packageSummaryBuildContent {
+  margin-top: 20px;
+}
+
+#packageSummaryFreqHostsContent {
+  margin-top: 40px;
+}

@@ -19,14 +19,29 @@
     <div class='row-fluid'>
       <div id='packageSummaryBuildNumber' class='span5'>
         <h4 class='contentTitle'>Number of Builds this Month</h4>
-        <div id='typeSummaryBuildContent' class='typeChartContent'>
+        <div id='packageSummaryBuildContent' class='typeChartContent'>
           <div class='yAxisLabel'>Builds</div>
         </div>
       </div>
-      <div id='packageSummaryFreqUsers' class='span5 offset1'>
+      <div id='packageSummaryFreqHosts' class='span5 offset1'>
         <h4 class='contentTitle'>Frequent Builders</h4>
-        <div id='typeSummaryHostContent' class='typeChartContent'>
-          <div class='yAxisLabel yAxisPushLeft'>Percentage</div>
+        <div id='packageSummaryFreqHostsContent' class='typeChartContent'>
+          <table class='table table-hover table-striped'>
+            <thead>
+              <th>Host</th>
+              <th>Builds</th>
+              <th>Percentage</th>
+            </thead>
+            <tbody>
+              <% @stats[:freqHostList].each do |host| %>
+                <tr>
+                  <td><%= host[0] %></td>
+                  <td><%= host[1]%></td>
+                  <td><%= host[2]%>%</td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -77,17 +92,20 @@
       </span>
     </div>
   </div>
-  <div id='distContent' class='span7 contentContainer'>
-    <div id='typeDistSpeed' class='span5'>
+  <div id='buildStatsContent' class='span7 contentContainer'>
+    <div id='buildsStatsContentTitle' class='row-fluid'>
+      <h3 class='contentTitle span6'>Build Statistics</h3>
+    </div>
+    <div id='buildStatsSpeed' class='span5'>
       <h4 class='contentTitle'>Package Build Speed</h4>
-      <div id='typeDistSpeedContent' class='typeChartContent'>
-        <div id='distSpeedYAxis' class='yAxisLabel yAxisPushLeft'>Seconds</div>
+      <div id='buildStatsContent' class='typeChartContent'>
+        <div id='buildStatsYAxis' class='yAxisLabel yAxisPushLeft'>Seconds</div>
       </div>
     </div>
-    <div id='typeDistFailure' class='span5 offset1'>
+    <div id='buildStatsFailure' class='span5 offset1'>
       <h4 class='contentTitle'>Failure Rate</h4>
-      <div id='typeDistFailureContent' class='typeChartContent'>
-        <div id='typeDistFailureYAxis' class='yAxisLabel'>Percentage</div>
+      <div id='buildStatsFailureContent' class='typeChartContent'>
+        <div id='buildStatsFailureYAxis' class='yAxisLabel'>Percentage</div>
       </div>
     </div>
   </div>
@@ -98,6 +116,10 @@
 
 <script type='text/javascript'>
   $(document).ready(function() {
+    $(function() {
+      createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#packageSummaryBuildContent', 'builds', '../summary/type')
+    })
+
       // Resize the data sections for small resolutions
     $(function() {
       var recentBuilds = document.getElementById("recentBuildsContent");

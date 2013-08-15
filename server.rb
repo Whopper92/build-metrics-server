@@ -160,13 +160,22 @@ class MetricServer < Sinatra::Base
     @stats[:general][:FOSSBuilds]    = Metric.count(:package_name => params[:package], :pe_version => 'N/A')
     @stats[:general][:PEBuilds]      = Metric.count(:package_name => params[:package], :pe_version.not => 'N/A')
 
-    @stats[:jenkinsBuilds]          = Hash[:key => 'Jenkins Jobs', :count => 0, :avgSpd => 0]
-    @stats[:localBuilds]            = Hash[:key => 'Local Builds', :count => 0, :avgSpd => 0]
-    @stats[:jenkinsBuilds][:count]  = Metric.count(:package_name => params[:package], :jenkins_build_time.not => nil)
-    @stats[:localBuilds][:count]    = Metric.count(:package_name => params[:package], :jenkins_build_time => nil, :package_build_time.not => nil)
-    @stats[:jenkinsBuilds][:avgSpd] = Metric.avg(:jenkins_build_time, :package_name => params[:package], :jenkins_build_time.not => nil)
-    @stats[:localBuilds][:avgSpd]   = Metric.avg(:package_build_time, :package_name => params[:package], :package_build_time.not => nil)
+    # Gather aggregate data about each package type
+    @@allPackageTypes.each do |type|
+      @stats[:"#{type}"]                   = Hash[:key => "#{type}", :count => 0, :avgSpd => 0, :freqHost => '', :freqHostPercent => 0, :freqHostHash => Hash.new]
+      @stats[:"#{type}"][:count]           = Metric.count(:package_type => type, :package_name => params[:package])
+      @stats[:"#{type}"][:avgSpd]          = Metric.avg(:jenkins_build_time, :package_type => type, :package_name => params[:package])
+    end
 
+    totalBuilds = Metric.count(:package_name => params[:package])
+    @stats[:freqHostList]    = Metric.aggregate(:build_loc, :all.count, :package_name => params[:package]).sort {|a,b| b[1] <=> a[1]}
+    @stats[:freqHostList].each do |host|
+      percent = host[1] / Float(totalBuilds)
+      percent = (percent * 100).round(0)
+      host << percent
+    end
+
+    @stats[:freqHostList] = @stats[:freqHostList][0..9]
 
     erb :package
   end
