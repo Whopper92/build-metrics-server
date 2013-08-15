@@ -9,32 +9,6 @@
   <span id='tableModalFooter' class='toolTipDesc'></span>
 </div>
 
-<div id='packageSelectionModal' class='modal fade'>
-  <div class='modal-dialog'>
-    <div class='modal-content'>
-      <div class='modal-header'>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 id='packageSelectionModalTitle' class='modal-title'>Packages</h4>
-      </div>
-    </div>
-    <div class='modal-body'>
-      <table class='table table-hover'>
-        <tbody>
-          <% @allPackages.each do |pkg| %>
-            <tr class='row-fluid' onclick='document.location.href=<%= "\"/package/#{pkg.package_name}\"" %>'>
-              <td id='packageSelectionNameCell'><%= pkg.package_name %></td>
-              <td><i class='icon-chevron-right'></i></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-    </div>
-  </div>
-</div>
-
 <div id='recentBuildsModal' class="modal fade">
   <div class="modal-dialog">
     <div class="modal-content">

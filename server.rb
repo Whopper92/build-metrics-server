@@ -128,6 +128,33 @@ class MetricServer < Sinatra::Base
   get '/package/:package' do
     @packageTypes = @@allPackageTypes
     @allPackages  = @@allPackageNames
+    @packageName  = params[:package]
+
+    # First, get all data about the latest 6 builds
+    @stats = Hash.new
+    @stats[:latest] = Metric.all(
+                        :order => [:date.desc],
+                        :limit => 6,
+                        :package_name => params[:package],
+                        :jenkins_build_time.not => nil)
+
+    # Next, for each recent build find all build times for the appropriate dist to formulate a trend
+    @trends = Hash.new
+    @stats[:latest].each do |package|
+      @trends["#{package[:package_name]}-#{package[:dist]}"] = Metric.all(:fields => [:jenkins_build_time],
+                                                      :order                  => [:date.desc],
+                                                      :package_name           => params[:package],
+                                                      :jenkins_build_time.not => nil)
+    end
+
+    # Gather stats for the 'general stats' section
+    @stats[:general] = Hash.new
+    @stats[:general][:RCReleases]    = 22
+    @stats[:general][:finalReleases] = 35
+    @stats[:general][:releaseBuilds] = 402
+    @stats[:general][:otherBuilds]   = 115
+    @stats[:general][:FOSSBuilds]    = Metric.count(:package_name => params[:package], :pe_version => 'N/A')
+    @stats[:general][:PEBuilds]      = Metric.count(:package_name => params[:package], :pe_version.not => 'N/A')
 
     erb :package
   end
