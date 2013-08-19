@@ -179,14 +179,15 @@ class MetricServer < Sinatra::Base
     @stats[:freqHostList] = @stats[:freqHostList][0..9]
 
     # Gather time series data about the number of builds and failure rate. Allow up to 12 months of data.
-    thisYear                            = Date.today.strftime("%Y")
-    lastYear                            = thisYear.to_i - 1
-    @stats[:timeSeries]                 = Hash.new
-    @stats[:timeSeries][:"#{thisYear}"] = Hash.new
-    @stats[:timeSeries][:"#{lastYear}"] = Hash.new
-    thisMonth                           = Date.today.strftime("%m")
-    monthCounter                        = 0
-    curYear                             = lastYear
+    thisYear                             = Date.today.strftime("%Y")
+    lastYear                             = thisYear.to_i - 1
+    thisMonth                            = Date.today.strftime("%m")
+    @stats[:timeSeries]                  = Hash.new
+    @stats[:timeSeries][:"#{thisYear}"]  = Hash.new
+    @stats[:timeSeries][:"#{lastYear}"]  = Hash.new
+    @monthArray                          = []
+    monthCounter                         = 0
+    curYear                              = lastYear
 
     # Create an array of months based on the current month
     until monthCounter == 13 do
@@ -202,9 +203,16 @@ class MetricServer < Sinatra::Base
       @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:avg] = 0 if @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:avg].nan?
       @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate] = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE package_name = '#{params[:package]}' AND success = false AND date LIKE '#{curYear}-#{thisMonth}%'")
       @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate] = Float(@stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate][0]) / Float(@stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:count][0])
-      @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate] = 0 if @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate].kind_of?(Array) == false
-      @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate] = (Float(@stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate][0]) * 100).round(0)
 
+      if @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate].nan?
+        @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate] = 0
+      else
+        puts '@@@@@'
+        puts @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate]
+        @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate] = ((@stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate]) * 100).round(0)
+      end
+
+      @monthArray << "#{curYear}-#{thisMonth}"
       nextMonth = thisMonth.to_i + 1
       if nextMonth.to_i < 10
         nextMonth = '0' + nextMonth.to_s

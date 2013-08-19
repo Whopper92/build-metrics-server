@@ -11,3 +11,21 @@
 #packageSummaryFreqHostsContent {
   margin-top: 40px;
 }
+
+#buildStatsSpeed {
+  margin-left: -5px;
+}
+
+
+#buildStatsSpeedContent {
+  margin-top: 10px;
+}
+
+#buildStatsFailure {
+  margin-left: -5px;
+}
+
+#buildStatsFailureContent {
+  margin-top: 10px;
+}
+

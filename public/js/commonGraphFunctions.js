@@ -20,7 +20,7 @@ function displayTooltip(tooltipID, contentTitle, contentFooter, xPosition, yPosi
     .style('top', yPosition + 'px')
     .select(contentTitle)
     .text(function() {
-      if(units == '%' || units == '% failed') {
+      if(units == '%' || units == '% Failed') {
         return label + count + units
       } else {
         return label + count + ' ' + units

@@ -96,13 +96,13 @@
     <div id='buildsStatsContentTitle' class='row-fluid'>
       <h3 class='contentTitle span6'>Build Statistics</h3>
     </div>
-    <div id='buildStatsSpeed' class='span5'>
+    <div id='buildStatsSpeed' class='span6'>
       <h4 class='contentTitle'>Package Build Speed</h4>
-      <div id='buildStatsContent' class='typeChartContent'>
+      <div id='buildStatsSpeedContent' class='typeChartContent'>
         <div id='buildStatsYAxis' class='yAxisLabel yAxisPushLeft'>Seconds</div>
       </div>
     </div>
-    <div id='buildStatsFailure' class='span5 offset1'>
+    <div id='buildStatsFailure' class='span6'>
       <h4 class='contentTitle'>Failure Rate</h4>
       <div id='buildStatsFailureContent' class='typeChartContent'>
         <div id='buildStatsFailureYAxis' class='yAxisLabel'>Percentage</div>
@@ -118,6 +118,16 @@
   $(document).ready(function() {
     $(function() {
       createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#packageSummaryBuildContent', 'builds', '../summary/type')
+
+      <%  # Create the data array to send to JavaScript graph generation functions
+        timeSeriesArray = []
+        @monthArray.each do |timeSpan|
+          timeSeriesArray << @stats[:timeSeries][:"#{timeSpan.split('-')[0]}"][:"#{timeSpan.split('-')[1]}"].to_json
+        end
+        puts timeSeriesArray
+      %>
+      createPackageSpeedLineGraph(<%= timeSeriesArray %>, 600, 480, 70, '#buildStatsSpeedContent', '#buildStatsSpeedGraph', 'seconds')
+      createPackageSpeedLineGraph(<%= timeSeriesArray %>, 600, 480, 70, '#buildStatsFailureContent', '#buildStatsFailureGraph', '% Failed')
     })
 
       // Resize the data sections for small resolutions
@@ -134,11 +144,3 @@
     })
   })
 </script>
-
-
-
-
-
-
-
-
