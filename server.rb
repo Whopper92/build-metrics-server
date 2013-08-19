@@ -149,6 +149,7 @@ class MetricServer < Sinatra::Base
       @trends["#{package[:package_name]}-#{package[:dist]}"] = Metric.all(:fields => [:jenkins_build_time],
                                                       :order                  => [:date.desc],
                                                       :package_name           => params[:package],
+                                                      :dist                   => package[:dist],
                                                       :jenkins_build_time.not => nil)
     end
 

@@ -4,8 +4,16 @@
   margin-top: 25px;
 }
 
+#packageSummaryBuildNumber {
+  margin-left: 100px;
+}
+
 #packageSummaryBuildContent {
   margin-top: 20px;
+}
+
+#packageSummaryFreqHosts {
+  margin-left: 30px;
 }
 
 #packageSummaryFreqHostsContent {
