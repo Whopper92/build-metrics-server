@@ -176,13 +176,13 @@ th.trend {width: 30%;}
 #typeBuildSpeed {
   display: inline-block;
   margin-top: 15px;
+  margin-left: -10px;
 }
 
 #typeBuildHost {
   display: inline-block;
   min-width: 450px;
   margin-top: 15px;
-  margin-left: -25px;
 }
 
 .typeChartContent {
