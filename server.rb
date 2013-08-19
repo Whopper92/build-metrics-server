@@ -5,6 +5,7 @@ require 'dm-postgres-adapter'
 require 'dm-aggregates'
 require 'fileutils'
 require 'json'
+require 'date'
 
 class MetricServer < Sinatra::Base
   attr_accessor :metrics, :avg, :error, :builds, :last_sat, :next_sat, :title
@@ -177,6 +178,42 @@ class MetricServer < Sinatra::Base
 
     @stats[:freqHostList] = @stats[:freqHostList][0..9]
 
+    # Gather time series data about the number of builds and failure rate. Allow up to 12 months of data.
+    thisYear                            = Date.today.strftime("%Y")
+    lastYear                            = thisYear.to_i - 1
+    @stats[:timeSeries]                 = Hash.new
+    @stats[:timeSeries][:"#{thisYear}"] = Hash.new
+    @stats[:timeSeries][:"#{lastYear}"] = Hash.new
+    thisMonth                           = Date.today.strftime("%m")
+    monthCounter                        = 0
+    curYear                             = lastYear
+
+    # Create an array of months based on the current month
+    until monthCounter == 13 do
+      if monthCounter != 0 and thisMonth == '01'
+        # Incrememnt the year
+        nextYear = curYear.to_i + 1
+        curYear  = nextYear
+      end
+      @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"]       = Hash[:key => "#{curYear}-#{thisMonth}", :count => 0, :avg => 0, :failureRate => 0]
+      @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:count] = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE package_name = '#{params[:package]}' AND date LIKE '#{curYear}-#{thisMonth}%'")
+      @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:avg] = DataMapper.repository.adapter.select("SELECT jenkins_build_time FROM metrics WHERE package_name = '#{params[:package]}' AND jenkins_build_time IS NOT NULL AND date LIKE '#{curYear}-#{thisMonth}%'")
+      @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:avg] = @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:avg].inject(0.0) { |sum, el| sum + el } / @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:avg].size
+      @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:avg] = 0 if @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:avg].nan?
+      @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate] = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE package_name = '#{params[:package]}' AND success = false AND date LIKE '#{curYear}-#{thisMonth}%'")
+      @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate] = Float(@stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate][0]) / Float(@stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:count][0])
+      @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate] = 0 if @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate].kind_of?(Array) == false
+      @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate] = (Float(@stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate][0]) * 100).round(0)
+
+      nextMonth = thisMonth.to_i + 1
+      if nextMonth.to_i < 10
+        nextMonth = '0' + nextMonth.to_s
+      elsif nextMonth.to_i == 13
+        nextMonth = '01'
+      end
+      thisMonth = nextMonth
+      monthCounter += 1
+    end
     erb :package
   end
 

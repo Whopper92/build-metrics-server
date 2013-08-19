@@ -29,7 +29,7 @@
           <div class='yAxisLabel'>Seconds</div>
         </div>
       </div>
-      <div id='typeSummaryHosts' class='span5'>
+      <div id='typeSummaryHosts' class='span6'>
         <h4 class='contentTitle'>Build Host Usage</h4>
         <div id='typeSummaryHostContent' class='typeChartContent'>
           <div class='yAxisLabel yAxisPushLeft'>Percentage</div>
@@ -111,7 +111,7 @@
     $(function() {
       createHistogram(<%= [@stats[:jenkinsBuilds].to_json, @stats[:localBuilds].to_json] %>, 200, 440, 70, <%= @stats[:jenkinsBuilds][:count] * 0.2  %>, '#typeSummaryBuildContent', 'builds', '#')
       createHistogram(<%= [@stats[:jenkinsBuilds].to_json, @stats[:localBuilds].to_json] %>, 200, 440, 80, <%= @stats[:jenkinsBuilds][:avgSpd] * 0.2 %>, '#typeSummarySpeedContent', 'seconds', '#')
-      createHistogram(<%= @hostDataArray %>, 450, 440, 70, 50, '#typeSummaryHostContent', '%', 'summary/hosts')
+      createHistogram(<%= @hostDataArray %>, 580, 440, 70, 50, '#typeSummaryHostContent', '%', 'summary/hosts')
       createHistogram(<%= @distDataArray %>, 600, 440, 65, 10, '#typeDistSpeedContent', 'seconds', '#')
       createHistogram(<%= @distDataArray %>, 600, 440, 55, 100, '#typeDistFailureContent', '% failed', '#')
     })
