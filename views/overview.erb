@@ -22,7 +22,7 @@
         <div class="btn-group">
           <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-search"></i></button>
           <ul class='dropdown-menu pull-right'>
-            <li><a tabindex="-1" href="#">Historical Build Log</a></li>
+            <li><a id='histLogButton' tabindex="-1">Historical Build Log</a></li>
           </ul>
         </div>
       </span>
@@ -255,8 +255,14 @@
 
 <script type='text/javascript'>
   $(document).ready(function() {
-    // Generate the graphs
+
     $(function() {
+      // Add JS interactive elements
+      $('#histLogButton').on('click', function() {
+        createHistoricalBuildLogModal()
+      })
+
+      // Generate the graphs
       createLineGraph(<%= @totalBuildsTimeSeries %>, <%= @failedBuildsTimeSeries %>, 460, 445, 70, '#summaryBuildNumberContent', '#summaryBuildsGraph', 'builds')
       createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 0, '#summaryShippedContent', 'shipped', '/summary/shipped/' )
       createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent', 'builds', '/summary/shipped')
