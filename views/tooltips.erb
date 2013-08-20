@@ -111,8 +111,56 @@
   </div>
   <div id='histLogBody' class="modal-body">
     <p id='histLogContent'></p>
+    <ul class="pager">
+      <li id='newestBuildsButton' class="previous">
+        <a href=#>Newest</a>
+      </li>
+      <li id='prevBuildsButton'><a href="#">Previous</a></li>
+      <li id='nextBuildsButton'><a href="#">Next</a></li>
+      <li id='oldestBuildsButton' class="next">
+        <a href=#>Oldest</a>
+      </li>
+    </ul>
   </div>
   <div class="modal-footer">
     <a href="#" data-dismiss="modal" aria-hidden="true" class="btn">Close</a>
   </div>
 </div>
+
+<script type='text/javascript'>
+  $(document).ready(function() {
+    var pageNumber = <%= @pageNumber %>
+    // Load up the data
+    d3.json(<%= "'overview/log/#{@pageNumber}'" %>, function(data) {
+      loadHistoricalLog(data)
+    })
+
+    setButtons(<%= @pageNumber %>) // Initialize the page number
+
+    $('#prevBuildsButton').on('click', function() {
+      if($('#prevBuildsButton').hasClass('disabled') == false) {
+        pageNumber -= 1
+        setButtons(pageNumber)
+        getBuilds(pageNumber)
+      }
+    })
+    $('#nextBuildsButton').on('click', function() {
+      if($('#nextBuildsButton').hasClass('disabled') == false) {
+        pageNumber += 1
+        setButtons(pageNumber)
+        getBuilds(pageNumber)
+      }
+    })
+
+    function setButtons(pageNumber) {
+      if(pageNumber == 0) {   // Disable next or previous buttons if at first or last page, respectively
+        $('#prevBuildsButton').addClass('disabled')
+      } else if(pageNumber == <%= @totalPages %>) {
+        $('#nextBuildsButton').addClass('disabled')
+      } else {
+        $('#prevBuildsButton').removeClass('disabled')
+        $('#nextBuildsButton').removeClass('disabled')
+      }
+    }
+  })
+</script>

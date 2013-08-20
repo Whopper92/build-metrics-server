@@ -62,6 +62,7 @@ class MetricServer < Sinatra::Base
   get '/overview' do
     @title = "Packaging Overview"
     @packageTypes = @@allPackageTypes
+    @pageNumber = 0 # This is used for the historical build log
     # First, get all data about the latest 6 builds
     @stats = Hash.new
     @stats[:latest] = Metric.all(
@@ -127,7 +128,53 @@ class MetricServer < Sinatra::Base
     @teamNumBuilds[:other]   = Hash[:key => 'Other', :count => 42]
     @otherTeamBuildSeries    = [10, 12, 16, 7, 12, 20, 14, 14, 10, 9, 4, 19]
 
+    # Determine how many pages of data there are for the historical build log
+    @totalPages = Metric.count
+    @totalPages = Float(@totalPages) / Float(10)
+    @totalPages = @totalPages.ceil
+
+
     erb :overview
+  end
+
+  # A dynamic route to gather historical build log data
+  get '/overview/log/:page' do
+
+    # Get all data about the latest 10 builds
+    offset = params[:page].to_i * 10
+    @stats = Hash.new
+    @stats[:latest] = Metric.all(
+                        :order  => [:date.desc],
+                        :offset => offset.to_i,
+                        :limit  => 10,
+                        :jenkins_build_time.not => nil)
+
+    # Next, for each recent build find all build times for the appropriate dist to formulate a trend
+    @trends = Hash.new
+    @stats[:latest].each do |package|
+      @trends["#{package[:package_name]}-#{package[:dist]}"] = Metric.all(:fields => [:jenkins_build_time],
+                                                      :order                  => [:date.desc],
+                                                      :package_name           => package[:package_name],
+                                                      :dist                   => package[:dist],
+                                                      :jenkins_build_time.not => nil)
+    end
+
+    @stats[:latest].each do |build|
+      build = Hash[:id                   => build.id,
+                   :date                 => build.date,
+                   :package_name         => build.package_name,
+                   :package_type         => build.package_type,
+                   :dist                 => build.dist,
+                   :build_user           => build.build_user,
+                   :build_loc            => build.build_loc,
+                   :version              => build.version,
+                   :pe_version           => build.pe_version,
+                   :jenkins_build_time   => build.jenkins_build_time,
+                   :package_build_time   => build.package_build_time,
+                   :success              => build.success,
+                   :build_log            => build.build_log]
+    end
+    @stats[:latest].to_json
   end
 
   # A dynamic route for each individual package view
