@@ -107,19 +107,14 @@
 <div id='histLogModal' class="modal hide fade" data-backdrop='false'>
   <div class="modal-header">
     <div class='row-fluid'>
-    <div class='span4'>
-      <h3 id='histLogTitle'>Historical Build Log</h3>
-      <h6 id='histLogPageTitle'><h6>
+      <div class='span4'>
+        <h3 id='histLogTitle'>Historical Build Log</h3>
+        <h6 id='histLogPageTitle'><h6>
+      </div>
+      <div class='span1 offset7'>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      </div>
     </div>
-      <ul class="pager span5 offset2">
-        <li id='newestBuildsButton'><a href=#>Newest</a></li>
-        <li id='prevBuildsButton'><a href="#">Previous</a></li>
-        <li id='nextBuildsButton'><a href="#">Next</a></li>
-        <li id='oldestBuildsButton'><a href=#>Oldest</a></li>
-      </ul>
-    <button type="button" class="close span1" data-dismiss="modal" aria-hidden="true">&times;</button>
-    </div>
-
   </div>
   <div id='histLogBody' class="modal-body">
     <span id='histLogContent'>
@@ -135,6 +130,12 @@
         </tbody>
       </table>
     </span>
+    <ul class="pager">
+      <li id='newestBuildsButton'><a href=#>Newest</a></li>
+      <li id='prevBuildsButton'><a href="#">Previous</a></li>
+      <li id='nextBuildsButton'><a href="#">Next</a></li>
+      <li id='oldestBuildsButton'><a href=#>Oldest</a></li>
+    </ul>
   </div>
   <div class="modal-footer">
     <a href="#" data-dismiss="modal" aria-hidden="true" class="btn">Close</a>
@@ -187,6 +188,7 @@
         $('#prevBuildsButton').addClass('disabled')
         $('#newestBuildsButton').addClass('disabled')
         $('#nextBuildsButton').removeClass('disabled')
+        $('#oldestBuildsButton').removeClass('disabled')
       } else if(pageNumber == totalPages) {
         $('#nextBuildsButton').addClass('disabled')
         $('#oldestBuildsButton').addClass('disabled')
