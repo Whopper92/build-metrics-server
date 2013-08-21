@@ -2,6 +2,7 @@
 build is clicked in the recent builds graphic on the
 overview dashboard */
 function createRecentBuildsModal(data) {
+  console.log(data)
   var date    = data.date.slice(0,10)
   var hours   = data.date.slice(11,13)
   var minutes = data.date.slice(14,16)

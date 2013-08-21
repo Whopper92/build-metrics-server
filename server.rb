@@ -130,9 +130,7 @@ class MetricServer < Sinatra::Base
 
     # Determine how many pages of data there are for the historical build log
     @totalPages = Metric.count
-    @totalPages = Float(@totalPages) / Float(10)
-    @totalPages = @totalPages.ceil
-
+    @totalPages = @totalPages / 12
 
     erb :overview
   end
@@ -141,12 +139,12 @@ class MetricServer < Sinatra::Base
   get '/overview/log/:page' do
 
     # Get all data about the latest 10 builds
-    offset = params[:page].to_i * 10
+    offset = params[:page].to_i * 12
     @stats = Hash.new
     @stats[:latest] = Metric.all(
                         :order  => [:date.desc],
                         :offset => offset.to_i,
-                        :limit  => 10,
+                        :limit  => 12,
                         :jenkins_build_time.not => nil)
 
     # Next, for each recent build find all build times for the appropriate dist to formulate a trend
@@ -181,6 +179,10 @@ class MetricServer < Sinatra::Base
   get '/package/:package' do
     @packageTypes = @@allPackageTypes
     @packageName  = params[:package]
+
+    # Determine how many pages of data there are for the historical build log
+    @totalPages = Metric.count
+    @totalPages = @totalPages / 12
 
     # First, get all data about the latest 6 builds
     @stats = Hash.new

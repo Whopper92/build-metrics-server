@@ -35,6 +35,39 @@ th.trend {width: 30%;}
   font-weight: bold;
 }
 
+#histLogModal {
+  margin: -70px 0 0 -450px;
+  width: 900px;
+}
+
+#histLogModal .modal-body {
+  max-height: 600px;
+}
+
+#histLogTable {
+  cursor: auto;
+}
+
+#histLogTable .date {
+  width: 20%;
+}
+
+#histLogTable .package {
+  width: 20%;
+}
+
+#histLogTable .dist {
+  width: 10%;
+}
+
+#histLogTable .buildTime {
+  width: 10%;
+}
+
+#histNextButtons {
+  margin-left: -10px;
+}
+
 /* General chart labels */
 .yAxisLabel {
   float: left;
