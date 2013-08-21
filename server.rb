@@ -73,11 +73,12 @@ class MetricServer < Sinatra::Base
     # Next, for each recent build find all build times for the appropriate dist to formulate a trend
     @trends = Hash.new
     @stats[:latest].each do |package|
-      @trends["#{package[:package_name]}-#{package[:dist]}"] = Metric.all(:fields => [:jenkins_build_time],
+      @trends["#{package[:package_name]}-#{package[:dist]}-#{package[:id]}"] = Metric.all(:fields => [:jenkins_build_time],
                                                       :order                  => [:date.desc],
                                                       :package_name           => package[:package_name],
                                                       :dist                   => package[:dist],
-                                                      :jenkins_build_time.not => nil)
+                                                      :jenkins_build_time.not => nil,
+                                                      :id.lte => package[:id])
     end
 
     # Gather high level metrics. Some of this data is fabricated until real data can be aquired
@@ -150,11 +151,12 @@ class MetricServer < Sinatra::Base
     # Next, for each recent build find all build times for the appropriate dist to formulate a trend
     @trends = Hash.new
     @stats[:latest].each do |package|
-      @trends["#{package[:package_name]}-#{package[:dist]}"] = Metric.all(:fields => [:jenkins_build_time],
+      @trends["#{package[:package_name]}-#{package[:dist]}-#{package[:id]}"] = Metric.all(:fields => [:jenkins_build_time],
                                                       :order                  => [:date.desc],
                                                       :package_name           => package[:package_name],
                                                       :dist                   => package[:dist],
-                                                      :jenkins_build_time.not => nil)
+                                                      :jenkins_build_time.not => nil,
+                                                      :id.lte                 => package[:id])
     end
 
     @stats[:latest].each do |build|
@@ -183,6 +185,7 @@ class MetricServer < Sinatra::Base
     # Determine how many pages of data there are for the historical build log
     @totalPages = Metric.count
     @totalPages = @totalPages / 12
+    @pageNumber = 0
 
     # First, get all data about the latest 6 builds
     @stats = Hash.new
@@ -195,11 +198,12 @@ class MetricServer < Sinatra::Base
     # Next, for each recent build find all build times for the appropriate dist to formulate a trend
     @trends = Hash.new
     @stats[:latest].each do |package|
-      @trends["#{package[:package_name]}-#{package[:dist]}"] = Metric.all(:fields => [:jenkins_build_time],
+      @trends["#{package[:package_name]}-#{package[:dist]}-#{package[:id]}"] = Metric.all(:fields => [:jenkins_build_time],
                                                       :order                  => [:date.desc],
                                                       :package_name           => params[:package],
                                                       :dist                   => package[:dist],
-                                                      :jenkins_build_time.not => nil)
+                                                      :jenkins_build_time.not => nil,
+                                                      :id.lte                 => package[:id])
     end
 
     # Gather stats for the 'general stats' section
@@ -284,6 +288,11 @@ class MetricServer < Sinatra::Base
       when 'dmg' then 'DMG'
     end
 
+    # Determine how many pages of data there are for the historical build log
+    @totalPages = Metric.count
+    @totalPages = @totalPages / 11
+    @pageNumber = 0
+
     # First, get all data about the latest 6 builds
     @stats = Hash.new
     @stats[:latest] = Metric.all(
@@ -295,12 +304,13 @@ class MetricServer < Sinatra::Base
     # Next, for each recent build find all build times for the appropriate dist to formulate a trend
     @trends = Hash.new
     @stats[:latest].each do |package|
-      @trends["#{package[:package_name]}-#{package[:dist]}"] = Metric.all(:fields => [:jenkins_build_time],
+      @trends["#{package[:package_name]}-#{package[:dist]}-#{package[:id]}"] = Metric.all(:fields => [:jenkins_build_time],
                                                       :order                  => [:date.desc],
                                                       :package_name           => package[:package_name],
                                                       :dist                   => package[:dist],
                                                       :jenkins_build_time.not => nil,
-                                                      :package_type           => params[:type])
+                                                      :package_type           => params[:type],
+                                                      :id.lte                 => package[:id])
     end
 
     # Gather stats about Jenkins and local builds

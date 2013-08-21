@@ -148,7 +148,7 @@
     var totalPages = <%= @totalPages - 1%>
 
     // Load up the data
-    d3.json('overview/log/' + pageNumber, function(data) {
+    d3.json('/overview/log/' + pageNumber, function(data) {
       console.log(data)
       loadHistoricalLog(data)
     })

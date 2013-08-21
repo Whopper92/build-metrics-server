@@ -50,7 +50,7 @@
       <td><%= "#{row.jenkins_build_time.round(0)} sec" %></td>
       <td id="<%= "sparkline#{row.id}" %>">
         <%= time_array = Array.new
-            @trends["#{row.package_name}-#{row.dist}"].each do |row|
+            @trends["#{row.package_name}-#{row.dist}-#{row.id}"].each do |row|
               time_array << row.jenkins_build_time
             end
             puts time_array.inspect
