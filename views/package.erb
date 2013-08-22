@@ -131,7 +131,6 @@
       })
 
     $(function() {
-      createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#packageSummaryBuildContent', 'builds', '../summary/type')
 
       <%  # Create the data array to send to JavaScript graph generation functions
         timeSeriesArray = []
@@ -141,6 +140,7 @@
       %>
       createStandardLineGraph(<%= timeSeriesArray %>, 570, 480, 70, 30, 110, 50, '#buildStatsSpeedContent', '#buildStatsSpeedGraph', 'seconds')
       createStandardLineGraph(<%= timeSeriesArray %>, 570, 480, 70, 30, 110, 50, '#buildStatsFailureContent', '#buildStatsFailureGraph', '% Failed')
+      createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#packageSummaryBuildContent', 'builds', '../summary/type')
     })
 
       // Resize the data sections for small resolutions
