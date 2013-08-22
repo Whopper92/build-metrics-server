@@ -107,11 +107,11 @@
 <div id='histLogModal' class="modal hide fade" data-backdrop='false'>
   <div class="modal-header">
     <div class='row-fluid'>
-      <div class='span4'>
+      <div class='span11'>
         <h3 id='histLogTitle'>Historical Build Log</h3>
         <h6 id='histLogPageTitle'><h6>
       </div>
-      <div class='span1 offset7'>
+      <div class='span1'>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
     </div>
@@ -146,9 +146,20 @@
   $(document).ready(function() {
     var pageNumber = <%= @pageNumber %>
     var totalPages = <%= @totalPages - 1%>
+    var urlType    = <%= "\"#{@urlType}\"" %>
+    var urlName    = <%= "\"#{@urlName}\"" %>
+    var url        = '/log/' + urlType + '~' + urlName + '~' + pageNumber
+
+    if(urlType == 'all') {
+      var title = 'Historical Build Log'
+    } else {
+      var name = urlName.charAt(0).toUpperCase() + urlName.slice(1);
+      var title = name + ' Historical Build Log'
+    }
+    $('#histLogTitle').text(title)
 
     // Load up the data
-    d3.json('/overview/log/' + pageNumber, function(data) {
+    d3.json(url, function(data) {
       console.log(data)
       loadHistoricalLog(data)
     })
@@ -158,26 +169,30 @@
     $('#prevBuildsButton').on('click', function() {
       if($('#prevBuildsButton').hasClass('disabled') == false) {
         pageNumber -= 1
+        url        = '/log/' + urlType + '~' + urlName + '~' + pageNumber
         setButtons(pageNumber)
-        getBuilds(pageNumber)
+        getBuilds(url)
       }
     })
     $('#nextBuildsButton').on('click', function() {
       if($('#nextBuildsButton').hasClass('disabled') == false) {
         pageNumber += 1
+        url        = '/log/' + urlType + '~' + urlName + '~' + pageNumber
         setButtons(pageNumber)
-        getBuilds(pageNumber)
+        getBuilds(url)
       }
     })
    $('#newestBuildsButton').on('click', function() {
        pageNumber = 0
+       url        = '/log/' + urlType + '~' + urlName + '~' + pageNumber
        setButtons(pageNumber)
-       getBuilds(pageNumber)
+       getBuilds(url)
     })
    $('#oldestBuildsButton').on('click', function() {
        pageNumber = totalPages
+       url        = '/log/' + urlType + '~' + urlName + '~' + pageNumber
        setButtons(pageNumber)
-       getBuilds(pageNumber)
+       getBuilds(url)
     })
 
     function setButtons(pageNumber) {

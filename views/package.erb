@@ -7,6 +7,14 @@
   <div id='recentBuildsContent' class='span4 contentContainer'>
     <div id='recentBuildsContentTitle' class='row-fluid'>
       <h3 class='contentTitle span6'>Latest <%= @packageName %> Builds</h3>
+      <span class='span2 offset4'>
+        <div class="btn-group">
+          <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-search"></i></button>
+          <ul class='dropdown-menu pull-right'>
+            <li><a id='histLogButton' tabindex="-1" href=#>Historical Build Log</a></li>
+          </ul>
+        </div>
+      </span>
     </div>
     <!-- Use a multi-purpose template to generate the table -->
     <%= erb :recentBuildsTable %>
@@ -116,6 +124,11 @@
 
 <script type='text/javascript'>
   $(document).ready(function() {
+    // Add JS interactive elements
+      $('#histLogButton').on('click', function() {
+        createHistoricalBuildLogModal()
+      })
+
     $(function() {
       createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#packageSummaryBuildContent', 'builds', '../summary/type')
 

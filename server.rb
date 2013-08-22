@@ -60,9 +60,12 @@ class MetricServer < Sinatra::Base
   end
 
   get '/overview' do
-    @title = "Packaging Overview"
+    @title        = "Packaging Overview"
     @packageTypes = @@allPackageTypes
-    @pageNumber = 0 # This is used for the historical build log
+    @pageNumber   = 0 # This is used for the historical build log
+    @urlType      = 'all'
+    @urlName      = 'all'
+
     # First, get all data about the latest 6 builds
     @stats = Hash.new
     @stats[:latest] = Metric.all(
@@ -131,32 +134,31 @@ class MetricServer < Sinatra::Base
 
     # Determine how many pages of data there are for the historical build log
     @totalPages = Metric.count
-    @totalPages = @totalPages / 11
+    puts @totalPages
+    @totalPages = (Float(@totalPages) / Float(11)).ceil
+    puts @totalPages
 
     erb :overview
   end
 
   # A dynamic route to gather historical build log data
-  get '/overview/log/:page' do
+  get '/log/:options' do
+    @packageTypes = @@allPackageTypes
+    @packageName  = params[:package]
+
+    # options is a parameter with the form: package-facter, type-deb, or all-all
+    type = params[:options].split('~')[0]
+    name = params[:options].split('~')[1]
+    page = params[:options].split('~')[2]
+
 
     # Get all data about the latest 10 builds
-    offset = params[:page].to_i * 11
+    offset = page.to_i * 11
     @stats = Hash.new
-    @stats[:latest] = Metric.all(
-                        :order  => [:date.desc],
-                        :offset => offset.to_i,
-                        :limit  => 11,
-                        :jenkins_build_time.not => nil)
-
-    # Next, for each recent build find all build times for the appropriate dist to formulate a trend
-    @trends = Hash.new
-    @stats[:latest].each do |package|
-      @trends["#{package[:package_name]}-#{package[:dist]}-#{package[:id]}"] = Metric.all(:fields => [:jenkins_build_time],
-                                                      :order                  => [:date.desc],
-                                                      :package_name           => package[:package_name],
-                                                      :dist                   => package[:dist],
-                                                      :jenkins_build_time.not => nil,
-                                                      :id.lte                 => package[:id])
+    if type == 'all'
+      @stats[:latest] = Metric.all(:order  => [:date.desc], :offset => offset.to_i, :limit  => 11)
+    else
+      @stats[:latest] = Metric.all(:order  => [:date.desc], :offset => offset.to_i, :limit  => 11, :"#{type}" => name)
     end
 
     @stats[:latest].each do |build|
@@ -181,10 +183,12 @@ class MetricServer < Sinatra::Base
   get '/package/:package' do
     @packageTypes = @@allPackageTypes
     @packageName  = params[:package]
+    @urlType      = 'package_name'
+    @urlName      = params[:package]
 
     # Determine how many pages of data there are for the historical build log
-    @totalPages = Metric.count
-    @totalPages = @totalPages / 12
+    @totalPages = Metric.count(:package_name => params[:package])
+    @totalPages = (Float(@totalPages) / Float(11)).ceil
     @pageNumber = 0
 
     # First, get all data about the latest 6 builds
@@ -261,7 +265,6 @@ class MetricServer < Sinatra::Base
       if @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate].nan?
         @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate] = 0
       else
-        puts '@@@@@'
         puts @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate]
         @stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate] = ((@stats[:timeSeries][:"#{curYear}"][:"#{thisMonth}"][:failureRate]) * 100).round(0)
       end
@@ -287,10 +290,12 @@ class MetricServer < Sinatra::Base
       when 'gem' then 'RubyGem'
       when 'dmg' then 'DMG'
     end
+    @urlType  = 'package_type'
+    @urlName  = params[:type]
 
     # Determine how many pages of data there are for the historical build log
-    @totalPages = Metric.count
-    @totalPages = @totalPages / 11
+    @totalPages = Metric.count(:package_type => params[:type])
+    @totalPages = (Float(@totalPages) / Float(11)).ceil
     @pageNumber = 0
 
     # First, get all data about the latest 6 builds

@@ -4,11 +4,10 @@ function createHistoricalBuildLogModal() {
   $('#histLogModal').modal('show')
 }
 
-function getBuilds(pageNumber) {
-  console.log(pageNumber)
-  URL = '/overview/log/' + pageNumber
+function getBuilds(url) {
+  console.log(url)
 
-  d3.json(URL, function(data) {
+  d3.json(url, function(data) {
     $("#histLogTable").find("tr:gt(0)").remove();
     loadHistoricalLog(data)
   })
@@ -29,7 +28,11 @@ function loadHistoricalLog(data) {
     dataArray[trID] = data[i]
     var packageName = data[i].package_name
     var dist        = data[i].dist
-    var buildTime   = data[i].jenkins_build_time
+    if(data[i].jenkins_build_time == null) {
+      var buildTime   = data[i].package_build_time
+    } else {
+      var buildTime   = data[i].jenkins_build_time
+    }
 
     var date    = data[i].date.slice(0,10)
     var hours   = data[i].date.slice(11,13)
