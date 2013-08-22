@@ -125,6 +125,7 @@
 <script type='text/javascript'>
   $(document).ready(function() {
     // Add JS interactive elements
+
       $('#histLogButton').on('click', function() {
         createHistoricalBuildLogModal()
       })
@@ -137,10 +138,9 @@
         @monthArray.each do |timeSpan|
           timeSeriesArray << @stats[:timeSeries][:"#{timeSpan.split('-')[0]}"][:"#{timeSpan.split('-')[1]}"].to_json
         end
-        puts timeSeriesArray
       %>
-      createPackageSpeedLineGraph(<%= timeSeriesArray %>, 570, 480, 70, '#buildStatsSpeedContent', '#buildStatsSpeedGraph', 'seconds')
-      createPackageSpeedLineGraph(<%= timeSeriesArray %>, 570, 480, 70, '#buildStatsFailureContent', '#buildStatsFailureGraph', '% Failed')
+      createStandardLineGraph(<%= timeSeriesArray %>, 570, 480, 70, 30, 110, 50, '#buildStatsSpeedContent', '#buildStatsSpeedGraph', 'seconds')
+      createStandardLineGraph(<%= timeSeriesArray %>, 570, 480, 70, 30, 110, 50, '#buildStatsFailureContent', '#buildStatsFailureGraph', '% Failed')
     })
 
       // Resize the data sections for small resolutions

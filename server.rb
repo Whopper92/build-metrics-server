@@ -86,12 +86,46 @@ class MetricServer < Sinatra::Base
 
     # Gather high level metrics. Some of this data is fabricated until real data can be aquired
     # These arrays are used to create a time series of number of builds by various teams
-    @totalBuildsTimeSeries   = [100, 120, 80, 90, 100, 140 ,70, 60, 80, 70, 80, 80]
-    @failedBuildsTimeSeries  = [12, 23, 6, 12, 12, 13 ,15, 7, 9, 12, 8, 5]
-    @releaseBuildsTimeSeries = [50, 60, 40, 45, 50, 70 ,45, 30, 40, 50, 30, 40, 30]
-    @jenkinsBuildsTimeSeries = [20, 20, 20, 15, 30, 30 ,25, 10, 10, 15, 20, 10, 20]
-    @devBuildsTimeSeries     = [30, 40, 20, 30, 20, 40 ,20, 20, 10, 15, 20, 30, 30]
-    @buildSeries             = [@totalBuildsTimeSeries, @failedBuildsTimeSeries, @devBuildsTimeSeries, @releaseBuildsTimeSeries, @jenkinsBuildsTimeSeries]
+    # Gather time series data about the number of builds and failure rate. Allow up to 12 months of data.
+    thisYear                                   = Date.today.strftime("%Y")
+    lastYear                                   = thisYear.to_i - 1
+    thisMonth                                  = Date.today.strftime("%m")
+    @stats[:buildsTimeSeries]                  = Hash.new
+    @stats[:buildsTimeSeries][:"#{thisYear}"]  = Hash.new
+    @stats[:buildsTimeSeries][:"#{lastYear}"]  = Hash.new
+
+    @stats[:teamTimeSeries]                    = Hash.new
+    @stats[:teamTimeSeries][:"#{thisYear}"]    = Hash.new
+    @stats[:teamTimeSeries][:"#{lastYear}"]    = Hash.new
+
+    @monthArray                            = []
+    monthCounter                               = 0
+    curYear                                    = lastYear
+
+    # Create an array of months based on the current month
+    fakeTeamData = [10, 12, 16, 7, 12, 20, 14, 14, 10, 9, 4, 19, 19]
+    until monthCounter == 13 do
+      if monthCounter != 0 and thisMonth == '01'
+        # Incrememnt the year
+        nextYear = curYear.to_i + 1
+        curYear  = nextYear
+      end
+      @stats[:buildsTimeSeries][:"#{curYear}"][:"#{thisMonth}"]               = Hash[:key => "#{curYear}-#{thisMonth}", :count => 0, :failCount => 0]
+      @stats[:buildsTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:count]       = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE date LIKE '#{curYear}-#{thisMonth}%'")
+      @stats[:buildsTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:failCount]   = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = false AND date LIKE '#{curYear}-#{thisMonth}%'")
+
+      @stats[:teamTimeSeries][:"#{curYear}"][:"#{thisMonth}"]                 = Hash[:key => "#{curYear}-#{thisMonth}", :count => fakeTeamData[monthCounter]]
+
+      @monthArray << "#{curYear}-#{thisMonth}"
+      nextMonth = thisMonth.to_i + 1
+      if nextMonth.to_i < 10
+        nextMonth = '0' + nextMonth.to_s
+      elsif nextMonth.to_i == 13
+        nextMonth = '01'
+      end
+      thisMonth = nextMonth
+      monthCounter += 1
+    end
 
     # Collect data on shipped RC and final packages
     @stats[:shipped]         = Hash.new
@@ -130,7 +164,6 @@ class MetricServer < Sinatra::Base
     @teamNumBuilds           = Hash.new
     @teamNumBuilds[:release] = Hash[:key => 'Release', :count => 102]
     @teamNumBuilds[:other]   = Hash[:key => 'Other', :count => 42]
-    @otherTeamBuildSeries    = [10, 12, 16, 7, 12, 20, 14, 14, 10, 9, 4, 19]
 
     # Determine how many pages of data there are for the historical build log
     @totalPages = Metric.count

@@ -57,7 +57,7 @@
     </div>
     <div class='row-fluid'>
       <div id='summaryBuildNumber' class='span5'>
-        <h4 class='contentTitle'>Builds over Last 12 Weeks</h4>
+        <h4 class='contentTitle'>Builds over Last 12 Months</h4>
         <div id='summaryBuildNumberContent'>
           <div id='summaryBuildsYLabel'  class='yAxisLabel'>Builds</div>
           <div id='summaryBuildsLegend'>
@@ -70,7 +70,6 @@
               <text x='30' y='12' fill='black'>Failed</text>
             </svg>
           </div>
-          <div id='summaryBuildsXLabel'>Weeks Ago</div>
         </div>
       </div>
 
@@ -163,10 +162,9 @@
           </div>
         </div>
         <div id='otherTeamSeries' class='span7 offset1'>
-          <h4 class='contentTitle'>Builds by Teams other than Release over Last 12 Weeks</h4>
+          <h4 class='contentTitle'>Builds by Teams other than Release over Last 12 Months</h4>
           <div id='otherTeamSeriesContent'>
             <div class='yAxisLabel'>Builds</div>
-            <div id='teamsBuildsXLabel'>Weeks Ago</div>
           </div>
       </div>
     </div>
@@ -257,10 +255,19 @@
       })
 
       // Generate the graphs
-      createLineGraph(<%= @totalBuildsTimeSeries %>, <%= @failedBuildsTimeSeries %>, 460, 445, 70, '#summaryBuildNumberContent', '#summaryBuildsGraph', 'builds')
+      <%  # Create the data array to send to JavaScript graph generation functions
+        buildsTimeSeriesArray = []
+        buildsFailSeriesArray = []
+        teamTimeSeriesArray   = []
+        @monthArray.each do |timeSpan|
+          buildsTimeSeriesArray << @stats[:buildsTimeSeries][:"#{timeSpan.split('-')[0]}"][:"#{timeSpan.split('-')[1]}"].to_json
+          teamTimeSeriesArray   << @stats[:teamTimeSeries][:"#{timeSpan.split('-')[0]}"][:"#{timeSpan.split('-')[1]}"].to_json
+        end
+      %>
+      createStandardLineGraph(<%= buildsTimeSeriesArray %>, 470, 480, 70, 45, 110, 100, '#summaryBuildNumberContent', '#summaryBuildsGraph', 'builds')
+      createStandardLineGraph(<%= teamTimeSeriesArray %>, 470, 480, 70, 35, 110, 20, '#otherTeamSeriesContent', '#otherTeamGraph', 'builds')
       createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 0, '#summaryShippedContent', 'shipped', '/summary/shipped/' )
       createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent', 'builds', '/summary/shipped')
-      createLineGraph(<%= @otherTeamBuildSeries %>, <%= [] %>, 460, 450, 40, '#otherTeamSeriesContent', '#otherTeamGraph', 'builds')
       createHistogram(<%=[@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 100, '#typeBuildNumberContent', 'builds', 'summary/type')
       createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#typeBuildSpeedContent', 'seconds', '/summary/type')
     })
