@@ -180,13 +180,7 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
       .attr('text-anchor', 'middle')
       .attr('font-family', 'Arial')
       .attr('font-weight', 'bold')
-      .attr('font-size', function(d) {
-        if(graphType == 'percent') {
-          return '9px'
-        } else {
-          return '12px'
-        }
-      })
+      .attr('font-size', '12px')
 
   // Create the Axes
   var xAxis = d3.svg.axis()
