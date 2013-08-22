@@ -115,7 +115,6 @@
                   <% rowID        = "#{user[0]}#{user[1]}" %>
                   <% modalMessage = "#{user[0]} has built #{user[1]} packages."%>
                   <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()'>
-
                     <td><strong><%= user[0] %></strong></td>
                     <td><%= user[1] %></td>
                   </tr>
@@ -128,9 +127,6 @@
     </div>
   </div>
 </div>
-
-  <!-- Tooltips for graphs and charts, to be styled by D3 -->
-  <%= erb :tooltips %>
 
   <!-- Bottom fluid row -->
 
@@ -244,6 +240,9 @@
     </div>
   </div>
 </div>
+
+<!-- Tooltips for graphs and charts, to be styled by D3 -->
+<%= erb :tooltips %>
 
 <script type='text/javascript'>
   $(document).ready(function() {
