@@ -26,6 +26,7 @@ function loadHistoricalLog(data) {
   for(i = 0; i < data.length; ++i) {
     var trID        = 'histRow' + i
     dataArray[trID] = data[i]
+    var user        = data[i].build_user
     var packageName = data[i].package_name
     var dist        = data[i].dist
     if(data[i].jenkins_build_time == null) {
@@ -60,7 +61,7 @@ function loadHistoricalLog(data) {
     }
 
     $('#histLogTableTbody').append(
-      '<tr id=' + trID + '><td><svg id="resultCell"  xmlns="http://www.w3.org/2000/svg" version="1.1"><defs><filter id="drop-shadow"><feGaussianBlur in="SourceGraphic" stdDeviation="1" /></filter></defs><circle class="resultCircle" r="5" cx="20" cy="8" filter="url(#drop-shadow)" fill="' + fillColor + '"></svg></td><td>' + date + '</td><td>' + packageName + '</td><td>' + dist + '</td><td>' + buildTime.toFixed(0) + ' sec</td>');
+      '<tr id=' + trID + '><td><svg id="resultCell"  xmlns="http://www.w3.org/2000/svg" version="1.1"><defs><filter id="drop-shadow"><feGaussianBlur in="SourceGraphic" stdDeviation="1" /></filter></defs><circle class="resultCircle" r="5" cx="20" cy="8" filter="url(#drop-shadow)" fill="' + fillColor + '"></svg></td><td>' + date + '</td><td>' + user + '</td><td>' + packageName + '</td><td>' + dist + '</td><td>' + buildTime.toFixed(0) + ' sec</td>');
 
   }
 
