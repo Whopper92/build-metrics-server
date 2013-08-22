@@ -131,12 +131,23 @@
         </tbody>
       </table>
     </span>
-    <ul class="pager">
-      <li id='newestBuildsButton'><a href=#>Newest</a></li>
-      <li id='prevBuildsButton'><a href="#">Previous</a></li>
-      <li id='nextBuildsButton'><a href="#">Next</a></li>
-      <li id='oldestBuildsButton'><a href=#>Oldest</a></li>
-    </ul>
+    <div class='row-fluid'>
+      <ul class="pager span5 offset3">
+        <li id='newestBuildsButton'><a href=#>Newest</a></li>
+        <li id='prevBuildsButton'><a href="#">Previous</a></li>
+        <li id='nextBuildsButton'><a href="#">Next</a></li>
+        <li id='oldestBuildsButton'><a href=#>Oldest</a></li>
+      </ul>
+      <div class='span3'>
+        <p>Jump to Page:</p>
+        <select id='pageSelect' class='span4'>
+          <% (1..@totalPages).each do |i|%>
+                <option><%= i %></option>
+          <% end %>
+        </select>
+        <button id='pageSelectButton' class="btn btn-mini" type="button">Go!</button>
+      </div>
+    </div>
   </div>
   <div class="modal-footer">
     <a href="#" data-dismiss="modal" aria-hidden="true" class="btn">Close</a>
@@ -163,6 +174,13 @@
     d3.json(url, function(data) {
       console.log(data)
       loadHistoricalLog(data)
+    })
+
+    $('#pageSelectButton').click(function() {
+      pageNumber = parseInt($('#pageSelect').val()) - 1
+      url        = '/log/' + urlType + '~' + urlName + '~' + pageNumber
+      setButtons(pageNumber)
+      getBuilds(url)
     })
 
     setButtons(pageNumber) // Initialize the page number
