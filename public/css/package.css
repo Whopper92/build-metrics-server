@@ -8,6 +8,10 @@
   margin-left: 100px;
 }
 
+#packageSummaryBuildNumberTitle {
+  margin-left: -40px;
+}
+
 #packageSummaryBuildContent {
   margin-top: 20px;
 }
