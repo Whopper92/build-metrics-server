@@ -80,8 +80,5 @@ function loadHistoricalLog(data) {
   $('#histRow11').click(function() { createRecentBuildsModal(data[11]) })
 
   $('#recentBuildsModal').css('z-index', '5000')
-
-  $('#recentBuildsModalLogButton').click(function() {
-    $('#logModal').css('z-index', '9999')
-  })
+  $('#logModal').css('z-index', '6000')
 }

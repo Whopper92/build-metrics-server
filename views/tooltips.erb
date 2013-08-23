@@ -9,11 +9,11 @@
   <span id='tableModalFooter' class='toolTipDesc'></span>
 </div>
 
-<div id='recentBuildsModal' class="modal fade">
+<div id='recentBuildsModal' class="modal hide fade">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" id='recentBuildsModalXButton' class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 id='recentBuildsModalTitle' class="modal-title"></h4>
       </div>
       <div class="modal-body">
@@ -83,14 +83,14 @@
         <br><br>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" id='#recentBuildsModalCloseButton' class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
   <!-- Build log modal -->
-<div id='logModal' class="modal fade" data-backdrop='false'>
+<div id='logModal' class="modal hide fade" data-backdrop='false'>
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
     <h3 id='logTitle'>Modal header</h3>
@@ -112,7 +112,7 @@
         <h6 id='histLogPageTitle'><h6>
       </div>
       <div class='span1'>
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <button type="button" id='histLogModalXButton' class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
       </div>
     </div>
   </div>
@@ -150,7 +150,7 @@
     </div>
   </div>
   <div class="modal-footer">
-    <a href="#" data-dismiss="modal" aria-hidden="true" class="btn">Close</a>
+    <a href="#" data-dismiss="modal" aria-hidden="true" id='histLogModalCloseButton' class="btn">Close</a>
   </div>
 </div>
 
