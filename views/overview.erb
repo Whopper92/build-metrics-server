@@ -263,7 +263,7 @@
           teamTimeSeriesArray   << @stats[:teamTimeSeries][:"#{timeSpan.split('-')[0]}"][:"#{timeSpan.split('-')[1]}"].to_json
         end
       %>
-      createStandardLineGraph(<%= buildsTimeSeriesArray %>, 470, 480, 70, 45, 110, 100, '#summaryBuildNumberContent', '#summaryBuildsGraph', 'builds')
+      createStandardLineGraph(<%= buildsTimeSeriesArray %>, 470, 480, 70, 45, 110, 200, '#summaryBuildNumberContent', '#summaryBuildsGraph', 'builds')
       createStandardLineGraph(<%= teamTimeSeriesArray %>, 470, 480, 70, 35, 110, 20, '#otherTeamSeriesContent', '#otherTeamGraph', 'builds')
       createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 0, '#summaryShippedContent', 'shipped', '/summary/shipped/' )
       createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent', 'builds', '/summary/shipped')
