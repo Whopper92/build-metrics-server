@@ -40,7 +40,7 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
       }
   } else if(graphType == 'failed') {
     if(dataset.length == 1) {
-      var rangeBand = 0.7
+      var rangeBand = 0.8
     } else if(dataset.length > 1 && dataset.length <= 3) {
       var rangeBand = 0.5
     } else if(dataset.length < 10) {
