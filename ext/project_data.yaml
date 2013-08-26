@@ -1,0 +1,21 @@
+---
+project: 'buildboard'
+author: 'Will Hopper'
+email: 'whopper@puppetlabs.com'
+homepage: 'https://github.com/Whopper92/build-metrics-server'
+summary: 'Sinatra based web application for automated packaging metrics gathering'
+description: 'A sinatra based web application'
+# files and gem_files are space separated lists
+files:
+  - conf
+  - config.ru
+  - examples
+  - ext
+  - Gemfile
+  - models
+  - public
+  - rakefile
+  - README.md
+  - server.rb
+  - spec
+  - views

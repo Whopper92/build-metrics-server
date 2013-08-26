@@ -1,0 +1,13 @@
+Source: buildboard
+Section: extra
+Priority: optional
+Maintainer: Will Hopper <whopper@puppetlabs.com>
+Build-Depends: cdbs, debhelper (>> 7)
+Standards-Version: 3.9.3
+Homepage: http://www.puppetlabs.com/
+
+Package: buildboard
+Architecture: all
+Depends: ${misc:Depends}, libpq-dev, apache2, ruby-rack, ruby-passenger, ruby-sinatra, ruby-tilt, ruby-rack-protection, libapache2-mod-passenger, ruby | ruby-interpreter, ruby-dev, build-essential, bundler
+Description: Sinatra based web application for automated packaging metrics gathering
+ A sinatra based web application
