@@ -47,6 +47,7 @@ class MetricServer < Sinatra::Base
       @allHosts          = Metric.all(:fields => [:build_loc], :unique => true, :order => [:build_loc.asc])
       @allUsers          = Metric.all(:fields => [:build_user], :unique => true, :order => [:build_user.asc])
       @allPackageTypes   = ['deb', 'rpm', 'gem', 'dmg']
+      @pageNumber        = 0 # This is used for the historical build log
     end
 
   #  =============================  ROUTES  =============================== #
@@ -59,8 +60,6 @@ class MetricServer < Sinatra::Base
   end
 
   get '/overview' do
-    @title        = "Packaging Overview"
-    @pageNumber   = 0 # This is used for the historical build log
     @urlType      = 'all'
     @urlName      = 'all'
 
@@ -217,7 +216,6 @@ class MetricServer < Sinatra::Base
     # Determine how many pages of data there are for the historical build log
     @totalPages = Metric.count(:package_name => params[:package])
     @totalPages = (Float(@totalPages) / Float(11)).ceil
-    @pageNumber = 0
 
     # First, get all data about the latest 6 builds
     @stats = Hash.new
@@ -323,7 +321,6 @@ class MetricServer < Sinatra::Base
     # Determine how many pages of data there are for the historical build log
     @totalPages = Metric.count(:package_type => params[:type])
     @totalPages = (Float(@totalPages) / Float(11)).ceil
-    @pageNumber = 0
 
     # First, get all data about the latest 6 builds
     @stats = Hash.new
