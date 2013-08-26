@@ -53,6 +53,8 @@
                 <li><a href="#">Distributions</a></li>
               </ul>
             </li>
+            <li><a id='navBuildLog' href=#>Build Log</a></li>
+            <li><a href="https://github.com/Whopper92/build-metrics-server/blob/master/README.md">Docs</a></li>
           </ul>
         </div> <!-- end of container -->
       </div>
@@ -67,3 +69,14 @@
     </div>
   </body>
 </html>
+
+<script type='text/javascript'>
+  $(document).ready(function() {
+    $(function() {
+      // Add JS interactive elements
+      $('#navBuildLog').on('click', function() {
+        createHistoricalBuildLogModal()
+      })
+    })
+  })
+</script>
