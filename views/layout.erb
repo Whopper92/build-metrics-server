@@ -45,7 +45,7 @@
                 <li class='dropdown-submenu'>
                   <a tabindex='-1' href="#">Package Types</a>
                   <ul class='dropdown-menu'>
-                    <% @packageTypes.each do |type|%>
+                    <% @allPackageTypes.each do |type|%>
                       <li><a tabindex="-1" href="/summary/type/<%= type %>"><%= type %></a></li>
                     <% end %>
                   </ul>

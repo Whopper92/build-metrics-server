@@ -17,7 +17,7 @@
             <div class="span10 offset1">
               <ul id='packageList' class="nav nav-pills nav-stacked">
                 <li class='active'><a href='overview'>Home</a></li>
-                <% @allPackages.each do |pkg| %>
+                <% @allPackageNames.each do |pkg| %>
                   <li><a href='<%= "package/#{pkg.package_name}" %>'><%= pkg.package_name %></a></li>
                 <% end %>
               </ul>

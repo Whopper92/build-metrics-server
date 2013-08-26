@@ -1,14 +1,13 @@
-require 'yaml'
 require 'sinatra/base'
+require 'fileutils'
+require 'json'
+require 'yaml'
+require 'date'
 require 'data_mapper'
 require 'dm-postgres-adapter'
 require 'dm-aggregates'
-require 'fileutils'
-require 'json'
-require 'date'
 
 class MetricServer < Sinatra::Base
-  attr_accessor :metrics, :avg, :error, :builds, :last_sat, :next_sat, :title
 
   #  =============================  METHODS  =============================== #
   # Determine if a configuration file is present and return its location if it is
@@ -42,11 +41,13 @@ class MetricServer < Sinatra::Base
   end
 
   #  ============================= VARIABLES =============================== #
-    @@allPackageNames   = Metric.all(:fields => [:package_name], :unique => true, :order => [:package_name.asc])
-    @@allDists          = Metric.all(:fields => [:dist], :unique => true, :order => [:dist.asc])
-    @@allHosts          = Metric.all(:fields => [:build_loc], :unique => true, :order => [:build_loc.asc])
-    @@allUsers          = Metric.all(:fields => [:build_user], :unique => true, :order => [:build_user.asc])
-    @@allPackageTypes   = ['deb', 'rpm', 'gem', 'dmg']
+    before do
+      @allPackageNames   = Metric.all(:fields => [:package_name], :unique => true, :order => [:package_name.asc])
+      @allDists          = Metric.all(:fields => [:dist], :unique => true, :order => [:dist.asc])
+      @allHosts          = Metric.all(:fields => [:build_loc], :unique => true, :order => [:build_loc.asc])
+      @allUsers          = Metric.all(:fields => [:build_user], :unique => true, :order => [:build_user.asc])
+      @allPackageTypes   = ['deb', 'rpm', 'gem', 'dmg']
+    end
 
   #  =============================  ROUTES  =============================== #
   get '/' do
@@ -54,14 +55,11 @@ class MetricServer < Sinatra::Base
   end
 
   get '/package' do
-    @allPackages  = @@allPackageNames
-    @packageTypes = @@allPackageTypes
     erb :packageSelection
   end
 
   get '/overview' do
     @title        = "Packaging Overview"
-    @packageTypes = @@allPackageTypes
     @pageNumber   = 0 # This is used for the historical build log
     @urlType      = 'all'
     @urlName      = 'all'
@@ -98,7 +96,7 @@ class MetricServer < Sinatra::Base
     @stats[:teamTimeSeries][:"#{thisYear}"]    = Hash.new
     @stats[:teamTimeSeries][:"#{lastYear}"]    = Hash.new
 
-    @monthArray                            = []
+    @monthArray                                = []
     monthCounter                               = 0
     curYear                                    = lastYear
 
@@ -113,7 +111,6 @@ class MetricServer < Sinatra::Base
       @stats[:buildsTimeSeries][:"#{curYear}"][:"#{thisMonth}"]               = Hash[:key => "#{curYear}-#{thisMonth}", :count => 0, :failCount => 0]
       @stats[:buildsTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:count]       = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE date LIKE '#{curYear}-#{thisMonth}%'")
       @stats[:buildsTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:failCount]   = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = false AND date LIKE '#{curYear}-#{thisMonth}%'")
-
       @stats[:teamTimeSeries][:"#{curYear}"][:"#{thisMonth}"]                 = Hash[:key => "#{curYear}-#{thisMonth}", :count => fakeTeamData[monthCounter]]
 
       @monthArray << "#{curYear}-#{thisMonth}"
@@ -134,7 +131,7 @@ class MetricServer < Sinatra::Base
 
     # Gather the number of times each package has been built and find the top 3
     @pkgNumBuilds = Hash.new
-    @@allPackageNames.each do |pkg|
+    @allPackageNames.each do |pkg|
      @pkgNumBuilds[:"#{pkg.package_name}"] = Metric.count(:conditions => ['package_name = ?', "#{pkg.package_name}"])
     end
 
@@ -142,14 +139,14 @@ class MetricServer < Sinatra::Base
 
     # Find the users who most frequently run builds
     @userNumBuilds = Hash.new
-    @@allUsers.each do |user|
+    @allUsers.each do |user|
      @userNumBuilds[:"#{user.build_user}"] = Metric.count(:conditions => ['build_user =?', "#{user.build_user}"])
     end
 
     @freqUsers = @userNumBuilds.sort_by { |k,v| -v }[0..2]
 
     # Gather aggregate data about each package type
-    @@allPackageTypes.each do |type|
+    @allPackageTypes.each do |type|
       @stats[:"#{type}"]                   = Hash[:key => "#{type}", :count => 0, :avgSpd => 0, :freqHost => '', :freqHostPercent => 0]
       @stats[:"#{type}"][:count]           = Metric.count(:conditions => ['package_type = ?', "#{type}"])
       @stats[:"#{type}"][:avgSpd]          = Metric.avg(:jenkins_build_time, :conditions => ['package_type = ?', "#{type}"])
@@ -176,7 +173,6 @@ class MetricServer < Sinatra::Base
 
   # A dynamic route to gather historical build log data
   get '/log/:options' do
-    @packageTypes = @@allPackageTypes
     @packageName  = params[:package]
 
     # options is a parameter with the form: package-facter, type-deb, or all-all
@@ -185,7 +181,7 @@ class MetricServer < Sinatra::Base
     page = params[:options].split('~')[2]
 
 
-    # Get all data about the latest 10 builds
+    # Get all data about the latest 11 builds
     offset = page.to_i * 11
     @stats = Hash.new
     if type == 'all'
@@ -214,7 +210,6 @@ class MetricServer < Sinatra::Base
 
   # A dynamic route for each individual package view
   get '/package/:package' do
-    @packageTypes = @@allPackageTypes
     @packageName  = params[:package]
     @urlType      = 'package_name'
     @urlName      = params[:package]
@@ -253,7 +248,7 @@ class MetricServer < Sinatra::Base
     @stats[:general][:PEBuilds]      = Metric.count(:package_name => params[:package], :pe_version.not => 'N/A')
 
     # Gather aggregate data about each package type
-    @@allPackageTypes.each do |type|
+    @allPackageTypes.each do |type|
       @stats[:"#{type}"]                   = Hash[:key => "#{type}", :count => 0, :avgSpd => 0, :freqHost => '', :freqHostPercent => 0, :freqHostHash => Hash.new]
       @stats[:"#{type}"][:count]           = Metric.count(:package_type => type, :package_name => params[:package])
       @stats[:"#{type}"][:avgSpd]          = Metric.avg(:jenkins_build_time, :package_type => type, :package_name => params[:package])
@@ -316,7 +311,6 @@ class MetricServer < Sinatra::Base
   end
 
   get '/summary/type/:type' do
-    @packageTypes = @@allPackageTypes
     @packageType  = case params[:type]
       when 'deb' then 'Debian'
       when 'rpm' then 'RPM'
@@ -385,7 +379,6 @@ class MetricServer < Sinatra::Base
 
     @stats[:general]                    = Hash.new
     @stats[:general][:totalBuilds]      = Metric.count(:package_type => params[:type])
-    #@stats[:general][:releaseBuilds]   = Metric.count(:package_type => params[:type], :team => 'release')
     @stats[:general][:releaseBuilds]    = 620
     @stats[:general][:otherBuilds]      = 293
     @stats[:general][:mostBuiltDist]    = Metric.aggregate(:dist, :all.count, :conditions => ['package_type = ?', "#{params[:type]}"]).sort {|a,b| b[1] <=> a[1]}[0]
