@@ -63,6 +63,11 @@ class MetricServer < Sinatra::Base
     @urlType      = 'all'
     @urlName      = 'all'
 
+    # Determine how many pages of data there are for the historical build log
+    @totalPages = Metric.count
+    puts @totalPages
+    @totalPages = (Float(@totalPages) / Float(11)).ceil
+
     # First, get all data about the latest 6 builds
     @stats = Hash.new
     @stats[:latest] = Metric.all(
@@ -160,12 +165,6 @@ class MetricServer < Sinatra::Base
     @teamNumBuilds           = Hash.new
     @teamNumBuilds[:release] = Hash[:key => 'Release', :count => 102]
     @teamNumBuilds[:other]   = Hash[:key => 'Other', :count => 42]
-
-    # Determine how many pages of data there are for the historical build log
-    @totalPages = Metric.count
-    puts @totalPages
-    @totalPages = (Float(@totalPages) / Float(11)).ceil
-    puts @totalPages
 
     erb :overview
   end
