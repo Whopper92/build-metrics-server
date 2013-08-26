@@ -113,6 +113,7 @@ There are two types of Jenkins packaging jobs that the Build Board currently sup
   Once the build has completed, the Jenkins Groovy Post-build plugin is used to gather and format all needed data points
   and send them to the `/overview/metrics` route of the metrics server with an HTTP post request. Note that the Groovy script
   used to accomplish this is included in this repository, and is slightly different than the script needed for dynamic Jenkins builds.
+  It can be seen [here.](#groovyScript)
 
 * **Dynamic jobs:**
   When the `uber_build` task is initiated, a dynamic Jenkins matrix job is created. The dynamic Jenkins task submits
@@ -388,3 +389,108 @@ A template for displaying upon a route being requested that doesn't exist.
 
 * `overview.erb`  
 The template which contains all HTML defining the overview dashboard display.
+
+##### `Other`
+
+<a name="groovyScript"/>
+* `Groovy Postbuild Script`  
+The following is the postbuild script which must be added to the configuration of a static Jenkins job
+in order to collect metrics. Along with this script, the job must also be configured with a string parameter
+named 'METRICS'.
+
+<pre>
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+import java.net.HttpURLConnection
+import java.util.Date;
+
+def get_jenkins_build_time() {
+    start_time  = manager.build.getStartTimeInMillis()
+    end_time    = new Date().getTime()
+    return String.valueOf((end_time - start_time)/1000)
+}
+
+// Assemble metrics to post to build metrics server
+
+app_server    = "http://metrics.delivery.puppetlabs.net:4567/overview/metrics"
+task_metrics  = manager.build.getEnvironment(manager.listener)['METRICS']
+charset       = "UTF-8"
+
+// Maintain backwards compatibility
+if ( task_metrics == null) {
+    build_user  = "N/A"
+    version     = "N/A"
+    pe_version  = "N/A"
+    dist        = "N/A"
+} else {
+    build_user  = task_metrics.split("~")[0]
+    version     = task_metrics.split("~")[1]
+    pe_version  = task_metrics.split("~")[2]
+    dist        = task_metrics.split("~")[3]
+}
+
+matcher = manager.getLogMatcher(/(?:Finished building in:) ([\d]+\.?[\d]*)/)
+if (matcher != null) {
+  package_build_time = matcher[0][1]
+} else {
+  package_build_time = "N/A"
+}
+
+jenkins_build_time  = get_jenkins_build_time()
+package_type         = manager.build.getEnvironment(manager.listener)['BUILD_TYPE']
+package_name        = manager.build.getEnvironment(manager.listener)['PROJECT']
+build_loc           = manager.build.getEnvironment(manager.listener)['NODE_NAME']
+build_log           = "${manager.build.getEnvironment(manager.listener)['BUILD_URL']}" + "consoleText"
+success             = String.valueOf(manager.build.result)
+
+String query = String.format("package_name=%s&dist=%s&package_type=%s&build_user=%s&build_loc=%s&version=%s&pe_version=%s&success=%s&build_log=%s&jenkins_build_time=%s&package_build_time=%s",
+     URLEncoder.encode(package_name, charset),
+     URLEncoder.encode(dist, charset),
+     URLEncoder.encode(package_type, charset),
+     URLEncoder.encode(build_user, charset),
+     URLEncoder.encode(build_loc, charset),
+     URLEncoder.encode(version, charset),
+     URLEncoder.encode(pe_version, charset),
+     URLEncoder.encode(success, charset),
+     URLEncoder.encode(build_log, charset),
+     URLEncoder.encode(jenkins_build_time, charset),
+     URLEncoder.encode(package_build_time, charset))
+
+// Make sure the server is listening before attempting to post data
+
+URLConnection connection = null
+serverAlive = false
+try {
+    URL u       = new URL(app_server);
+    connection  = (HttpURLConnection) u.openConnection();
+    connection.setRequestMethod("GET");
+    int code    = connection.getResponseCode();
+    serverAlive = true
+    connection.disconnect();
+
+} catch (MalformedURLException e) {
+    serverAlive = false
+    e.printStackTrace()
+
+} catch (IOException e) {
+    serverAlive = false
+    e.printStackTrace()
+
+} finally {
+    if (serverAlive == true) {
+        connection = new URL(app_server).openConnection()
+        connection.setDoOutput(true) // Triggers POST.
+        connection.setRequestProperty("Accept-Charset", charset);
+        connection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=" + charset);
+        OutputStream output = null;
+
+        try {
+             output = connection.getOutputStream()
+             output.write(query.getBytes(charset))
+             InputStream response = connection.getInputStream()
+        } finally {
+             if (output != null) try { output.close(); } catch (IOException logOrIgnore) {}
+        }
+    }
+}
+</pre>
