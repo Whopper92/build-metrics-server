@@ -145,14 +145,27 @@
 
       // Resize the data sections for small resolutions
     $(function() {
-      var recentBuilds = document.getElementById("recentBuildsContent");
-      var teamBuilds   = document.getElementById("generalStatsContent");
+      var upperLeft  = document.getElementById("recentBuildsContent");
+      var lowerLeft  = document.getElementById("generalStatsContent");
+      var upperRight = document.getElementById("typeSummaryContent");
+      var lowerRight = document.getElementById("buildStatsContent");
+
       if(screen.width < 1600) {
-        recentBuilds.style.minWidth = "1300px";
-        teamBuilds.style.minWidth   = "1300px";
+        upperLeft.style.minWidth = "1300px";
+        lowerLeft.style.minWidth   = "1300px";
+      } else if(screen.width == 1920 && screen.height == 1080) {
+        upperLeft.style.minWidth    = "1400px";
+        $(upperLeft).css('margin-left', '50px');
+        lowerLeft.style.minWidth    = "1400px";
+        $(lowerLeft).css('margin-left', '50px');
+        upperRight.style.minWidth   = "1400px";
+        $(upperRight).css('margin-left', '50px');
+        lowerRight.style.minWidth   = "1400px";
+        $(lowerRight).css('margin-left', '50px');
+        $('#logBody').css('height', '800px');
       } else {
-        recentBuilds.style.minWidth = "900px";
-        teamBuilds.style.minWidth   = "900px";
+        upperLeft.style.minWidth = "900px";
+        lowerLeft.style.minWidth   = "900px";
       }
     })
   })
