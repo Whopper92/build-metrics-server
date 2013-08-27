@@ -1,10 +1,12 @@
 <table id='recentBuildsTable' class='table table-striped table-hover'>
   <thead>
-    <th class='result'>Result</th>
-    <th class='package'>Package</th>
-    <th class='dist'>Dist</th>
-    <th class='buildTime'><i class="icon-time"></i></th>
-    <th id='trendHeader'class='trend'><i class="icon-time"></i> Trend by Dist (All Time)</th>
+    <tr>
+      <th class='result'>Result</th>
+      <th class='package'>Package</th>
+      <th class='dist'>Dist</th>
+      <th class='buildTime'><i class="icon-time"></i></th>
+      <th id='trendHeader' class='trend'><i class="icon-time"></i> Trend by Dist (All Time)</th>
+    </tr>
   </thead>
   <tbody>
   <% @stats[:latest].each do |row| %>
