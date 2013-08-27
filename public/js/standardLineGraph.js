@@ -100,7 +100,6 @@ function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPaddin
             .transition()
             .duration(250)
             .attr('r', '10')
-            .attr('cursor', 'pointer')
         })
        .on('mouseout', function(d) {
          hideTooltip('#graphToolTip')
@@ -142,7 +141,6 @@ function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPaddin
               .transition()
               .duration(250)
               .attr('r', '10')
-              .attr('cursor', 'pointer')
           })
          .on('mouseout', function(d) {
            var tooltipID = '#graphToolTip';
