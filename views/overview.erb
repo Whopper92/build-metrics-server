@@ -93,7 +93,7 @@
                 <% @freqPackages.each do |pkg| %>
                   <% rowID        = "#{pkg[0][0...1]}#{pkg[1]}" %>
                   <% modalMessage = "#{pkg[0]}: built #{pkg[1]} times."%>
-                  <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()'>
+                  <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()' onclick='document.location.href=<%= "\"/package/#{pkg[0]}\"" %>'>
                     <td><strong><%= pkg[0] %></strong></td>
                     <td><%= pkg[1] %></td>
                   </tr>
