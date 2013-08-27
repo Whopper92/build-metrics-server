@@ -42,7 +42,9 @@
             </thead>
             <tbody>
               <% @stats[:freqHostList].each do |host| %>
-                <tr>
+                <% rowID        = "#{host[0].gsub('-', '').gsub('.', '')}row"%>
+                <% modalMessage = "#{host[0]}: #{host[2]}% of all #{@packageName} builds." %>
+                <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()'>
                   <td><%= host[0] %></td>
                   <td><%= host[1]%></td>
                   <td><%= host[2]%>%</td>
