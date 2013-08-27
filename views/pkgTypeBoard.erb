@@ -124,7 +124,7 @@
     $(function() {
       createHistogram(<%= [@stats[:jenkinsBuilds].to_json, @stats[:localBuilds].to_json] %>, 200, 440, 70, <%= @stats[:jenkinsBuilds][:count] * 0.2  %>, '#typeSummaryBuildContent', 'builds', '#')
       createHistogram(<%= [@stats[:jenkinsBuilds].to_json, @stats[:localBuilds].to_json] %>, 200, 440, 80, <%= @stats[:jenkinsBuilds][:avgSpd] * 0.2 %>, '#typeSummarySpeedContent', 'seconds', '#')
-      createHistogram(<%= @hostDataArray %>, 580, 440, 70, 50, '#typeSummaryHostContent', '%', 'summary/hosts')
+      createHistogram(<%= @hostDataArray %>, 580, 440, 70, 50, '#typeSummaryHostContent', '%', '#')
       createHistogram(<%= @distDataArray %>, 600, 440, 65, 10, '#typeDistSpeedContent', 'seconds', '#')
       createHistogram(<%= @distDataArray %>, 600, 440, 55, 100, '#typeDistFailureContent', '% failed', '#')
     })

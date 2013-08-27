@@ -225,7 +225,7 @@
                 <% [@stats[:deb], @stats[:rpm], @stats[:gem], @stats[:dmg]].each do |pkgtype| %>
                   <% rowID        = "#{pkgtype[:key]}row"%>
                   <% modalMessage = "#{pkgtype[:freqHost][0]}: #{pkgtype[:freqHostPercent]}% of all #{pkgtype[:key]} builds." %>
-                  <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()' onclick='document.location.href=<%= "\"/summary/hosts/#{pkgtype[:freqHost][0]}\"" %>'>
+                  <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()'>
                     <td><strong><%= pkgtype[:key] %></strong></td>
                     <td><%= pkgtype[:freqHost][0] %></td>
                     <td><%= pkgtype[:freqHost][1] %></td>
