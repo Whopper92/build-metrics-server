@@ -130,8 +130,8 @@ class MetricServer < Sinatra::Base
 
     # Collect data on shipped RC and final packages
     @stats[:shipped]         = Hash.new
-    @stats[:shipped][:final] = Hash[:key => 'Final', :count => 4]
-    @stats[:shipped][:rc]    = Hash[:key => 'RC', :count => 7]
+    @stats[:shipped][:final] = Hash[:key => 'Final', :count => 1]
+    @stats[:shipped][:rc]    = Hash[:key => 'RC', :count => 3]
 
     # Gather the number of times each package has been built and find the top 3
     @pkgNumBuilds = Hash.new

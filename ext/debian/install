@@ -6,4 +6,4 @@ views                 usr/share/metrics
 server.rb             usr/share/metrics
 rakefile              usr/share/metrics
 spec                  usr/share/metrics
-conf/db.conf.example  etc/metrics
+conf/db.conf          etc/metrics

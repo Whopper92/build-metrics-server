@@ -266,7 +266,7 @@
 
       createStandardLineGraph(<%= buildsTimeSeriesArray %>, 470, 480, 70, 45, 110, 200, '#summaryBuildNumberContent', '#summaryBuildsGraph', 'builds')
       createStandardLineGraph(<%= teamTimeSeriesArray %>, 470, 480, 70, 35, 110, 20, '#otherTeamSeriesContent', '#otherTeamGraph', 'builds')
-      createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 0, '#summaryShippedContent', 'shipped', '/summary/shipped/' )
+      createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 1, '#summaryShippedContent', 'shipped', '/summary/shipped/' )
       createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent', 'builds', '/summary/shipped')
       createHistogram(<%=[@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 100, '#typeBuildNumberContent', 'builds', 'summary/type')
       createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#typeBuildSpeedContent', 'seconds', '/summary/type')
@@ -280,8 +280,8 @@
       var lowerRight = document.getElementById("typeContent");
 
       if(screen.width < 1600) {
-        upperLeft.style.minWidth = "1300px";
-        lowerLeft.style.minWidth   = "1300px";
+        upperLeft.style.minWidth    = "1300px";
+        lowerLeft.style.minWidth    = "1300px";
       } else if(screen.width == 1920 && screen.height == 1080) {
         upperLeft.style.minWidth    = "1300px";
         $(upperLeft).css('margin-left', '50px');
@@ -293,8 +293,8 @@
         $(lowerRight).css('margin-left', '50px');
         $('#logBody').css('height', '800px');
       } else {
-        upperLeft.style.minWidth = "900px";
-        lowerLeft.style.minWidth   = "900px";
+        upperLeft.style.minWidth    = "900px";
+        lowerLeft.style.minWidth    = "900px";
       }
     })
   })
