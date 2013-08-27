@@ -43,17 +43,11 @@
 .sideBarModal {
   position: absolute;
   z-index: 99999;
-  width: 250px;
-  height: auto;
   padding: 5px;
   background-color: white;
   border-radius: 10px;
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.4);
   pointer-events:none;
-}
-
-.tableModal {
-  width: 350px;
 }
 
 .sideBarModal {
@@ -75,7 +69,7 @@
 .tableModal p {
   margin-left:5px;
   font-family: sans-serif;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .graphToolTip span,
