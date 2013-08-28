@@ -9,6 +9,7 @@
       <h3 class='contentTitle span6'>Latest <%= @packageName %> Builds</h3>
       <div class='span2 offset4'>
         <div class="btn-group">
+          <button id='recentBuildsPopover' class='moreBtn btn btn-mini' data-toggle='popover' data-placement='left' data-title='Description' data-content='The latest six builds. Click a row for more information.' type="button"><i class='icon-info-sign'></i></button>
           <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-search"></i></button>
           <ul class='dropdown-menu pull-right'>
             <li><a id='histLogButton' tabindex="-1" href=#>Historical Build Log</a></li>
@@ -23,10 +24,15 @@
   <div id='typeSummaryContent' class='span7 contentContainer'>
     <div id='typeSummaryContentTitle' class='row-fluid'>
       <h3 class='contentTitle span6'><%= @packageName %> Packaging Summaries</h3>
+      <div class='span2 offset4'>
+        <div class="btn-group">
+          <button id='summaryPopover' class='moreBtn btn btn-mini' data-toggle='popover' data-placement='left' data-title='Description' data-content='General stats detailing the number of package builds, as well as the distribution of build jobs across each build host.' type="button"><i class='icon-info-sign'></i></button>
+        </div>
+      </div>
     </div>
     <div class='row-fluid'>
       <div id='packageSummaryBuildNumber' class='span5'>
-        <h4 id='packageSummaryBuildNumberTitle' class='contentTitle'>Number of Builds this Month</h4>
+        <h4 id='packageSummaryBuildNumberTitle' class='contentTitle'>Number of Builds</h4>
         <div id='packageSummaryBuildContent' class='typeChartContent'>
           <div class='yAxisLabel'>Builds</div>
         </div>
@@ -64,6 +70,11 @@
   <div id='generalStatsContent' class='span4 contentContainer'>
     <div id='generalStatsContentTitle' class='row-fluid'>
       <h3 class='contentTitle span6'>General <%= @packageName %> Stats</h3>
+      <div class='span2 offset4'>
+        <div class="btn-group">
+          <button id='generalPopover' class='moreBtn btn btn-mini' data-toggle='popover' data-placement='left' data-title='Description' data-content='Miscellaneous statistics about this package.' type="button"><i class='icon-info-sign'></i></button>
+        </div>
+      </div>
     </div>
     <div class='row-fluid'>
       <div class='span5'>
@@ -107,6 +118,11 @@
   <div id='buildStatsContent' class='span7 contentContainer'>
     <div id='buildsStatsContentTitle' class='row-fluid'>
       <h3 class='contentTitle span6'>Build Statistics over Last 12 Months</h3>
+      <div class='span2 offset4'>
+        <div class="btn-group">
+          <button id='buildStatsPopover' class='moreBtn btn btn-mini' data-toggle='popover' data-placement='left' data-title='Description' data-content='Trends in build time and build failure rate for this package over the course of the last year.' type="button"><i class='icon-info-sign'></i></button>
+        </div>
+      </div>
     </div>
     <div id='buildStatsSpeed' class='span6'>
       <h4 class='contentTitle'>Average Package Build Speed</h4>
@@ -133,6 +149,11 @@
       $('#histLogButton').on('click', function() {
         createHistoricalBuildLogModal()
       })
+
+      $('#recentBuildsPopover').popover();
+      $('#summaryPopover').popover();
+      $('#generalPopover').popover();
+      $('#buildStatsPopover').popover();
 
     $(function() {
 
