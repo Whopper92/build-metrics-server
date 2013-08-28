@@ -15,8 +15,15 @@ a large number of package builds.
 <a name="installation"/>
 ## 1. Installation and Setup
 
+* **Package**  
+The Build Board comes pre-configured with the rake task `package:bootstrap`, which automatically clones the [Puppet Labs packaging repository](https://github.com/puppetlabs/packaging). Once this has been done, a Debian package can be generated for fast installation by running the task `package:deb`. This will build a package and place it into the `pkg` directory within the root of the project, which can be installed using `dpkg`.
+
+* **Puppet Module**  
+
 * **Configuration**  
 This app uses a simple [configuration file](#config-file) to store sensitive database login information. This file is installed into `/etc/db.conf` by default, and must be configured with the appropriate credentials before the Build Board server can connect.
+
+The application also includes an [Apache vhost configuration](#vhost-config), which is installed by default and can be manually configured.
 
 
 <a name="dependencies"/>
@@ -295,6 +302,10 @@ The number of seconds that package building tools took to complete the build.
 * `config.ru`  
 A standard Sinatra configuration file that allows the server to run.
 
+* `favicon.ico`  
+The Puppet Labs logo image, used as the favicon icon which can be seen in the browser
+tab and address bars.
+
 * `server.rb`  
 The core of the Build Board application. Contains route definitions for every view of
 the dashboard and handles every database lookup through DataMapper.
@@ -309,6 +320,18 @@ An example configuration file including each required database connection parame
 An example Ruby implementation of a valid HTTP POST request to store build data.
 
 ##### `ext/`
+* `build_defaults.yaml`  
+A configuration file used for linking the project to the Puppet Labs packaging repository.
+
+* `debian/`  
+Files needed to build Debian packages. Contents of this directory are used by the task `package:deb`.
+
+<a name="vhost-config"/>
+* `metrics.conf`  
+The Apache Vhost configuration.
+
+* `project_data.yaml`  
+Another configuration file used with the Puppet Labs packaging repository.
 
 ##### `public/css/`
 * `bootstrap.css`, `bootstrap.min.css`, `bootstrap-responsive.css` and `bootstrap-responsive.min.css`  
@@ -325,6 +348,18 @@ Contents: general purpose CSS classes not specific to any single route
 
 * `overview.css`  
 Contents: all styling used for the /overview route, which is the main dashboard display.
+
+* `package.css`  
+Contents: Styling for the individual package view.
+
+* `packageSelection.css`  
+Contents: Styling for the package selection screen.
+
+* `packageType.css`  
+Contents: Styling for the package type view.
+
+* `toolTips.css`  
+Contents: Styling for tooltips and modal popups, which are present on every view.
 
 ##### `models/`
 * `metric.rb`  
@@ -350,13 +385,16 @@ Each relies heavily on D3.js.
 * `d3/d3.v3.js` and `d3.v3.min.js`  
 The D3 graphing library. These are used heavily to create all of the data visualizing graphs seen on the dashboard.
 
+* `historicalBuildLogModal.js`  
+Code which generates the historical build log, which can be triggered on any view.
+
 * `jquery-2.0.3.min.js`  
 The JQuery JavaScript library. This is required by bootstrap.
 
 * `overviewPackageSparkline.js`  
 Responsible for creating a sparkline without Axes. Primarily used in the recent builds section of the overview display.
 
-* `overviewTables.js`   
+* `tableFunctions.js`   
 Creates tooltip popups for overview hover effects on tables.
 
 * `recentBuildsModal.js`  
@@ -389,6 +427,22 @@ A template for displaying upon a route being requested that doesn't exist.
 
 * `overview.erb`  
 The template which contains all HTML defining the overview dashboard display.
+
+* `package.erb`  
+The template defining the individual package dashboard view.
+
+* `packageSelection.erb`  
+The template which creates the package selection view.
+
+* `pkgTypeBoard.erb`  
+The template containing the structure of the 'package type' dashboard view.
+
+* `recentBuildsTable.erb`  
+A template containing HTML defining the 'recent builds' table, which is used dynamically
+across each of the main vies.
+
+* `tooltips.erb`  
+The template which contains the structuring of all tooltips and modal popups.
 
 ##### `Other`
 
