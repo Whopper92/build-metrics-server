@@ -105,7 +105,6 @@ class MetricServer < Sinatra::Base
     curYear                                    = lastYear
 
     # Create an array of months based on the current month
-    fakeTeamData = [10, 12, 16, 7, 12, 20, 14, 14, 10, 9, 4, 19, 19]
     until monthCounter == 13 do
       if monthCounter != 0 and thisMonth == '01'
         # Incrememnt the year
@@ -113,9 +112,10 @@ class MetricServer < Sinatra::Base
         curYear  = nextYear
       end
       @stats[:buildsTimeSeries][:"#{curYear}"][:"#{thisMonth}"]               = Hash[:key => "#{curYear}-#{thisMonth}", :count => 0, :failCount => 0]
+      @stats[:teamTimeSeries][:"#{curYear}"][:"#{thisMonth}"]                 = Hash[:key => "#{curYear}-#{thisMonth}", :count => 0, :failCount => 0]
       @stats[:buildsTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:count]       = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE date LIKE '#{curYear}-#{thisMonth}%'")
       @stats[:buildsTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:failCount]   = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = false AND date LIKE '#{curYear}-#{thisMonth}%'")
-      @stats[:teamTimeSeries][:"#{curYear}"][:"#{thisMonth}"]                 = Hash[:key => "#{curYear}-#{thisMonth}", :count => fakeTeamData[monthCounter]]
+      @stats[:teamTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:count]         = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE date LIKE '#{curYear}-#{    thisMonth}%' AND build_team != 'release'")
 
       @monthArray << "#{curYear}-#{thisMonth}"
       nextMonth = thisMonth.to_i + 1
@@ -163,8 +163,8 @@ class MetricServer < Sinatra::Base
 
     # Gather team statistics
     @teamNumBuilds           = Hash.new
-    @teamNumBuilds[:release] = Hash[:key => 'Release', :count => 102]
-    @teamNumBuilds[:other]   = Hash[:key => 'Other', :count => 42]
+    @teamNumBuilds[:release] = Hash[:key => 'Release', :count => Metric.count(:build_team => 'release')]
+    @teamNumBuilds[:other]   = Hash[:key => 'Other', :count => Metric.count(:build_team.not => 'release')]
 
     erb :overview
   end
