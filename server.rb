@@ -392,10 +392,14 @@ class MetricServer < Sinatra::Base
   post '/overview/metrics' do
     # Format some paramters and download the Jenkins build log for storage
     puts params.inspect
-    params[:date]    = Time.now.to_s
-    params[:dist]    = params[:dist][3..-1] if params[:dist][0..2].match(/[\d]+\.[\d]+/)
-    params[:dist]    = 'sles11' if params[:dist] == 'sl11'
-    params[:success] = case params[:success]
+    params[:date]       = Time.now.to_s
+    params[:dist]       = params[:dist][3..-1] if params[:dist][0..2].match(/[\d]+\.[\d]+/)
+    params[:dist]       = 'sles11' if params[:dist] == 'sl11'
+    if params[:build_team] != 'release' and params[:build_user] != 'jenkins'
+      params[:build_team] = 'dev'
+    end
+    params[:build_team] = 'jenkins' if params[:build_user] == 'jenkins'
+    params[:success]    = case params[:success]
         when /SUCCESS/ then true
         when /true/    then true
         else false

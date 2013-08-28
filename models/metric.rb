@@ -8,6 +8,7 @@ class Metric
   property :jenkins_build_time, Float
   property :package_build_time, Float
   property :build_user, String
+  property :build_team, String
   property :build_loc, Text
   property :version, String
   property :pe_version, String
