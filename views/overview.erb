@@ -14,6 +14,7 @@
       <h3 class='contentTitle span4'>Recent Builds</h3>
       <div class='span2 offset6'>
         <div class="btn-group">
+          <button id='recentBuildsPopover' class='moreBtn btn btn-mini' data-toggle='popover' data-placement='left' data-title='Description' data-content='The latest six builds. Click a row for more information.' type="button"><i class='icon-info-sign'></i></button>
           <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-search"></i></button>
           <ul class='dropdown-menu pull-right'>
             <li><a id='histLogButton' tabindex="-1" href=#>Historical Build Log</a></li>
@@ -31,6 +32,7 @@
       <h3 class='contentTitle span4'>Metric Summaries</h3>
       <div class='span2 offset6'>
         <div class="btn-group">
+          <button id='summaryPopover' class='moreBtn btn btn-mini' data-toggle='popover' data-placement='left' data-title='Description' data-content='High level stats detailing the number of builds over time, packages shipped by the release team, and the most active builders.' type="button"><i class='icon-info-sign'></i></button>
           <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-wrench"></i></button>
           <ul class='dropdown-menu pull-right'>
             <li><a tabindex="-1" href="#">Adjust Timescale</a></li>
@@ -141,6 +143,7 @@
         <h3 class='contentTitle span4'>Team Statistics</h3>
         <div class='span2 offset6'>
           <div class="btn-group">
+            <button id='teamPopover' class='moreBtn btn btn-mini' data-toggle='popover' data-placement='left' data-title='Description' data-content='A package building comparison between the release team and other Puppet Labs development teams.' type="button"><i class='icon-info-sign'></i></button>
             <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-wrench"></i></button>
             <ul class='dropdown-menu pull-right'>
               <li><a tabindex="-1" href="#">Adjust Timescale</a></li>
@@ -175,6 +178,7 @@
         <h3 class='contentTitle span4'>Metrics by Package Type </h3>
         <div class='span2 offset6'>
           <div class="btn-group">
+            <button id='typePopover' class='moreBtn btn btn-mini' data-toggle='popover' data-placement='left' data-title='Description' data-content='High level overview of key stats by package type, as well as build host usage for respective package types.' type="button"><i class='icon-info-sign'></i></button>
             <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-wrench"></i></button>
             <ul class='dropdown-menu pull-right'>
               <li><a tabindex="-1" href="#">Adjust Timescale</a></li>
@@ -258,6 +262,11 @@
       $('#histLogButton').on('click', function() {
         createHistoricalBuildLogModal()
       })
+
+      $('#recentBuildsPopover').popover();
+      $('#summaryPopover').popover();
+      $('#teamPopover').popover();
+      $('#typePopover').popover();
 
       // Generate the graphs
       <%  # Create the data array to send to JavaScript graph generation functions
