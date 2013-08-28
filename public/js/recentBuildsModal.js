@@ -68,9 +68,19 @@ function createRecentBuildsModal(data) {
     })
 
   d3.select('#recentBuildsModal')
+    .select('#recentBuildsModalTeamCell')
+    .text(function(d) {
+      if(data.build_team) {
+        return data.build_team
+      } else {
+        return 'Not Available'
+      }
+    })
+
+  d3.select('#recentBuildsModal')
     .select('#recentBuildsModalPackageTimeCell')
     .text(function(d) {
-      if(data.package_build_time != null) {
+      if(data.package_build_time) {
         return parseFloat(data.package_build_time).toFixed(2) + ' seconds'
       } else {
         return 'Not Available'
