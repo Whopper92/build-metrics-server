@@ -116,6 +116,7 @@ class MetricServer < Sinatra::Base
       @stats[:buildsTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:count]       = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE date LIKE '#{curYear}-#{thisMonth}%'")
       @stats[:buildsTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:failCount]   = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = false AND date LIKE '#{curYear}-#{thisMonth}%'")
       @stats[:teamTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:count]         = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE date LIKE '#{curYear}-#{    thisMonth}%' AND build_team != 'release'")
+      @stats[:teamTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:failCount]     = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = false AND build_team != 'release' AND build_team IS NOT NULL AND date LIKE '#{curYear}-#{thisMonth}%'")
 
       @monthArray << "#{curYear}-#{thisMonth}"
       nextMonth = thisMonth.to_i + 1

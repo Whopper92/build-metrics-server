@@ -121,6 +121,10 @@ th.trend {width: 30%;}
   margin-top: 15px;
 }
 
+#otherTeamSeriesContent {
+  margin: -50px 0 0 -50px;
+}
+
 #teamsBuildsXLabel {
   position: relative;
   top: 470px;
