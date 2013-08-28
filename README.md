@@ -63,7 +63,7 @@ DataMapper initializes its connection to the database in the main server file, `
     DataMapper.setup(:default, "postgres://#{config['username']}:#{config['password']}@#{config['hostname']} 
                      #{config.has\_key?('port') ? ":#{config['port']}" : ""}/#{config['database']}")
 
-Any database type compatible with DataMapper may be used. To swap databases, the correct DataMapper adapter must be required, and the database setup line must be updated.
+Any database type compatible with DataMapper may be used. To swap databases, the correct DataMapper adapter must be required in the server file, and the database setup line must be updated.
 
 #### Retrieving data
 
@@ -222,8 +222,8 @@ located in the `public/` directory.
 
 ##### HTML and CSS
   Much of the structuring used within the HTML of the dashboard is based around the [Twitter Bootstrap fluid layout](http://getbootstrap.com/css/#grid) grid system.
-  The main view, for example, consists of two insances of `row-fluid` with spans of various sizes to represent columns. The navigation bar and
-  footer seen on every route is also styled exclusively with bootstrap.
+  The main view, for example, consists of two instances of `row-fluid` with spans of various sizes to represent columns. The navigation bar and
+  footer seen on every route are also styled exclusively with bootstrap.
 
   The fluid layout allows the application to scale depending on screen resolution without compromising the visibility of the data.
 
@@ -286,7 +286,7 @@ The complete log of the build in text.
 * `jenkins_build_time`  
 The number of seconds that a Jenkins package building job took to complete the build.
 
-* `package_build_time**`  
+* `package_build_time`  
 The number of seconds that package building tools took to complete the build.
 
 <a name="file-glossary"/>
