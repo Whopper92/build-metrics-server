@@ -36,7 +36,7 @@ itself may be swapped for a different type so long as it is compatible with Data
 ### Configuring a database
 
 
-The default data store for this app is a PostgreSQL database running on the same server as the web application. The schema of this database exists as follows, where each row represents a single package build:
+The default data store for this app is a PostgreSQL database, which can be run either on the same host as the webserver or remotely. The schema of this database exists as follows, where each row represents a single package build:
 
 <pre>
        Column       |          Type          |                      Modifiers                       | Storage  | Description
