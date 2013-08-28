@@ -40,7 +40,9 @@ function loadHistoricalLog(data) {
     var minutes = data[i].date.slice(14,16)
 
     // Convert time
-    if(parseInt(hours) > 12) {
+    if(parseInt(hours) == 12) {
+      var time    = '12:' + minutes + ' PM'
+    } else if(parseInt(hours) > 12) {
       var stdHour = parseInt(hours) - 12
       var time    = String(stdHour) + ':' + minutes + ' PM'
     } else {
