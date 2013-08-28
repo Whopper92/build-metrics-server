@@ -240,8 +240,8 @@ class MetricServer < Sinatra::Base
     @stats[:general] = Hash.new
     @stats[:general][:RCReleases]    = 22
     @stats[:general][:finalReleases] = 35
-    @stats[:general][:releaseBuilds] = 402
-    @stats[:general][:otherBuilds]   = 115
+    @stats[:general][:releaseBuilds] = Metric.count(:package_name => params[:package], :build_team => 'release')
+    @stats[:general][:otherBuilds]   = Metric.count(:package_name => params[:package], :build_team.not => 'release')
     @stats[:general][:FOSSBuilds]    = Metric.count(:package_name => params[:package], :pe_version => 'N/A')
     @stats[:general][:PEBuilds]      = Metric.count(:package_name => params[:package], :pe_version.not => 'N/A')
 
@@ -376,8 +376,8 @@ class MetricServer < Sinatra::Base
 
     @stats[:general]                    = Hash.new
     @stats[:general][:totalBuilds]      = Metric.count(:package_type => params[:type])
-    @stats[:general][:releaseBuilds]    = 620
-    @stats[:general][:otherBuilds]      = 293
+    @stats[:general][:releaseBuilds]    = Metric.count(:package_type => params[:type], :build_team => 'release')
+    @stats[:general][:otherBuilds]      = Metric.count(:package_type => params[:type], :build_team.not => 'release')
     @stats[:general][:mostBuiltDist]    = Metric.aggregate(:dist, :all.count, :conditions => ['package_type = ?', "#{params[:type]}"]).sort {|a,b| b[1] <=> a[1]}[0]
     @stats[:general][:mostBuiltPackage] = Metric.aggregate(:package_name, :all.count, :conditions => ['package_type = ?', "#{params[:type]}"]).sort {|a,b| b[1] <=> a[1]}[0]
     @stats[:general][:failureRate]      = Metric.count(:package_type => params[:type], :success => false) / Float(@stats[:general][:totalBuilds])
