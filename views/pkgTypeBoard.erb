@@ -132,14 +132,18 @@
 <script type='text/javascript'>
   $(document).ready(function() {
     // Add JS interactive elements
-      $('#histLogButton').on('click', function() {
-        createHistoricalBuildLogModal()
-      })
+    setTimeout(function(){
+      window.location.reload(1);
+    }, 10000);
 
-      $('#recentBuildsPopover').popover();
-      $('#summaryPopover').popover();
-      $('#generalPopover').popover();
-      $('#distPopover').popover();
+    $('#histLogButton').on('click', function() {
+      createHistoricalBuildLogModal()
+    })
+
+    $('#recentBuildsPopover').popover();
+    $('#summaryPopover').popover();
+    $('#generalPopover').popover();
+    $('#distPopover').popover();
 
     // Generate the graphs
     $(function() {
