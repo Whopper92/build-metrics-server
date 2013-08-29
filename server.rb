@@ -243,8 +243,8 @@ class MetricServer < Sinatra::Base
     @stats[:general][:finalReleases] = 35
     @stats[:general][:releaseBuilds] = Metric.count(:package_name => params[:package], :build_team => 'release')
     @stats[:general][:otherBuilds]   = Metric.count(:package_name => params[:package], :build_team.not => 'release')
-    @stats[:general][:FOSSBuilds]    = Metric.count(:package_name => params[:package], :pe_version => 'N/A')
-    @stats[:general][:PEBuilds]      = Metric.count(:package_name => params[:package], :pe_version.not => 'N/A')
+    @stats[:general][:jenkinsBuilds]   = Metric.count(:package_name => params[:package], :build_team => 'jenkins')
+    @stats[:general][:totalBuilds]   = Metric.count(:package_name => params[:package])
 
     # Gather aggregate data about each package type
     @allPackageTypes.each do |type|

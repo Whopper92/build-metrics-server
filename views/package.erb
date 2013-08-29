@@ -89,8 +89,8 @@
               <td id='generalStatsReleaseBuildsCell' class='generalStatsTableCell'><%= @stats[:general][:releaseBuilds] %></td>
             </tr>
             <tr>
-              <td class='generalStatsTableLabel'>Total Builds:</td>
-              <td id='generalStatsFOSSBuildsCell' class='generalStatsTableCell'><%= @stats[:general][:FOSSBuilds] %></td>
+              <td class='generalStatsTableLabel'>Jenkins Builds:</td>
+              <td id='generalStatsFOSSBuildsCell' class='generalStatsTableCell'><%= @stats[:general][:jenkinsBuilds] %></td>
             </tr>
           </tbody>
         </table>
@@ -105,6 +105,10 @@
             <tr>
               <td class='generalStatsTableLabel'>Other Team Builds:</td>
               <td id='generalStatsOtherBuildsCell' class='generalStatsTableCell'><%= @stats[:general][:otherBuilds] %></td>
+            </tr>
+            <tr>
+              <td class='generalStatsTableLabel'>Total Builds:</td>
+              <td id='generalStatsFOSSBuildsCell' class='generalStatsTableCell'><%= @stats[:general][:totalBuilds] %></td>
             </tr>
           </tbody>
         </table>
