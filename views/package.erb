@@ -146,18 +146,14 @@
   $(document).ready(function() {
     // Add JS interactive elements
 
-    setTimeout(function(){
-      window.location.reload(1);
-    }, 10000);
+      $('#histLogButton').on('click', function() {
+        createHistoricalBuildLogModal()
+      })
 
-    $('#histLogButton').on('click', function() {
-      createHistoricalBuildLogModal()
-    })
-
-    $('#recentBuildsPopover').popover();
-    $('#summaryPopover').popover();
-    $('#generalPopover').popover();
-    $('#buildStatsPopover').popover();
+      $('#recentBuildsPopover').popover();
+      $('#summaryPopover').popover();
+      $('#generalPopover').popover();
+      $('#buildStatsPopover').popover();
 
     $(function() {
 
