@@ -31,6 +31,7 @@ The application also includes an [Apache vhost configuration](#vhost-config), wh
 
 * rubygem sinatra (1.3.3)
 * rubygem sinatra-contrib (1.3.2)
+* rubygem passenger (4.0.14)
 * rubygem dm-postgres-adapter (1.2.0)
 * rubygem datamapper (1.2.0)
 
@@ -315,6 +316,10 @@ the dashboard and handles every database lookup through DataMapper.
 * `db.conf.example`  
 An example configuration file including each required database connection parameter.
 
+<a name="vhost-config"/>
+* `metrics.delivery.puppetlabs.net`  
+The Apache Vhost configuration.
+
 ##### `examples/`  
 * `metrics_client.rb`  
 An example Ruby implementation of a valid HTTP POST request to store build data.
@@ -325,10 +330,6 @@ A configuration file used for linking the project to the Puppet Labs packaging r
 
 * `debian/`  
 Files needed to build Debian packages. Contents of this directory are used by the task `package:deb`.
-
-<a name="vhost-config"/>
-* `metrics.conf`  
-The Apache Vhost configuration.
 
 * `project_data.yaml`  
 Another configuration file used with the Puppet Labs packaging repository.
