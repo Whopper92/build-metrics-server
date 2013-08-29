@@ -291,7 +291,7 @@
       createStandardLineGraph(<%= buildsTimeSeriesArray %>, 470, 480, 70, 45, 110, 200, '#summaryBuildNumberContent', '#summaryBuildsGraph', 'builds')
       createStandardLineGraph(<%= teamTimeSeriesArray %>, 470, 480, 70, 35, 110, 20, '#otherTeamSeriesContent', '#otherTeamGraph', 'builds')
       createHistogram(<%= [@stats[:shipped][:final].to_json, @stats[:shipped][:rc].to_json]%>, 200, 440, 70, 1, '#summaryShippedContent', 'shipped', '/summary/shipped/' )
-      createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:other].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent', 'builds', '/summary/shipped')
+      createHistogram(<%= [@teamNumBuilds[:release].to_json, @teamNumBuilds[:jenkins].to_json, @teamNumBuilds[:dev].to_json] %>, 200, 450, 70, 20, '#teamBuildComparisonContent', 'builds', '/summary/shipped')
       createHistogram(<%=[@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 100, '#typeBuildNumberContent', 'builds', 'summary/type')
       createHistogram(<%= [@stats[:deb].to_json, @stats[:rpm].to_json, @stats[:gem].to_json, @stats[:dmg].to_json] %>, 350, 440, 70, 20, '#typeBuildSpeedContent', 'seconds', '/summary/type')
     })

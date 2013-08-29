@@ -165,7 +165,8 @@ class MetricServer < Sinatra::Base
     # Gather team statistics
     @teamNumBuilds           = Hash.new
     @teamNumBuilds[:release] = Hash[:key => 'Release', :count => Metric.count(:build_team => 'release')]
-    @teamNumBuilds[:other]   = Hash[:key => 'Other', :count => Metric.count(:build_team.not => 'release')]
+    @teamNumBuilds[:dev]     = Hash[:key => 'Dev', :count => Metric.count(:build_team.not => 'release', :build_team.not => 'jenkins')]
+    @teamNumBuilds[:jenkins]   = Hash[:key => 'Jenkins', :count => Metric.count(:build_team => 'jenkins')]
 
     erb :overview
   end
