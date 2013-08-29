@@ -7,4 +7,3 @@ server.rb                              usr/share/metrics
 rakefile                               usr/share/metrics
 spec                                   usr/share/metrics
 conf/db.conf                           etc/metrics
-conf/metrics.delivery.puppetlabs.net   etc/apache2/site-enabled

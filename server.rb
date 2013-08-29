@@ -242,7 +242,7 @@ class MetricServer < Sinatra::Base
     @stats[:general][:RCReleases]    = 22
     @stats[:general][:finalReleases] = 35
     @stats[:general][:releaseBuilds] = Metric.count(:package_name => params[:package], :build_team => 'release')
-    @stats[:general][:otherBuilds]   = Metric.count(:package_name => params[:package], :build_team.not => 'release')
+    @stats[:general][:otherBuilds]   = Metric.count(:package_name => params[:package], :build_team.not => 'release', :build_user.not => 'jenkins')
     @stats[:general][:jenkinsBuilds]   = Metric.count(:package_name => params[:package], :build_team => 'jenkins')
     @stats[:general][:totalBuilds]   = Metric.count(:package_name => params[:package])
 
