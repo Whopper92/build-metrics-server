@@ -115,8 +115,8 @@ class MetricServer < Sinatra::Base
       @stats[:teamTimeSeries][:"#{curYear}"][:"#{thisMonth}"]                 = Hash[:key => "#{curYear}-#{thisMonth}", :count => 0, :failCount => 0]
       @stats[:buildsTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:count]       = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE date LIKE '#{curYear}-#{thisMonth}%'")
       @stats[:buildsTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:failCount]   = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = false AND date LIKE '#{curYear}-#{thisMonth}%'")
-      @stats[:teamTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:count]         = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE date LIKE '#{curYear}-#{    thisMonth}%' AND build_team != 'release'")
-      @stats[:teamTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:failCount]     = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = false AND build_team != 'release' AND build_team IS NOT NULL AND date LIKE '#{curYear}-#{thisMonth}%'")
+      @stats[:teamTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:count]         = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE date LIKE '#{curYear}-#{thisMonth}%' AND build_team != 'release' AND build_team != 'jenkins'")
+      @stats[:teamTimeSeries][:"#{curYear}"][:"#{thisMonth}"][:failCount]     = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = false AND build_team != 'release' AND build_team != 'jenkins' AND build_team IS NOT NULL AND date LIKE '#{curYear}-#{thisMonth}%'")
 
       @monthArray << "#{curYear}-#{thisMonth}"
       nextMonth = thisMonth.to_i + 1
@@ -131,8 +131,8 @@ class MetricServer < Sinatra::Base
 
     # Collect data on shipped RC and final packages
     @stats[:shipped]         = Hash.new
-    @stats[:shipped][:final] = Hash[:key => 'Final', :count => 1]
-    @stats[:shipped][:rc]    = Hash[:key => 'RC', :count => 3]
+    @stats[:shipped][:final] = Hash[:key => 'Final', :count => 0]
+    @stats[:shipped][:rc]    = Hash[:key => 'RC', :count => 0]
 
     # Gather the number of times each package has been built and find the top 3
     @pkgNumBuilds = Hash.new
@@ -165,8 +165,8 @@ class MetricServer < Sinatra::Base
     # Gather team statistics
     @teamNumBuilds           = Hash.new
     @teamNumBuilds[:release] = Hash[:key => 'Release', :count => Metric.count(:build_team => 'release')]
-    @teamNumBuilds[:dev]     = Hash[:key => 'Dev', :count => Metric.count(:build_team.not => 'release', :build_team.not => 'jenkins')]
-    @teamNumBuilds[:jenkins]   = Hash[:key => 'Jenkins', :count => Metric.count(:build_team => 'jenkins')]
+    @teamNumBuilds[:dev]     = Hash[:key => 'Dev', :count => Metric.count(:build_team => 'dev')]
+    @teamNumBuilds[:jenkins] = Hash[:key => 'Jenkins', :count => Metric.count(:build_team => 'jenkins')]
 
     erb :overview
   end
@@ -239,8 +239,8 @@ class MetricServer < Sinatra::Base
 
     # Gather stats for the 'general stats' section
     @stats[:general] = Hash.new
-    @stats[:general][:RCReleases]    = 22
-    @stats[:general][:finalReleases] = 35
+    @stats[:general][:RCReleases]    = 0
+    @stats[:general][:finalReleases] = 0
     @stats[:general][:releaseBuilds] = Metric.count(:package_name => params[:package], :build_team => 'release')
     @stats[:general][:otherBuilds]   = Metric.count(:package_name => params[:package], :build_team.not => 'release', :build_user.not => 'jenkins')
     @stats[:general][:jenkinsBuilds]   = Metric.count(:package_name => params[:package], :build_team => 'jenkins')
@@ -418,6 +418,19 @@ class MetricServer < Sinatra::Base
       else
         params[:package_build_time] = params[:jenkins_build_time] if params[:package_build_time] == nil
       end
+    end
+
+    # Compatibility hack for certain packages that don't follow the same conventions in dynamic Jenkins builds
+    if params[:dist] == '5'
+      params[:dist] = 'el5'
+    elsif params[:dist] == '6'
+      params[:dist] = 'el6'
+    elsif params[:dist] == '17'
+      params[:dist] = 'fedora17'
+    elsif params[:dist] == '18'
+      params[:dist] = 'fedora18'
+    elsif params[:dist] == '19'
+      params[:dist] = 'fedora19'
     end
 
     render_page do
