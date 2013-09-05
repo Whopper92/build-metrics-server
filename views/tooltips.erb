@@ -221,17 +221,24 @@
     function setButtons(pageNumber) {
       var displayPage = pageNumber + 1
       var displayTotal = totalPages + 1
+      console.log(pageNumber)
+      console.log(totalPages)
       $('#histLogPageTitle').text('Page ' + displayPage + ' of ' + displayTotal)
-      if(pageNumber == 0) {   // Disable next or previous buttons if at first or last page, respectively
+      if(pageNumber == 0 && totalPages != 0) {   // Disable next or previous buttons if at first or last page, respectively
         $('#prevBuildsButton').addClass('disabled')
         $('#newestBuildsButton').addClass('disabled')
         $('#nextBuildsButton').removeClass('disabled')
         $('#oldestBuildsButton').removeClass('disabled')
-      } else if(pageNumber == totalPages) {
+      } else if(pageNumber == totalPages && totalPages != 0) {
         $('#nextBuildsButton').addClass('disabled')
         $('#oldestBuildsButton').addClass('disabled')
         $('#prevBuildsButton').removeClass('disabled')
         $('#newestBuildsButton').removeClass('disabled')
+      } else if(totalPages == 0) {
+        $('#prevBuildsButton').addClass('disabled')
+        $('#nextBuildsButton').addClass('disabled')
+        $('#newestBuildsButton').addClass('disabled')
+        $('#oldestBuildsButton').addClass('disabled')
       } else {
         $('#prevBuildsButton').removeClass('disabled')
         $('#nextBuildsButton').removeClass('disabled')

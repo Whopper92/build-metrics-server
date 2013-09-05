@@ -2,6 +2,9 @@
 on the overview dashboard. Requires a divid to allow for dynamic
 positioning */
 function createRecentSparkline(dataset, divid) {
+  console.log(dataset)
+  console.log(divid)
+
   dataset = dataset.reverse();
   var w = 350
   var h = 20

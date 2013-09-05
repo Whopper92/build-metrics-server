@@ -1,0 +1,30 @@
+<!--
+  packageSelection template
+  Used for generating a list of packages for selection
+-->
+
+<div class='row-fluid'>
+  <div id='packageSelectionContainer' class='span6 offset3 contentContainer'>
+    <div class='row-fluid'>
+      <div id='packageSelectionTitle' class='span6'>
+        <h2>Select a Package</h2>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div id='packageSelectionMain'>
+        <div id='packageListContainer' class="container span12">
+          <div class="row-fluid">
+            <div class="span10 offset1">
+              <ul id='packageList' class="nav nav-pills nav-stacked">
+                <li class='active'><a href='overview'>Home</a></li>
+                <% @allUsers.each do |user| %>
+                  <li><a href='<%= "user/#{user.build_user}" %>'><%= user.build_user %></a></li>
+                <% end %>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

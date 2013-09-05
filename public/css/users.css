@@ -1,0 +1,20 @@
+/* Styling for the user view */
+
+/* Content positioning */
+#userRecentBuildsContent {
+  position: relative;
+  margin-top: 50px;
+  min-width: 900px;
+  height: 540px;
+}
+
+#userGeneralStatsContent {
+  min-width: 900px;
+  margin-top: 25px;
+  height: 560px;
+}
+
+/* Stat table styling */
+#generalStatsFavPackageCell {
+  font-size: 28px;
+}

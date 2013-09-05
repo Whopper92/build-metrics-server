@@ -13,14 +13,6 @@ function getBuilds(url) {
   })
 }
 
-function getOldestBuilds() {
-  console.log('old')
-}
-
-function getNewestBuilds() {
-  console.log('new')
-}
-
 function loadHistoricalLog(data) {
   var dataArray = new Array()
   for(i = 0; i < data.length; ++i) {

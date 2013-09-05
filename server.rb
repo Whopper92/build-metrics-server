@@ -43,9 +43,9 @@ class MetricServer < Sinatra::Base
   #  ============================= VARIABLES =============================== #
     before do
       @allPackageNames   = Metric.all(:fields => [:package_name], :unique => true, :order => [:package_name.asc])
+      @allUsers          = Metric.all(:fields => [:build_user], :unique => true, :order => [:build_user.asc])
       @allDists          = Metric.all(:fields => [:dist], :unique => true, :order => [:dist.asc])
       @allHosts          = Metric.all(:fields => [:build_loc], :unique => true, :order => [:build_loc.asc])
-      @allUsers          = Metric.all(:fields => [:build_user], :unique => true, :order => [:build_user.asc])
       @allPackageTypes   = ['deb', 'rpm', 'gem', 'dmg']
       @pageNumber        = 0 # This is used for the historical build log
     end
@@ -173,7 +173,6 @@ class MetricServer < Sinatra::Base
 
   # A dynamic route to gather historical build log data
   get '/log/:options' do
-    @packageName  = params[:package]
 
     # options is a parameter with the form: package-facter, type-deb, or all-all
     type = params[:options].split('~')[0]
@@ -385,6 +384,51 @@ class MetricServer < Sinatra::Base
     @stats[:general][:failureRate]      = (@stats[:general][:failureRate] * 100).round(0)
 
     erb :pkgTypeBoard
+  end
+
+  get '/user' do
+    erb :userSelection
+  end
+
+  get '/user/:build_user' do
+    @build_user   = params[:build_user]
+    @urlType      = 'build_user'
+    @urlName      = params[:build_user]
+
+    # Determine how many pages of data there are for the historical build log
+    @totalPages = Metric.count(:build_user => params[:build_user])
+    @totalPages = (Float(@totalPages) / Float(11)).ceil
+
+    # First, get all data about the latest 6 builds
+    @stats = Hash.new
+    @stats[:latest] = Metric.all(
+                        :order => [:date.desc],
+                        :limit => 6,
+                        :jenkins_build_time.not => nil,
+                        :build_user => params[:build_user])
+
+    # Next, for each recent build find all build times for the appropriate dist to formulate a trend
+    @trends = Hash.new
+    @stats[:latest].each do |package|
+      @trends["#{package[:package_name]}-#{package[:dist]}-#{package[:id]}"] = Metric.all(:fields => [:jenkins_build_time],
+                                                      :order                  => [:date.desc],
+                                                      :package_name           => package[:package_name],
+                                                      :dist                   => package[:dist],
+                                                      :jenkins_build_time.not => nil,
+                                                      :id.lte                 => package[:id])
+    end
+
+    @stats[:general] = Hash.new
+    @stats[:general][:totalBuilds]    = Metric.count(:build_user => params[:build_user])
+    @stats[:general][:failureRate]    = Metric.count(:build_user => params[:build_user], :success => false) / Float(@stats[:general][:totalBuilds])
+    @stats[:general][:failureRate]    = (@stats[:general][:failureRate] * 100).round(0)
+    @stats[:general][:favPackage]     = Metric.aggregate(:package_name, :all.count, :conditions => ['build_user = ?', "#{params[:build_user]}"]).sort {|a,b| b[1] <=> a[1]}[0]
+    @stats[:general][:favPackageType] = Metric.aggregate(:package_type, :all.count, :conditions => ['build_user = ?', "#{params[:build_user]}"]).sort {|a,b| b[1] <=> a[1]}[0]
+    @stats[:general][:favDist]        = Metric.aggregate(:dist, :all.count, :conditions => ['build_user = ?', "#{params[:build_user]}"]).sort {|a,b| b[1] <=> a[1]}[0]
+    @stats[:general][:team]           = Metric.aggregate(:build_team, :all.count, :conditions => ['build_user = ?', "#{params[:build_user]}"]).sort {|a,b| b[1] <=> a[1]}[0]
+    @stats[:general][:team]           = ['dev'] if @stats[:general][:team][0] == nil
+
+    erb :users
   end
 
   # Listener for incoming metrics. Stores the data in the metrics database
