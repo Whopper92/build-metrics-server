@@ -19,6 +19,7 @@ a large number of package builds.
 The Build Board comes pre-configured with the rake task `package:bootstrap`, which automatically clones the [Puppet Labs packaging repository](https://github.com/puppetlabs/packaging). Once this has been done, a Debian package can be generated for fast installation by running the task `package:deb`. This will build a package and place it into the `pkg` directory within the root of the project, which can be installed using `dpkg`.
 
 * **Puppet Module**  
+The project Puppet module, which can be found [here](https://github.com/Whopper92/puppetlabs-buildboard-module) is meant for internal Puppet Labs use, and is currently setup to run in production.
 
 * **Configuration**  
 This app uses a simple [configuration file](#config-file) to store sensitive database login information. This file is installed into `/etc/db.conf` by default, and must be configured with the appropriate credentials before the Build Board server can connect.
@@ -44,7 +45,9 @@ itself may be swapped for a different type so long as it is compatible with Data
 ### Configuring a database
 
 
-The default data store for this app is a PostgreSQL database, which can be run either on the same host as the webserver or remotely. The schema of this database exists as follows, where each row represents a single package build:
+The default data store for this app is a PostgreSQL database, which can be run either on the same host as the webserver or remotely.  This database holds two tables, one of which details individual builds while the other contains information about shipped packages.
+
+The schema of the first table exists as follows, where each row represents a single package build:
 
 <pre>
        Column       |          Type          |                      Modifiers                       | Storage  | Description
@@ -62,6 +65,18 @@ The default data store for this app is a PostgreSQL database, which can be run e
  jenkins_build_time | double precision       |                                                      | plain    |
  package_build_time | double precision       |                                                      | plain    |
  package_type       | text                   |                                                      | extended |
+</pre>
+
+The second, 'ships' table is built as follows:
+<pre>
+  Column   |          Type          |                     Modifiers                      | Storage  | Description
+------------+------------------------+----------------------------------------------------+----------+-------------
+ id         | integer                | not null default nextval('ships_id_seq'::regclass) | plain    |
+ date       | character varying(128) | not null                                           | extended |
+ version    | character varying(128)  |                                                    | extended |
+ pe_version | character varying(128)  |                                                    | extended |
+ is_rc      | boolean                |                                                    | plain    |
+ package    | character varying(128)  |                                                    | extended |
 </pre>
 
 See the [database column glossary](#database-glossary) for information on the purpose of each data point.
@@ -261,6 +276,7 @@ Here, `time_array` is a ruby variable defined within `server.rb` and made availa
 <a name="database-glossary"/>
 #### Database Column Glossary
 
+##### Metrics
 * `date`  
 A Unix timestamp describing the time of building.
 
@@ -297,6 +313,21 @@ The number of seconds that a Jenkins package building job took to complete the b
 * `package_build_time`  
 The number of seconds that package building tools took to complete the build.
 
+##### Ships
+* `date`  
+A Unix timestamp describing the time of shipping.
+
+* `package`  
+The name of the package which was shipped.
+
+* `version`  
+The version of the package when it was shipped.
+
+* `pe_version`  
+The Puppet Enterprise version of the package, if applicable.
+
+* `is_rc`  
+A boolean describing whether the shipped package was in RC or final state.
 <a name="file-glossary"/>
 #### File Glossary by Directory
 
@@ -361,6 +392,9 @@ Contents: Styling for the package type view.
 
 * `toolTips.css`  
 Contents: Styling for tooltips and modal popups, which are present on every view.
+
+* `users.css`  
+Contents: Styling for the user dashboard view.
 
 ##### `models/`
 * `metric.rb`  
@@ -444,6 +478,10 @@ across each of the main vies.
 
 * `tooltips.erb`  
 The template which contains the structuring of all tooltips and modal popups.
+
+* `users.erb`  
+A templaet which contains HTML structuring for the individual user view, a dashboard which
+displays statistics for each build user.
 
 ##### `Other`
 
