@@ -131,8 +131,9 @@ class MetricServer < Sinatra::Base
 
     # Collect data on shipped RC and final packages
     @stats[:shipped]         = Hash.new
-    @stats[:shipped][:final] = Hash[:key => 'Final', :count => 0]
-    @stats[:shipped][:rc]    = Hash[:key => 'RC', :count => 0]
+    @stats[:shipped][:final] = Hash[:key => 'Final', :count => Ship.count(:is_rc => false)]
+    @stats[:shipped][:rc]    = Hash[:key => 'RC', :count => Ship.count(:is_rc => true)]
+    puts @stats[:shipped].inspect
 
     # Gather the number of times each package has been built and find the top 3
     @pkgNumBuilds = Hash.new
@@ -238,8 +239,8 @@ class MetricServer < Sinatra::Base
 
     # Gather stats for the 'general stats' section
     @stats[:general] = Hash.new
-    @stats[:general][:RCReleases]    = 0
-    @stats[:general][:finalReleases] = 0
+    @stats[:general][:RCReleases]    = Ship.count(:is_rc => true)
+    @stats[:general][:finalReleases] = Ship.count(:is_rc => false)
     @stats[:general][:releaseBuilds] = Metric.count(:package_name => params[:package], :build_team => 'release')
     @stats[:general][:otherBuilds]   = Metric.count(:package_name => params[:package], :build_team.not => 'release', :build_user.not => 'jenkins')
     @stats[:general][:jenkinsBuilds]   = Metric.count(:package_name => params[:package], :build_team => 'jenkins')
@@ -436,50 +437,66 @@ class MetricServer < Sinatra::Base
   # date, package_name, dist, package_type, build_user, build_loc, version, pe_version, package_build_time, jenkins_build_time,  success, build_log
   # See README for details on each of these variables
   post '/overview/metrics' do
-    # Format some paramters and download the Jenkins build log for storage
-    puts params.inspect
-    params[:date]       = Time.now.to_s
-    params[:dist]       = params[:dist][3..-1] if params[:dist][0..2].match(/[\d]+\.[\d]+/)
-    params[:dist]       = 'sles11' if params[:dist] == 'sl11'
-    if params[:build_team] != 'release' and params[:build_user] != 'jenkins'
-      params[:build_team] = 'dev'
-    end
-    params[:build_team] = 'jenkins' if params[:build_user] == 'jenkins'
-    params[:success]    = case params[:success]
-        when /SUCCESS/ then true
-        when /true/    then true
-        else false
-    end
 
-    # Download the build log from jenkins if the build was run through jenkins
-    params[:build_log] = `wget -q #{params[:build_log]} -O -` if params[:jenkins_build_time] != nil
-    params[:package_build_time] = nil if params[:package_build_time] == 'N/A'
-
-    # A bit of a hack to make sure we get the package build time, which is a problem for dynamic Jenkins builds
-    if params[:package_build_time] == nil and params[:jenkins_build_time] != nil and params[:build_log] != nil
-      if /(?:Finished building in:) ([\d]+\.?[\d]*)/.match(params[:build_log])
-        params[:package_build_time]  = /(?:Finished building in:) ([\d]+\.?[\d]*)/.match(params[:build_log])[1]
+    if params[:type] == 'shipped'
+      puts params["pe_version"]
+      params["date"]       = Time.now.to_s
+      params["pe_version"] = 'N/A' if params["pe_version"] == nil
+      if params["is_rc"] == 'true'
+        params["is_rc"] = true
       else
-        params[:package_build_time] = params[:jenkins_build_time] if params[:package_build_time] == nil
+        params["is_rc"] = false
       end
-    end
+    else
+      # Format some paramters and download the Jenkins build log for storage
+      puts params.inspect
+      params[:date]       = Time.now.to_s
+      params[:dist]       = params[:dist][3..-1] if params[:dist][0..2].match(/[\d]+\.[\d]+/)
+      params[:dist]       = 'sles11' if params[:dist] == 'sl11'
+      if params[:build_team] != 'release' and params[:build_user] != 'jenkins'
+        params[:build_team] = 'dev'
+      end
+      params[:build_team] = 'jenkins' if params[:build_user] == 'jenkins'
+      params[:success]    = case params[:success]
+          when /SUCCESS/ then true
+          when /true/    then true
+          else false
+      end
 
-    # Compatibility hack for certain packages that don't follow the same conventions in dynamic Jenkins builds
-    if params[:dist] == '5'
-      params[:dist] = 'el5'
-    elsif params[:dist] == '6'
-      params[:dist] = 'el6'
-    elsif params[:dist] == '17'
-      params[:dist] = 'fedora17'
-    elsif params[:dist] == '18'
-      params[:dist] = 'fedora18'
-    elsif params[:dist] == '19'
-      params[:dist] = 'fedora19'
+      # Download the build log from jenkins if the build was run through jenkins
+      params[:build_log] = `wget -q #{params[:build_log]} -O -` if params[:jenkins_build_time] != nil
+      params[:package_build_time] = nil if params[:package_build_time] == 'N/A'
+
+      # A bit of a hack to make sure we get the package build time, which is a problem for dynamic Jenkins builds
+      if params[:package_build_time] == nil and params[:jenkins_build_time] != nil and params[:build_log] != nil
+        if /(?:Finished building in:) ([\d]+\.?[\d]*)/.match(params[:build_log])
+          params[:package_build_time]  = /(?:Finished building in:) ([\d]+\.?[\d]*)/.match(params[:build_log])[1]
+        else
+          params[:package_build_time] = params[:jenkins_build_time] if params[:package_build_time] == nil
+        end
+      end
+
+      # Compatibility hack for certain packages that don't follow the same conventions in dynamic Jenkins builds
+      if params[:dist] == '5'
+        params[:dist] = 'el5'
+      elsif params[:dist] == '6'
+        params[:dist] = 'el6'
+      elsif params[:dist] == '17'
+        params[:dist] = 'fedora17'
+      elsif params[:dist] == '18'
+        params[:dist] = 'fedora18'
+      elsif params[:dist] == '19'
+        params[:dist] = 'fedora19'
+      end
     end
 
     render_page do
       begin
-        Metric.create( params )
+        if params[:type] == 'shipped'
+          Ship.create(:date => params[:date], :package => params[:package], :version => params[:version], :pe_version => params[:pe_version], :is_rc => params[:is_rc])
+        else
+          Metric.create( params )
+        end
         200
       rescue Exception => e
         puts "something went wrong\n\n\n"

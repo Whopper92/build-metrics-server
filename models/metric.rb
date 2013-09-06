@@ -16,6 +16,16 @@ class Metric
   property :build_log, Text, :length => 99999999
 end
 
+class Ship
+  include DataMapper::Resource
+  property :id, Serial, :key => true
+  property :date, String, :required => true
+  property :package, String
+  property :version, String
+  property :pe_version, String
+  property :is_rc, Boolean
+end
+
 # Perform basic sanity checks and initialize all relationships
 # Call this when you've defined all your models
 DataMapper.finalize
@@ -23,3 +33,6 @@ DataMapper.finalize
 # automatically create the post table
 Metric.auto_upgrade!
 Metric.raise_on_save_failure = true
+
+Ship.auto_upgrade!
+Ship.raise_on_save_failure = true
