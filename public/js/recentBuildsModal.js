@@ -4,11 +4,17 @@ overview dashboard */
 function createRecentBuildsModal(data) {
   console.log(data)
   var date    = data.date.slice(0,10)
-  var hours   = data.date.slice(11,13)
   var minutes = data.date.slice(14,16)
+  if(parseInt(data.date.slice(11,13)) < 10) {
+    var hours = data.date.slice(12,13)
+  } else {
+    var hours = data.date.slice(11,13)
+  }
 
   // Convert time
-  if(parseInt(hours) > 12) {
+  if(parseInt(hours) == 12) {
+    var time    = '12:' + minutes + ' PM'
+  } else if(parseInt(hours) > 12) {
     var stdHour = parseInt(hours) - 12
     var time    = String(stdHour) + ':' + minutes + ' PM'
   } else {

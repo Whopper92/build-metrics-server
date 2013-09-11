@@ -28,8 +28,12 @@ function loadHistoricalLog(data) {
     }
 
     var date    = data[i].date.slice(0,10)
-    var hours   = data[i].date.slice(11,13)
     var minutes = data[i].date.slice(14,16)
+    if(parseInt(data[i].date.slice(11,13)) < 10) {
+      var hours = data[i].date.slice(12,13)
+    } else {
+      var hours = data[i].date.slice(11,13)
+    }
 
     // Convert time
     if(parseInt(hours) == 12) {
