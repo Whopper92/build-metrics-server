@@ -40,14 +40,8 @@
             <li class="dropdown-submenu pull-left">
               <a tabindex="-1" href="#">Detailed View</a>
               <ul class="dropdown-menu">
-                <li><a tabindex="-1" href="/summary/builds">Builds</a></li>
-                <li><a tabindex="-1" href="/summary/builds">Shipped</a></li>
-                <li><a tabindex="-1" href="/summary/users">Users</a></li>
+                <li><a tabindex="-1" href="/user">Users</a></li>
               </ul>
-            </li>
-            <li class="divider"></li>
-            <li>
-              <a tabindex="-1" href="#">More Views</a>
             </li>
           </ul>
         </div>
@@ -116,7 +110,7 @@
                 <% @freqUsers.each do |user| %>
                   <% rowID        = "#{user[0]}#{user[1]}" %>
                   <% modalMessage = "#{user[0]} has built #{user[1]} packages."%>
-                  <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()'>
+                  <tr id='<%= rowID %>' onmouseover='createTableRowModal(<%= "#{rowID}" %>, <%= "\"#{modalMessage}\"" %>)' onmouseout='removeTableModal()' onclick='document.location.href=<%="\"/user/#{user[0]} \"" %>'>
                     <td><strong><%= user[0] %></strong></td>
                     <td><%= user[1] %></td>
                   </tr>
@@ -140,12 +134,6 @@
         <div class='span2 offset6'>
           <div class="btn-group">
             <button id='teamPopover' class='moreBtn btn btn-mini' data-toggle='popover' data-placement='left' data-title='Description' data-content='A package building comparison between the release team and other Puppet Labs development teams.' type="button"><i class='icon-info-sign'></i></button>
-          </div>
-          <div class="btn-group">
-            <button class="moreBtn btn btn-mini dropdown-toggle" data-toggle="dropdown" type="button"><i class="icon-search"></i></button>
-            <ul class='dropdown-menu pull-right'>
-              <li><a tabindex="-1" href="#">Detailed View</a></li>
-            </ul>
           </div>
         </div>
       </div>
@@ -192,10 +180,6 @@
                     <li><a tabindex="-1" href="/summary/type/<%= type %>"><%= type %></a></li>
                   <% end %>
                 </ul>
-              </li>
-              <li class="divider"></li>
-              <li>
-                <a tabindex="-1" href="#">More Views</a>
               </li>
             </ul>
           </div>
