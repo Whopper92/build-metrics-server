@@ -130,10 +130,11 @@ class MetricServer < Sinatra::Base
     end
 
     # Collect data on shipped RC and final packages
-    @stats[:shipped]         = Hash.new
-    @stats[:shipped][:final] = Hash[:key => 'Final', :count => Ship.count(:is_rc => false)]
-    @stats[:shipped][:rc]    = Hash[:key => 'RC', :count => Ship.count(:is_rc => true)]
-    puts @stats[:shipped].inspect
+    thisYear  = Date.today.strftime("%Y")
+    thisMonth = Date.today.strftime("%m")
+    @stats[:shipped]          = Hash.new
+    @stats[:shipped][:final]  = Hash[:key => 'Final', :count => DataMapper.repository.adapter.select("SELECT COUNT(*) FROM ships WHERE is_rc = false AND date LIKE '#{thisYear}-#{thisMonth}'")]
+    @stats[:shipped][:rc]     = Hash[:key => 'Final', :count => DataMapper.repository.adapter.select("SELECT COUNT(*) FROM ships WHERE is_rc = true AND date LIKE '#{thisYear}-#{thisMonth}'")]
 
     # Gather the number of times each package has been built and find the top 3
     @pkgNumBuilds = Hash.new
