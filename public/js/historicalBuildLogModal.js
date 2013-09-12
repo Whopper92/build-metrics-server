@@ -5,8 +5,6 @@ function createHistoricalBuildLogModal() {
 }
 
 function getBuilds(url) {
-  console.log(url)
-
   d3.json(url, function(data) {
     $("#histLogTable").find("tr:gt(0)").remove();
     loadHistoricalLog(data)
@@ -21,37 +19,13 @@ function loadHistoricalLog(data) {
     var user        = data[i].build_user
     var packageName = data[i].package_name
     var dist        = data[i].dist
-    if(data[i].jenkins_build_time == null) {
-      var buildTime   = data[i].package_build_time
-    } else {
+    if(data[i].jenkins_build_time) {
       var buildTime   = data[i].jenkins_build_time
-    }
-
-    var date    = data[i].date.slice(0,10)
-    var minutes = data[i].date.slice(14,16)
-    if(parseInt(data[i].date.slice(11,13)) < 10) {
-      var hours = data[i].date.slice(12,13)
     } else {
-      var hours = data[i].date.slice(11,13)
+      var buildTime   = data[i].package_build_time
     }
 
-    // Convert time
-    if(parseInt(hours) == 12) {
-      var time    = '12:' + minutes + ' PM'
-    } else if(parseInt(hours) > 12) {
-      var stdHour = parseInt(hours) - 12
-      var time    = String(stdHour) + ':' + minutes + ' PM'
-    } else {
-      var time    = hours + ':' + minutes + ' AM'
-    }
-
-    // Convert date
-    var months    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-    var month_num = date.slice(5,7)
-    var day       = date.slice(8-10)
-    var month     = months[parseInt(month_num) - 1]
-    var date      = month + ' ' + day + ', ' + time
-
+    var date = getDate(data[i].date, 'abr')
     if(data[i].success == true) {
       var fillColor = 'limegreen'
     } else {

@@ -1,31 +1,10 @@
 /* Creates the modal popup triggered when a recent
 build is clicked in the recent builds graphic on the
 overview dashboard */
+
 function createRecentBuildsModal(data) {
-  console.log(data)
-  var date    = data.date.slice(0,10)
-  var minutes = data.date.slice(14,16)
-  if(parseInt(data.date.slice(11,13)) < 10) {
-    var hours = data.date.slice(12,13)
-  } else {
-    var hours = data.date.slice(11,13)
-  }
 
-  // Convert time
-  if(parseInt(hours) == 12) {
-    var time    = '12:' + minutes + ' PM'
-  } else if(parseInt(hours) > 12) {
-    var stdHour = parseInt(hours) - 12
-    var time    = String(stdHour) + ':' + minutes + ' PM'
-  } else {
-    var time    = hours + ':' + minutes + ' AM'
-  }
-
-  // Convert date
-  var months    = ['January','February','March','April','May','June','July','August','September','October','November','December']
-  var month_num = date.slice(5,7)
-  var day       = date.slice(8-10)
-  var month     = months[parseInt(month_num) - 1]
+  var date = getDate(data.date, 'full')
 
   if(data.jenkins_build_time != null) {
     var message = 'This package was built remotely via Jenkins'
@@ -37,7 +16,7 @@ function createRecentBuildsModal(data) {
 
   d3.select('#recentBuildsModal')
     .select('#recentBuildsModalTitle')
-    .text(data.package_name + ': built on '+ month + ' ' + day + ' at ' + time)
+    .text(data.package_name + ': built on '+ date)
 
   d3.select('#recentBuildsModal')
     .select('#recentBuildsModalPackageCell')
