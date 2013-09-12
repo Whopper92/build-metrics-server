@@ -133,5 +133,4 @@ function createRecentBuildsModal(data) {
 
 function createBuildLogModal() {
   $('#logModal').modal('show')
-  console.log('SHOWING')
 }

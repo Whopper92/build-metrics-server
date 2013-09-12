@@ -1,7 +1,6 @@
 /* Creates a line graph for individual package build speed trends*/
 function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPadding, yAxisPadding, scaleAdjust, divID, graphID, units) {
   /* Define variables for use with graph generation*/
-  console.log(dataset)
   var w           = width
   var h           = height
   var textPadding = txtPadding
@@ -56,8 +55,6 @@ function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPaddin
       .interpolate('cardinal')
       .x(function(d,i) { return xScale(i) + xPadding; })
       .y(function(d) {
-          console.log('failed')
-          console.log(JSON.parse(d).failCount)
           return yScale(JSON.parse(d).failCount) + 10;
       })
 
@@ -82,7 +79,6 @@ function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPaddin
           } else if(units =='seconds') {
             return yScale(JSON.parse(d).avg) + 35
           } else if(units == 'builds') {
-            console.log(yScale(JSON.parse(d).count) + 35)
             return yScale(JSON.parse(d).count) + 35
           }
         })
@@ -121,7 +117,6 @@ function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPaddin
 
 /* If data is provided for a 'failed line', we render the points for it and draw the path*/
   if(JSON.parse(dataset[0]).failCount != null) {
-    console.log('right mewo!!!')
     var failedPoints = svg.selectAll('.point')
          .data(dataset)
          .enter()
