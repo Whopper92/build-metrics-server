@@ -16,6 +16,7 @@
     <script type="text/javascript" src="/js/commonFunctions.js"></script>
     <script type="text/javascript" src="/js/recentBuildsModal.js"></script>
     <script type="text/javascript" src="/js/historicalBuildLogModal.js"></script>
+    <script type="text/javascript" src="/js/autoRefresh.js"></script>
 
     <link rel="stylesheet" media="screen"  href="/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/css/d3.css" />
@@ -53,6 +54,21 @@
               </ul>
             </li>
             <li><a id='navBuildLog' href=#>Build Log</a></li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href='#'>
+                Settings
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li class='dropdown-submenu'>
+                  <a tabindex='-1' href="#">Autorefresh</a>
+                  <ul class='dropdown-menu'>
+                    <li><a id='autorefOn' tabindex="-1" href='#'>On</a></li>
+                    <li><a id='autorefOff' tabindex="-1" href='#'>Off<i id='autorefSet' class='icon-ok pull-right'></i></a></li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
             <li><a href="https://github.com/Whopper92/build-metrics-server/blob/master/README.md" target="_blank">Docs</a></li>
           </ul>
         </div> <!-- end of container -->
@@ -76,6 +92,43 @@
       $('#navBuildLog').on('click', function() {
         createHistoricalBuildLogModal()
       })
+    })
+
+    $(function() {
+      var refStatus = getCookie('refresh')
+      if(refStatus == 'true') {
+        $('#autorefSet').remove()
+        $('#autorefOn').append("<i id='autorefSet' class='icon-ok pull-right'></i>")
+      } else {
+        $('#autorefSet').remove()
+        $('#autorefOff').append("<i id='autorefSet' class='icon-ok pull-right'></i>")
+      }
+    })
+
+    $(function() {
+    // Handle the autorefresh setting
+     $('#autorefOn').on('click', function() {
+       if( $('#autorefOn').children().length == 0) {
+         $('#autorefSet').remove()
+         $('#autorefOn').append("<i id='autorefSet' class='icon-ok pull-right'></i>")
+         setCookie('refresh',true,20*365)
+         autoRefresh()
+       }
+     })
+
+     $('#autorefOff').on('click',function() {
+       if( $('#autorefOff').children().length == 0) {
+         $('#autorefSet').remove()
+         $('#autorefOff').append("<i id='autorefSet' class='icon-ok pull-right'></i>")
+         setCookie('refresh',false,20*365)
+         autoRefresh()
+      }
+     })
+    })
+
+    // Check cookie value for autorefresh upon page load
+    $(function() {
+      autoRefresh()
     })
   })
 </script>
