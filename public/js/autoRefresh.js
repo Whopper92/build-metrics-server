@@ -3,7 +3,7 @@ function autoRefresh() {
   var refStatus = getCookie('refresh')
   if(refStatus == 'true') {
     var timeout = []
-    timeout.push( setTimeout(function(){ window.location.reload(1);}, 15000));
+    timeout.push( setTimeout(function(){ window.location.reload(1);}, 30000));
   } else {
     if(timeout) {
       for(i = 0; i < timeout.length; ++i) {
