@@ -69,7 +69,6 @@ class MetricServer < Sinatra::Base
 
     # Determine how many pages of data there are for the historical build log
     @totalPages = Metric.count
-    puts @totalPages
     @totalPages = (Float(@totalPages) / Float(11)).ceil
 
     # First, get all data about the latest 6 builds
@@ -241,8 +240,21 @@ class MetricServer < Sinatra::Base
           day = day.to_s.insert(0, '0')
         end
         dayRegex = "#{yearNum}-#{monthNum}-#{day}"
-        @stats[:monthBuilds]   << DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = true AND date #{searchType} '#{dayRegex}%'")[0]
-        @stats[:monthFailures] << DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = false AND date #{searchType} '#{dayRegex}%'")[0]
+        builds   = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE date #{searchType} '#{dayRegex}%'")[0]
+        failures = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = false AND date #{searchType} '#{dayRegex}%'")[0]
+
+        puts '---------'
+        puts dayRegex
+        puts builds
+        puts failures
+
+        @stats[:monthBuilds]   << builds
+        if builds != 0
+          failures = Float(failures) / Float(builds)
+          @stats[:monthFailures] << (failures * 100).round(0)
+        else
+          @stats[:monthFailures] << 0
+        end
       end
 
     elsif type == 'week'
@@ -501,6 +513,30 @@ class MetricServer < Sinatra::Base
     erb :users
   end
 
+  get '/date/calendar' do
+    erb :calendar
+  end
+
+  get '/date/month/:date' do
+    @monthTitle = params[:date].split('~')[0].capitalize
+    @year       = params[:date].split('~')[1]
+    @urlType      = 'all'
+    @urlName      = 'all'
+
+    # Determine how many pages of data there are for the historical build log
+    @totalPages = Metric.count
+    @totalPages = (Float(@totalPages) / Float(11)).ceil
+
+    erb :monthlyStats
+  end
+
+  get '/date/week/:week' do
+    erb :weeklyStats
+  end
+
+  get '/date/day/:day' do
+    erb :dailyStats
+  end
   # Listener for incoming metrics. Stores the data in the metrics database
   # Expects a hash with the following keys:
   # date, package_name, dist, package_type, build_user, build_loc, version, pe_version, package_build_time, jenkins_build_time,  success, build_log

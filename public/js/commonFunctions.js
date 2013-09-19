@@ -20,6 +20,11 @@ function convertTime(dateString) {
   return time
 }
 
+function getMonthNum(month) {
+  var monthFull = ['January','February','March','April','May','June','July','August','September','October','November','December']
+  return monthFull.indexOf(month) + 1
+}
+
 function getDate(dateString, format) {
   var monthAbr  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
   var monthFull = ['January','February','March','April','May','June','July','August','September','October','November','December']

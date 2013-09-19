@@ -1,0 +1,125 @@
+<!--
+  Monthly stats template
+-->
+<div id='topRowContainer' class='row-fluid'>
+  <div id='monthBuildsContent' class='span6 contentContainer'>
+    <div id='monthBuildsContentTitle' class='row-fluid'>
+      <h3 class='contentTitle span6'>Builds and Failures in <%= @monthTitle %></h3>
+      <div class='span2 offset4'>
+        <div class="btn-group">
+          <button id='recentBuildsPopover' class='moreBtn btn btn-mini' data-toggle='popover' data-placement='left' data-title='Description' data-content='The latest six builds. Click a row for more information.' type="button"><i class='icon-info-sign'></i></button>
+        </div>
+      </div>
+    </div>
+    <div id='monthTotalBuildsContent' class='span6'>
+      <h4 class='contentTitle'>Number of Builds</h4>
+      <div id='buildStatsSpeedContent' class='typeChartContent'>
+        <div id='buildStatsYAxis' class='yAxisLabel yAxisPushLeft'>Builds</div>
+      </div>
+    </div>
+    <div id='monthFailedBuildsContent' class='span6'>
+      <h4 class='contentTitle'>Build Failure Rate</h4>
+      <div id='buildStatsFailureContent' class='typeChartContent'>
+        <div id='buildStatsFailureYAxis' class='yAxisLabel'>Percentage</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+ <%= erb :tooltips %>
+
+<div id='bottomRowContainer' class='row-fluid'>
+  <div id='monthGeneralStatsContent' class='span6 contentContainer'>
+    <div id='monthGeneralStatsContentTitle' class='row-fluid'>
+      <h3 class='contentTitle span6'>General Stats for <%= @monthTitle.capitalize %></h3>
+      <div class='span2 offset4'>
+        <div class="btn-group">
+          <button id='generalPopover' class='moreBtn btn btn-mini' data-toggle='popover' data-placement='left' data-title='Description' data-content='Miscellaneous statistics about this user.' type="button"><i class='icon-info-sign'></i></button>
+        </div>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span5'>
+        <table id='generalStatsTableLeft' class='table generalStatsTable'>
+          <tbody>
+            <tr>
+              <td class='generalStatsTableLabel'>Total Builds:</td>
+              <td id='generalStatsTotalBuildsCell' class='generalStatsTableCell'></td>
+            </tr>
+            <tr>
+              <td class='generalStatsTableLabel'>Most Build Package:</td>
+              <td id='generalStatsFreqPackageCell' class='generalStatsTableCell'></td>
+            </tr>
+            <tr>
+              <td class='generalStatsTableLabel'>Most Active User:</td>
+              <td id='generalStatsFreqUserCell' class='generalStatsTableCell'></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class='span5 offset2'>
+        <table id='generalStatsTableRight' class='table generalStatsTable'>
+          <tbody>
+            <tr>
+              <td class='generalStatsTableLabel'>Failure Rate:</td>
+              <td id='generalStatsFailureCell' class='generalStatsTableCell'></td>
+            </tr>
+            <tr>
+              <td class='generalStatsTableLabel'>Packages Shipped:</td>
+              <td id='generalStatsShippedCell' class='generalStatsTableCell'></td>
+            </tr>
+            <tr>
+              <td class='generalStatsTableLabel'>Most Active Team:</td>
+              <td id='generalStatsFreqTeamCell' class='generalStatsTableCell'></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type='text/javascript'>
+  $(document).ready(function() {
+
+    var monthNum = '0' + getMonthNum(<%= "\"#{@monthTitle}\"" %>)
+    var year     = <%= @year %>
+    var url = '/datelog/month~' + monthNum + '-0-' + year
+    d3.json(url, function(data) {
+      createStandardLineGraph(data.monthBuilds,570, 480, 70, 30, 110, 20, '#monthTotalBuildsContent', '#monthTotalBuildsContentGraph', 'build Array')
+      createStandardLineGraph(data.monthFailures,570, 480, 70, 30, 110, 50, '#monthFailedBuildsContent', '#monthFailedBuildsContentGraph', '% Failed Array')
+      $('#generalStatsTotalBuildsCell').text(data.count)
+      $('#generalStatsFreqPackageCell').text(data.freqPkg)
+      $('#generalStatsFreqUserCell').text(data.freqUser)
+      $('#generalStatsFailureCell').text(data.failRate + '%')
+      $('#generalStatsShippedCell').text(data.shipped)
+      $('#generalStatsFreqTeamCell').text(data.freqTeam)
+
+    })
+    // Add JS interactive elements
+      $('#recentBuildsPopover').popover();
+      $('#generalPopover').popover();
+
+      // Resize the data sections for small resolutions
+    $(function() {
+      var upperContent  = document.getElementById("monthBuildsContent");
+      var lowerContent  = document.getElementById("monthGeneralStatsContent");
+
+      if(screen.width < 1600) {
+        upperContent.style.minWidth = "1300px";
+        lowerContent.style.minWidth = "1300px";
+      } else if(screen.width == 1920 && screen.height == 1080) {
+        upperContent.style.minWidth    = "1400px";
+        $(upperContent).css('margin-left', '50px');
+        lowerContent.style.minWidth    = "1400px";
+        $(lowerContent).css('margin-left', '50px');
+        $('#logBody').css('height', '800px');
+      } else {
+        upperContent.style.minWidth    = "1500px";
+        lowerContent.style.minWidth    = "1500px";
+        $(upperContent).addClass('offset3');
+        $(lowerContent).addClass('offset3');
+      }
+    })
+  })
+</script>

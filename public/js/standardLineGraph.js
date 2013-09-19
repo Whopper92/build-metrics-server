@@ -14,12 +14,14 @@ function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPaddin
 
   var yScale = d3.scale.linear()
                  .domain([0, d3.max(dataset, function(d) {
-                    if(units == '% Failed') {
+                    if(units == '% Failed' || units == '% Failed Array') {
                       return 100
                     } else if(units == 'seconds') {
                       return parseInt(JSON.parse(d).avg) + scaleAdjust
                     } else if(units == 'builds') {
                       return parseInt(JSON.parse(d).count) + scaleAdjust
+                    } else if(units == 'build Array') {
+                      return JSON.parse(d) + scaleAdjust
                     }
                   })])
                 .range([h - yPadding, 0]);
@@ -44,10 +46,14 @@ function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPaddin
       .y(function(d) {
         if(units == '% Failed') {
           return yScale(JSON.parse(d).failureRate) + 10;
+        } else if(units == '% Failed Array') {
+          return yScale(JSON.parse(d)) + 10;
         } else if(units == 'seconds') {
           return yScale(JSON.parse(d).avg) + 10;
         } else if(units == 'builds') {
           return yScale(JSON.parse(d).count) + 10;
+        } else if(units == 'build Array') {
+          return yScale(JSON.parse(d)) + 10
         }
       })
 
@@ -55,7 +61,11 @@ function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPaddin
       .interpolate('cardinal')
       .x(function(d,i) { return xScale(i) + xPadding; })
       .y(function(d) {
-          return yScale(JSON.parse(d).failCount) + 10;
+          if(units == '% Failed Array') {
+            return yScale(JSON.parse(d)) + 10;
+          } else {
+            return yScale(JSON.parse(d).failCount) + 10;
+          }
       })
 
   /* Add the circular points on top of the line path */
@@ -66,7 +76,7 @@ function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPaddin
        .attr('stroke', 'black')
        .attr('stroke-width', '1px')
        .attr('fill', function(d) {
-         if(units == '% Failed') {
+         if(units == '% Failed' || units == '% Failed Array') {
            return '#B80000'
          } else {
            return 'steelblue'
@@ -76,22 +86,41 @@ function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPaddin
        .attr('cy', function(d, i) {
           if(units == '% Failed') {
             return yScale(JSON.parse(d).failureRate) + 35
+          } else if(units == '% Failed Array') {
+            return yScale(JSON.parse(d)) + 35;
           } else if(units =='seconds') {
             return yScale(JSON.parse(d).avg) + 35
           } else if(units == 'builds') {
             return yScale(JSON.parse(d).count) + 35
+          } else if(units == 'build Array') {
+            return yScale(JSON.parse(d)) + 35;
           }
         })
        .attr('r', '5')
        .on('mouseover', function(d) {
           if(units == '% Failed') {
             displayLabel = JSON.parse(d).failureRate.toFixed(0)
+            displayText  = getLabelString(d)
+            disUnits = units
+          } else if(units == '% Failed Array') {
+            displayLabel = d
+            displayText  = ''
+            disUnits     = '% Failed'
+          } else if(units == 'build Array') {
+            displayLabel = d
+            displayText  = ''
+            disUnits     = 'Builds'
           } else if(units == 'seconds') {
             displayLabel = JSON.parse(d).avg.toFixed(2)
+            displayText  = ''
+            displayText  = getLabelString(d)
+            disUnits = units
           } else if(units == 'builds') {
             displayLabel = JSON.parse(d).count
+            displayText  = getLabelString(d)
+            disUnits = units
           }
-          displayTooltip('#graphToolTip', '#graphToolTipTitle', '#graphToolTipFooter', getToolTipXPos(divID, this), getToolTipYPos(divID, this), getLabelString(d), displayLabel, units);
+          displayTooltip('#graphToolTip', '#graphToolTipTitle', '#graphToolTipFooter', getToolTipXPos(divID, this), getToolTipYPos(divID, this), displayText, displayLabel, disUnits);
           d3.select(this)
             .transition()
             .duration(250)
@@ -108,7 +137,7 @@ function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPaddin
   g.append('path')
    .attr('d', line(dataset))
    .attr('stroke', function(d) {
-      if(units == '% Failed') {
+      if(units == '% Failed' || units == '% Failed Array') {
         return '#B80000'
       } else {
         return 'steelblue'
@@ -126,12 +155,20 @@ function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPaddin
          .attr('fill', '#B80000')
          .attr('cx', function(d, i) { return xScale(i) + xPadding})
          .attr('cy', function(d, i) {
-           return yScale(JSON.parse(d).failCount) + 35
+           if(units == '% Failed Array') {
+             return yScale(JSON.parse(d)) + 35;
+           } else {
+             return yScale(JSON.parse(d).failCount) + 35
+           }
           })
          .attr('r', '5')
          .on('mouseover', function(d) {
-            displayLabel = JSON.parse(d).failCount
-            displayTooltip('#graphToolTip', '#graphToolTipTitle', '#graphToolTipFooter', getToolTipXPos(divID, this), getToolTipYPos(divID, this), getLabelString(d),  displayLabel, 'Failed Builds');
+            if(units == '% Failed Array') {
+              displayLable = d
+            } else {
+              displayLabel = JSON.parse(d).failCount
+            }
+            displayTooltip('#graphToolTip', '#graphToolTipTitle', '#graphToolTipFooter', getToolTipXPos(divID, this), getToolTipYPos(divID, this), getLabelString(d), displayLabel, 'Failed Builds');
             d3.select(this)
               .transition()
               .duration(250)
@@ -161,11 +198,19 @@ function createStandardLineGraph(dataset, width, height, txtPadding, xAxisPaddin
       .attr('font-family', 'Arial')
       .attr('font-weight', 'bold')
       .attr('font-size', '12px')
-      .text(function(d) {
-        return getLabelString(d)
+      .text(function(d,i) {
+        if(units == 'build Array' || units == '% Failed Array') {
+          return i + 1
+        } else {
+          return getLabelString(d)
+        }
       })
       .attr("transform", function(d, i) {         // transform all the text elements
-        xTranslate = xScale(i) + xPadding + 15
+        if(units == 'build Array' || units == '% Failed Array') {
+          xTranslate = xScale(i) + xPadding + 8
+        } else {
+          xTranslate = xScale(i) + xPadding + 15
+        }
         yTranslate = h - 60
         return "translate(" +                     // First translate
           xTranslate + ", " + yTranslate + ") " + // Translation params same as your existing x & y

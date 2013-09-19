@@ -9,9 +9,9 @@ function make_y_axis(yScale) {
 /* Generate a label string */
 function getLabelString(data) {
  var months    = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
- var month_num = JSON.parse(data).key.slice(5,7)
- var month     = months[parseInt(month_num) - 1]
- return month + ' ' + JSON.parse(data).key.slice(0,4)
+  var month_num = JSON.parse(data).key.slice(5,7)
+  var month     = months[parseInt(month_num) - 1]
+  return month + ' ' + JSON.parse(data).key.slice(0,4)
 }
 
 /* Display a dynamically positioned tooltip on any graph type*/
