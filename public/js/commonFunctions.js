@@ -25,6 +25,11 @@ function getMonthNum(month) {
   return monthFull.indexOf(month) + 1
 }
 
+function getMonthName(monthNum) {
+  var monthFull = ['January','February','March','April','May','June','July','August','September','October','November','December']
+  return monthFull[monthNum]
+}
+
 function getDate(dateString, format) {
   var monthAbr  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
   var monthFull = ['January','February','March','April','May','June','July','August','September','October','November','December']
