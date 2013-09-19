@@ -40,6 +40,10 @@ class MetricServer < Sinatra::Base
     @@configured = false
   end
 
+  def days_in_month(year, month)
+    (Date.new(year, 12, 31) << (12-month)).day
+  end
+
   #  ============================= VARIABLES =============================== #
     before do
       @allPackageNames   = Metric.all(:fields => [:package_name], :unique => true, :order => [:package_name.asc])
@@ -210,11 +214,12 @@ class MetricServer < Sinatra::Base
   end
 
   get '/datelog/:options' do
-    type     = params[:options].split('~')[0]
-    key      = params[:options].split('~')[1]
-    monthNum = key.split('-')[0]
-    dayNum   = key.split('-')[1]
-    yearNum  = key.split('-')[2]
+    type        = params[:options].split('~')[0]
+    key         = params[:options].split('~')[1]
+    monthNum    = key.split('-')[0]
+    monthNoZero = monthNum.sub(/^0/, '')
+    dayNum      = key.split('-')[1]
+    yearNum     = key.split('-')[2]
 
     #thisYear  = Date.today.strftime("%Y")
     #thisMonth = Date.today.strftime("%m")
@@ -226,6 +231,20 @@ class MetricServer < Sinatra::Base
       @dateRange  = allMonths[monthNum.to_i]
       regex       = "#{yearNum}-#{monthNum}"
       searchType  = 'LIKE'
+      numDays     = days_in_month(yearNum.to_i, monthNoZero.to_i)
+
+      # Collect build data for the entire month
+      @stats[:monthBuilds]   = Array.new
+      @stats[:monthFailures] = Array.new
+      (1 .. numDays).each do |day|
+        if day < 10
+          day = day.to_s.insert(0, '0')
+        end
+        dayRegex = "#{yearNum}-#{monthNum}-#{day}"
+        @stats[:monthBuilds]   << DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = true AND date #{searchType} '#{dayRegex}%'")[0]
+        @stats[:monthFailures] << DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = false AND date #{searchType} '#{dayRegex}%'")[0]
+      end
+
     elsif type == 'week'
       today = Date.today
       dateArray = Array.new
@@ -254,6 +273,7 @@ class MetricServer < Sinatra::Base
       @stats[:freqTeam]   = DataMapper.repository.adapter.select("select build_team, count(*) from metrics where date #{searchType} '#{regex}%' group by build_team order by count desc limit 1 offset 1")
       @stats[:freqTeam]   = @stats[:freqTeam][0][:build_team]
     end
+
     @stats.to_json
   end
 
