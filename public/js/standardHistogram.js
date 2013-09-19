@@ -179,8 +179,15 @@ function createHistogram(dataset, width, height, txtPadding, yAxisPadding, divid
       .attr('text-anchor', 'middle')
       .attr('font-family', 'Arial')
       .attr('font-weight', 'bold')
-      .attr('font-size', '12px')
-
+      .attr('font-size', function(d) {
+        if(dataset.length >= 7 && dataset.length < 9) {
+          return '10px'
+        } else if(dataset.length >= 9) {
+          return '8px'
+        } else {
+          return '12px'
+        }
+      })
   // Create the Axes
   var xAxis = d3.svg.axis()
                 .scale(xScale)
