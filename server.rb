@@ -530,10 +530,6 @@ class MetricServer < Sinatra::Base
     erb :monthlyStats
   end
 
-  get '/date/week/:week' do
-    erb :weeklyStats
-  end
-
   get '/date/day/:day' do
     erb :dailyStats
   end
