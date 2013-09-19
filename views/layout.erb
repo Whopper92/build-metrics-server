@@ -104,10 +104,19 @@
 
       $('#thisMonthView').on('click', function() {
         var d = new Date();
-        var n = d.getMonth();
-        var y = d.getFullYear();
-        var thisMonth = getMonthName(n)
-        document.location.href='/date/month/' + thisMonth + '~' + y
+        var month     = d.getMonth();
+        var year      = d.getFullYear();
+        var thisMonth = getMonthName(month)
+        document.location.href='/date/month/' + thisMonth + '~' + year
+      })
+
+      $('#todayView').on('click', function() {
+        var d         = new Date();
+        var month     = d.getMonth();
+        var day       = d.getDate();
+        var year      = d.getFullYear();
+        var thisMonth = getMonthName(month)
+        document.location.href='/date/day/' + thisMonth + '~' + day + '~' + year
       })
     })
 

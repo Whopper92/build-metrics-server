@@ -218,6 +218,7 @@ class MetricServer < Sinatra::Base
     monthNum    = key.split('-')[0]
     monthNoZero = monthNum.sub(/^0/, '')
     dayNum      = key.split('-')[1]
+    dayNum      = dayNum.to_s.insert(0, '0') if dayNum.to_i < 10
     yearNum     = key.split('-')[2]
 
     #thisYear  = Date.today.strftime("%Y")
@@ -243,11 +244,6 @@ class MetricServer < Sinatra::Base
         builds   = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE date #{searchType} '#{dayRegex}%'")[0]
         failures = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = false AND date #{searchType} '#{dayRegex}%'")[0]
 
-        puts '---------'
-        puts dayRegex
-        puts builds
-        puts failures
-
         @stats[:monthBuilds]   << builds
         if builds != 0
           failures = Float(failures) / Float(builds)
@@ -256,18 +252,7 @@ class MetricServer < Sinatra::Base
           @stats[:monthFailures] << 0
         end
       end
-
-    elsif type == 'week'
-      today = Date.today
-      dateArray = Array.new
-      (today - 6 .. today).each do |date|
-        dateArray << date
-      end
-      @dateRange = "#{dateArray[0]} to #{dateArray[1]}"
-      regex      = "(#{dateArray[0]}|#{dateArray[1]}|#{dateArray[2]}|#{dateArray[3]}|#{dateArray[4]}|#{dateArray[5]}|#{dateArray[6]})"
-      searchType = 'SIMILAR TO'
     elsif type == 'day'
-      @dateRange = Date.today
       regex      = "#{yearNum}-#{monthNum}-#{dayNum}"
       searchType = 'LIKE'
     end
@@ -531,6 +516,16 @@ class MetricServer < Sinatra::Base
   end
 
   get '/date/day/:day' do
+    @month        = params[:day].split('~')[0]
+    @day          = params[:day].split('~')[1]
+    @year         = params[:day].split('~')[2]
+    @urlType      = 'all'
+    @urlName      = 'all'
+
+    # Determine how many pages of data there are for the historical build log
+    @totalPages = Metric.count
+    @totalPages = (Float(@totalPages) / Float(11)).ceil
+
     erb :dailyStats
   end
   # Listener for incoming metrics. Stores the data in the metrics database

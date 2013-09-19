@@ -1,0 +1,106 @@
+<!--
+  Dailt stats template
+-->
+ <%= erb :tooltips %>
+
+<div id='topRowContainer' class='row-fluid'>
+  <div id='dayGeneralStatsContent' class='span6 contentContainer'>
+    <div id='dayGeneralStatsContentTitle' class='row-fluid'>
+      <h3 id='generalTitle' class='contentTitle span6'></h3>
+      <div class='span2 offset4'>
+        <div class="btn-group">
+          <button id='generalPopover' class='moreBtn btn btn-mini' data-toggle='popover' data-placement='left' data-title='Description' data-content='Miscellaneous statistics about builds this month.' type="button"><i class='icon-info-sign'></i></button>
+        </div>
+      </div>
+    </div>
+    <div class='row-fluid'>
+      <div class='span5'>
+        <table id='generalStatsTableLeft' class='table generalStatsTable'>
+          <tbody>
+            <tr>
+              <td class='generalStatsTableLabel'>Total Builds:</td>
+              <td id='generalStatsTotalBuildsCell' class='generalStatsTableCell'></td>
+            </tr>
+            <tr>
+              <td class='generalStatsTableLabel'>Most Built Package:</td>
+              <td id='generalStatsFreqPackageCell' class='generalStatsTableCell'></td>
+            </tr>
+            <tr>
+              <td class='generalStatsTableLabel'>Most Active User:</td>
+              <td id='generalStatsFreqUserCell' class='generalStatsTableCell'></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class='span5 offset2'>
+        <table id='generalStatsTableRight' class='table generalStatsTable'>
+          <tbody>
+            <tr>
+              <td class='generalStatsTableLabel'>Failure Rate:</td>
+              <td id='generalStatsFailureCell' class='generalStatsTableCell'></td>
+            </tr>
+            <tr>
+              <td class='generalStatsTableLabel'>Packages Shipped:</td>
+              <td id='generalStatsShippedCell' class='generalStatsTableCell'></td>
+            </tr>
+            <tr>
+              <td class='generalStatsTableLabel'>Most Active Team:</td>
+              <td id='generalStatsFreqTeamCell' class='generalStatsTableCell'></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type='text/javascript'>
+  $(document).ready(function() {
+
+    var monthNum   = '0' + getMonthNum(<%= "\"#{@month}\"" %>)
+    var year       = <%= @year %>
+    var day        = <%= @day %>
+    if(parseInt(day) < 10) {
+      day = '0' + day
+    }
+    var url = '/datelog/day~' + monthNum + '-' + day + '-'  + year
+    d3.json(url, function(data) {
+      if(data.count > 0) {
+        $('#generalTitle').text('General Stats for ' + <%= "\'#{@month}\'" %> + ' ' + day + ', ' + year)
+        $('#generalStatsTotalBuildsCell').text(data.count)
+        $('#generalStatsFreqPackageCell').text(data.freqPkg)
+        $('#generalStatsFreqUserCell').text(data.freqUser)
+        $('#generalStatsFailureCell').text(data.failRate + '%')
+        $('#generalStatsShippedCell').text(data.shipped)
+        $('#generalStatsFreqTeamCell').text(data.freqTeam)
+      } else {
+        $('#generalTitle').text('No Builds on ' + <%= "\'#{@month}\'" %> + ' ' + day + ', ' + year)
+        $('#generalStatsTotalBuildsCell').text('0')
+        $('#generalStatsFreqPackageCell').text('N/A')
+        $('#generalStatsFreqUserCell').text('N/A')
+        $('#generalStatsFailureCell').text('N/A')
+        $('#generalStatsShippedCell').text('0')
+        $('#generalStatsFreqTeamCell').text('N/A')
+      }
+    })
+    // Add JS interactive elements
+      $('#recentBuildsPopover').popover();
+      $('#generalPopover').popover();
+
+      // Resize the data sections for small resolutions
+    $(function() {
+      var upperContent  = document.getElementById("dayGeneralStatsContent");
+
+      if(screen.width < 1600) {
+        upperContent.style.minWidth = "1300px";
+      } else if(screen.width == 1920 && screen.height == 1080) {
+        upperContent.style.minWidth    = "1400px";
+        $(upperContent).css('margin-left', '50px');
+        $('#logBody').css('height', '800px');
+      } else {
+        upperContent.style.minWidth    = "1300px";
+        $(upperContent).addClass('offset3');
+      }
+    })
+  })
+</script>
