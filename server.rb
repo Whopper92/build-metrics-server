@@ -86,7 +86,7 @@ class MetricServer < Sinatra::Base
                                                       :id.lte => package[:id])
     end
 
-    # Gather high level metrics. Some of this data is fabricated until real data can be aquired
+    # Gather high level metrics
     # These arrays are used to create a time series of number of builds by various teams
     # Gather time series data about the number of builds and failure rate. Allow up to 12 months of data.
     thisYear                                   = Date.today.strftime("%Y")
@@ -207,6 +207,54 @@ class MetricServer < Sinatra::Base
                    :build_log            => build.build_log]
     end
     @stats[:latest].to_json
+  end
+
+  get '/datelog/:options' do
+    type     = params[:options].split('~')[0]
+    key      = params[:options].split('~')[1]
+    monthNum = key.split('-')[0]
+    dayNum   = key.split('-')[1]
+    yearNum  = key.split('-')[2]
+
+    #thisYear  = Date.today.strftime("%Y")
+    #thisMonth = Date.today.strftime("%m")
+
+    @stats    = Hash.new
+
+    if type == 'month'
+      allMonths   = ['January','February','March','April','May','June','July','August','September','October','November','December']
+      @dateRange  = allMonths[monthNum.to_i]
+      regex       = "#{yearNum}-#{monthNum}"
+      searchType  = 'LIKE'
+    elsif type == 'week'
+      today = Date.today
+      dateArray = Array.new
+      (today - 6 .. today).each do |date|
+        dateArray << date
+      end
+      @dateRange = "#{dateArray[0]} to #{dateArray[1]}"
+      regex      = "(#{dateArray[0]}|#{dateArray[1]}|#{dateArray[2]}|#{dateArray[3]}|#{dateArray[4]}|#{dateArray[5]}|#{dateArray[6]})"
+      searchType = 'SIMILAR TO'
+    elsif type == 'day'
+      @dateRange = Date.today
+      regex      = "#{yearNum}-#{monthNum}-#{dayNum}"
+      searchType = 'LIKE'
+    end
+
+    @stats[:count]      = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE date #{searchType} '#{regex}%'")[0]
+    if(@stats[:count] != 0)
+      @stats[:failCount]  = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM metrics WHERE success = false AND date #{searchType} '#{regex}%'")[0]
+      @stats[:failRate]   = Float(@stats[:failCount]) / Float(@stats[:count])
+      @stats[:failRate]   = ((@stats[:failRate]) * 100).round(0)
+      @stats[:shipped]    = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM ships WHERE date #{searchType} '#{regex}%'")[0]
+      @stats[:freqPkg]    = DataMapper.repository.adapter.select("select package_name, count(*) from metrics where date #{searchType} '#{regex}%' group by package_name order by count desc limit 1")
+      @stats[:freqPkg]   = @stats[:freqPkg][0][:package_name]
+      @stats[:freqUser]   = DataMapper.repository.adapter.select("select build_user, count(*) from metrics where date #{searchType} '#{regex}%' group by build_user order by count desc limit 1 offset 1")
+      @stats[:freqUser]   = @stats[:freqUser][0][:build_user]
+      @stats[:freqTeam]   = DataMapper.repository.adapter.select("select build_team, count(*) from metrics where date #{searchType} '#{regex}%' group by build_team order by count desc limit 1 offset 1")
+      @stats[:freqTeam]   = @stats[:freqTeam][0][:build_team]
+    end
+    @stats.to_json
   end
 
   # A dynamic route for each individual package view
