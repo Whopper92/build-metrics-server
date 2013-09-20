@@ -88,6 +88,10 @@
       $('#recentBuildsPopover').popover();
       $('#generalPopover').popover();
 
+      $('#calendarButton').on('click', function() {
+        displayCalModal();
+      })
+
       // Resize the data sections for small resolutions
     $(function() {
       var upperContent  = document.getElementById("dayGeneralStatsContent");
