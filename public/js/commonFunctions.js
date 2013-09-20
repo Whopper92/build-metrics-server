@@ -79,3 +79,7 @@ function createTableRowModal(rowID, modalContent) {
 function removeTableModal() {
   d3.select('#tableModal').classed('hidden', true);
 }
+
+function displayCalModal() {
+  $('#calModal').modal('show')
+}
