@@ -40,6 +40,8 @@
           <ul class="nav">
             <li><a href="/package">Packages</a></li>
             <li><a href="/user">Users</a></li>
+
+
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#summaries">
                 Summaries
@@ -54,14 +56,17 @@
                     <% end %>
                   </ul>
                 </li>
-                <li class='dropdown-submenu'>
-                  <a tabindex='-1' href="#">By Date</a>
-                  <ul class='dropdown-menu'>
-                    <li><a id='todayView' tabindex="-1" href='#'>Today</a></li>
-                    <li><a id='thisMonthView' tabindex="-1" href='#'>This Month</a></li>
-                    <li><a id='calendar' tabindex="-1" href='#'>Calendar</a></li>
-                  </ul>
-                </li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" href="#Calendar">
+                Calendar
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                <li><a id='calTodayOpt' tabindex='-1' href="#">Today</a></li>
+                <li><a id='calMonthOpt' tabindex='-1' href="#">This Month</a></li>
+                <li><a id='calCalOpt' tabindex='-1' href="#">Open Calendar</a></li>
               </ul>
             </li>
             <li><a id='navBuildLog' href=#>Build Log</a></li>
@@ -104,31 +109,37 @@
         createHistoricalBuildLogModal()
       })
 
+      var d = new Date();
+      var month     = d.getMonth();
+      var day       = d.getDate();
+      var year      = d.getFullYear();
+      var thisMonth = getMonthName(month)
+
       $('#thisMonthView').on('click', function() {
-        var d = new Date();
-        var month     = d.getMonth();
-        var year      = d.getFullYear();
-        var thisMonth = getMonthName(month)
         document.location.href='/date/month/' + thisMonth + '~' + year
       })
 
       $('#todayView').on('click', function() {
-        var d         = new Date();
-        var month     = d.getMonth();
-        var day       = d.getDate();
-        var year      = d.getFullYear();
-        var thisMonth = getMonthName(month)
         document.location.href='/date/day/' + thisMonth + '~' + day + '~' + year
+      })
+
+      $('#calTodayOpt').on('click', function() {
+        document.location.href='/date/day/' + thisMonth + '~' + day + '~' + year
+      })
+
+      $('#calMonthOpt').on('click', function() {
+        document.location.href='/date/month/' + thisMonth + '~' + year
+      })
+
+      $(function() {
+        $( "#datepicker" ).datepicker();
+      });
+
+      $('#calCalOpt').on('click', function() {
+        displayCalModal();
       })
     })
 
-    $(function() {
-      $( "#datepicker" ).datepicker();
-    });
-
-    $('#calendar').on('click', function() {
-      displayCalModal();
-    })
 
     $(function() {
       var refStatus = getCookie('refresh')
