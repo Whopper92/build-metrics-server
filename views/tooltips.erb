@@ -109,16 +109,36 @@
 <div id='calModal' class="modal hide fade" data-backdrop='false'>
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h3 id='calTitle'>Select a Date</h3>
+    <h3 id='calTitle'>Select a Day or Month</h3>
   </div>
-  <div id='calBody' class="modal-body">
-    Date: <input type="text" id="datepicker" /> or Month: <input class="monthpicker" data-start-year="2013" data-final-year="2013" data-selected-year="2013">
+  <div id='calBody' class="modal-body row-fluid">
+    <div id='datepicker' class='span5'></div>
+    <div id='monthpicker' class='span5 offset1'>
+      <select id='yearPickSelect' class='span6' selected=<%="\"#{@curYear}\""%>>
+        <% @years.each do |year|%>
+          <% if year == @curYear %>
+            <option selected='selected'><%= year %></option>
+          <% else %>
+            <option><%= year %></option>
+          <% end %>
+        <% end %>
+      </select>
+      <select id='monthPickSelect' class='span6'>
+        <% @months.each do |month| %>
+          <% if month == @curMonth %>
+            <option selected='selected'><%= month %></option>
+          <% else %>
+            <option><%= month %></option>
+          <% end %>
+        <% end %>
+      </select>
+    </div>
+    <button id='monthPickButton' class='btn'>Go!</button>
   </div>
   <div class="modal-footer">
     <a href="#" data-dismiss="modal" aria-hidden="true" class="btn">Close</a>
   </div>
 </div>
-
 
   <!-- Historical build log modal -->
 <div id='histLogModal' class="modal hide fade" data-backdrop='false'>
@@ -180,6 +200,26 @@
     var urlType    = <%= "\"#{@urlType}\"" %>
     var urlName    = <%= "\"#{@urlName}\"" %>
     var url        = '/log/' + urlType + '~' + urlName + '~' + pageNumber
+
+    // Getting calendar date
+    $("#datepicker").datepicker({
+      onSelect: function() {
+        var pickedDate = $('#datepicker').val()
+        var monthNum  = pickedDate.substring(0,2)
+        if(monthNum.charAt(0) == '0')
+          monthNum = monthNum.substring(1)
+        var month = getMonthName(parseInt(monthNum) - 1)
+        var day   = pickedDate.substring(3,5)
+        var year  = pickedDate.substring(6,10)
+        document.location.href='/date/day/' + month + '~' + day + '~' + year
+      }
+    });
+
+    $('#monthPickButton').on('click', function() {
+      var month = $('#monthPickSelect').val()
+      var year  = $('#yearPickSelect').val()
+      document.location.href='/date/month/' + month + '~' + year
+    });
 
     if(urlType == 'all') {
       var title = 'Historical Build Log'

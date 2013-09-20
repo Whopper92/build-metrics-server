@@ -52,6 +52,14 @@ class MetricServer < Sinatra::Base
       @allHosts          = Metric.all(:fields => [:build_loc], :unique => true, :order => [:build_loc.asc])
       @allPackageTypes   = ['deb', 'rpm', 'gem', 'dmg']
       @pageNumber        = 0 # This is used for the historical build log
+      curTime            = Time.new
+      @months            = ['January','February','March','April','May','June','July','August','September','October','November','December']
+      @curMonth          = @months[curTime.month - 1]
+      @years             = Array.new
+      @curYear           = curTime.year
+      (@curYear - 1 .. @curYear + 1).each do |year|
+        @years << year
+      end
     end
 
   #  =============================  ROUTES  =============================== #
@@ -218,11 +226,7 @@ class MetricServer < Sinatra::Base
     monthNum    = key.split('-')[0]
     monthNoZero = monthNum.sub(/^0/, '')
     dayNum      = key.split('-')[1]
-    dayNum      = dayNum.to_s.insert(0, '0') if dayNum.to_i < 10
     yearNum     = key.split('-')[2]
-
-    #thisYear  = Date.today.strftime("%Y")
-    #thisMonth = Date.today.strftime("%m")
 
     @stats    = Hash.new
 
@@ -265,10 +269,19 @@ class MetricServer < Sinatra::Base
       @stats[:shipped]    = DataMapper.repository.adapter.select("SELECT COUNT(*) FROM ships WHERE date #{searchType} '#{regex}%'")[0]
       @stats[:freqPkg]    = DataMapper.repository.adapter.select("select package_name, count(*) from metrics where date #{searchType} '#{regex}%' group by package_name order by count desc limit 1")
       @stats[:freqPkg]   = @stats[:freqPkg][0][:package_name]
-      @stats[:freqUser]   = DataMapper.repository.adapter.select("select build_user, count(*) from metrics where date #{searchType} '#{regex}%' group by build_user order by count desc limit 1 offset 1")
-      @stats[:freqUser]   = @stats[:freqUser][0][:build_user]
-      @stats[:freqTeam]   = DataMapper.repository.adapter.select("select build_team, count(*) from metrics where date #{searchType} '#{regex}%' group by build_team order by count desc limit 1 offset 1")
-      @stats[:freqTeam]   = @stats[:freqTeam][0][:build_team]
+      @stats[:freqUser]   = DataMapper.repository.adapter.select("select build_user, count(*) from metrics where date #{searchType} '#{regex}%' group by build_user order by count desc limit 2")
+      if @stats[:freqUser].length > 1 and @stats[:freqUser][0][:build_user] == 'jenkins'
+        @stats[:freqUser]  = @stats[:freqUser][1][:build_user]
+      else
+        @stats[:freqUser]  = @stats[:freqUser][0][:build_user]
+      end
+
+      @stats[:freqTeam]   = DataMapper.repository.adapter.select("select build_team, count(*) from metrics where date #{searchType} '#{regex}%' group by build_team order by count desc limit 2")
+      if @stats[:freqTeam].length > 1 and @stats[:freqTeam][0][:build_team] == 'jenkins'
+        @stats[:freqTeam]  = @stats[:freqTeam][1][:build_team]
+      else
+        @stats[:freqTeam]  = @stats[:freqTeam][0][:build_team]
+      end
     end
 
     @stats.to_json

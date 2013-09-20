@@ -83,7 +83,7 @@
   $(document).ready(function() {
 
     var monthNum = '0' + getMonthNum(<%= "\"#{@monthTitle}\"" %>)
-    var year     = <%= @year %>
+    var year     = <%= "\"#{@year}\"" %>
     var url = '/datelog/month~' + monthNum + '-0-' + year
     d3.json(url, function(data) {
       createStandardLineGraph(data.monthBuilds,570, 480, 70, 30, 110, 20, '#monthTotalBuildsContent', '#monthTotalBuildsContentGraph', 'build Array')
