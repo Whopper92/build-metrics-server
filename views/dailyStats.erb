@@ -58,7 +58,10 @@
 <script type='text/javascript'>
   $(document).ready(function() {
 
-    var monthNum   = '0' + getMonthNum(<%= "\"#{@month}\"" %>)
+    var monthNum = getMonthNum(<%= "\"#{@monthTitle}\"" %>)
+    if(parseInt(monthNum) < 10) {
+      monthNum = '0' + monthNum
+    }
     var year       = <%= @year %>
     var day        = <%= @day %>
     if(parseInt(day) < 10) {
