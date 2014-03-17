@@ -83,7 +83,10 @@
 <script type='text/javascript'>
   $(document).ready(function() {
 
-    var monthNum = '0' + getMonthNum(<%= "\"#{@monthTitle}\"" %>)
+    var monthNum = getMonthNum(<%= "\"#{@monthTitle}\"" %>)
+    if(parseInt(monthNum) < 10) {
+      monthNum = '0' + monthNum
+    }
     var year     = <%= "\"#{@year}\"" %>
     var url = '/datelog/month~' + monthNum + '-0-' + year
     d3.json(url, function(data) {
